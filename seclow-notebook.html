@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Lower Secondary · Python Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:#F1F5F6;color:#15201F;line-height:1.6}
+  ::selection{background:#0FA8A4;color:#fff}
+  @keyframes nbPulse{0%,100%{opacity:.45}50%{opacity:1}}
+  @keyframes nbSpin{to{transform:rotate(360deg)}}
+  .bar{height:6px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF)}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 26px;background:rgba(241,245,246,.88);backdrop-filter:blur(14px);border-bottom:1px solid #dbe6e5}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#15201F;margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:999px;background:#fff;border:2px solid #dbe6e5;color:#0a6f6c;white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:#0FA8A4;transform:translateY(-1px)}
+  .pill.solid{background:#0FA8A4;border-color:#0FA8A4;color:#fff}
+  header.hero{position:relative;background:#0e1a19;color:#eafdfb;padding:clamp(42px,6vw,66px) 26px clamp(38px,5vw,56px);overflow:hidden}
+  header.hero .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(15,168,164,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(15,168,164,.07) 1px,transparent 1px);background-size:44px 44px;opacity:.6}
+  header.hero .inner{position:relative;z-index:2;max-width:980px;margin:0 auto}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#5fe0db;border:1px solid rgba(15,168,164,.4);padding:6px 13px;border-radius:8px;margin-bottom:18px}
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:#0FA8A4;animation:nbPulse 2s infinite}
+  header.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 12px}
+  header.hero p.lede{font-size:clamp(.98rem,1.3vw,1.1rem);color:#bfe0dd;max-width:62ch;margin:0}
+  .toolbar{position:sticky;top:60px;z-index:40;max-width:980px;margin:-24px auto 0;padding:0 26px}
+  .toolbar .box{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #dde8e7;border-radius:14px;padding:12px 16px;box-shadow:0 10px 30px rgba(14,26,25,.10)}
+  .kchip{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:8px 14px;border-radius:999px;border:2px solid #dbe6e5;background:#fff;color:#46615e}
+  .kchip .kdot{width:9px;height:9px;border-radius:50%;background:#FFB23E;animation:nbPulse 1.4s infinite}
+  .kchip.ready .kdot{background:#0FA8A4;animation:none}
+  .kchip.running .kdot{background:#8E6BFF;animation:nbPulse .7s infinite}
+  .kchip.offline .kdot{background:#FF6A5A;animation:none}
+  .kchip.ready{border-color:#0FA8A4;color:#0a6f6c}
+  .kchip.offline{border-color:#FF6A5A;color:#C23F33}
+  .runall{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 18px;border-radius:999px;background:#0FA8A4;color:#fff;border:none;cursor:pointer;transition:.15s}
+  .runall:hover:not(:disabled){transform:translateY(-1px);background:#0c8f8b}
+  .runall:disabled{opacity:.45;cursor:not-allowed}
+  .toolbar .hint{font-size:12.5px;color:#7d9492;margin-left:auto}
+  main{max-width:980px;margin:0 auto;padding:34px 26px 60px}
+  .nb-sec{background:#fff;border:1px solid #dde8e7;border-radius:18px;padding:clamp(22px,3vw,32px);margin-bottom:26px}
+  .chip{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#0a6f6c;background:#E9FAF9;border:1px solid #c2e8e6;border-radius:999px;padding:5px 12px;margin-bottom:12px}
+  .nb-sec h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.35rem,2.6vw,1.8rem);letter-spacing:-.02em;margin:0 0 10px}
+  .nb-sec p.ex{margin:0 0 16px;font-size:15px;color:#46615e;max-width:72ch}
+  .nb-sec p.ex b{color:#15302e}
+  .nb-sec code{font-family:'Space Mono',monospace;font-size:.88em;background:#E9FAF9;border:1px solid #c2e8e6;border-radius:6px;padding:1px 6px;color:#0a6f6c}
+  .cell{border:1px solid #16302e;border-radius:14px;overflow:hidden;margin:0 0 14px;background:#0e1a19}
+  .cellbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#122423;border-bottom:1px solid #1d3a38}
+  .cno{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#5fe0db;min-width:64px}
+  .cellbar .spacer{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:#3f6360}
+  .runbtn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:6px 14px;border-radius:8px;background:#0FA8A4;color:#fff;border:none;cursor:pointer;transition:.15s}
+  .runbtn:hover:not(:disabled){background:#12c2bd}
+  .runbtn:disabled{opacity:.45;cursor:not-allowed}
+  textarea.code{display:block;width:100%;border:none;outline:none;resize:none;background:#0e1a19;color:#d9f4f2;font-family:'Space Mono',monospace;font-size:13.5px;line-height:1.62;padding:14px 16px;caret-color:#5fe0db;overflow:hidden}
+  textarea.code:focus{background:#101f1e}
+  pre.out{margin:0;padding:12px 16px;background:#F4FBFA;border-top:2px solid #0FA8A4;font-family:'Space Mono',monospace;font-size:12.8px;line-height:1.6;color:#15302e;white-space:pre-wrap;word-break:break-word}
+  pre.out .res{color:#0a6f6c;font-weight:700}
+  pre.out .err{color:#C23F33;font-weight:700}
+  pre.out .sys{color:#7d9492;font-style:italic}
+  .try{margin:14px 0 0;font-size:14px;color:#15302e;background:#E9FAF9;border:1px dashed #0FA8A4;border-radius:12px;padding:11px 15px}
+  .try b{color:#0a6f6c}
+  footer.pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:8px 24px 20px}
+  footer.credit{text-align:center;border-top:1px solid #dde8e7;padding:26px;font-size:13px;color:#7d9492}
+  @media (max-width:640px){.toolbar{top:104px}.toolbar .hint{display:none}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:#0FA8A4">.</span>26</b></a>
+  <a class="pill" href="seclow-syllabus.html">← Back to syllabus</a>
+  <a class="pill" href="seclow-lab.html">Practice Lab</a>
+  <a class="pill solid" href="seclow-problem-set-b.html">Problem sets →</a>
+</nav>
+
+<header class="hero">
+  <div class="grid"></div>
+  <div class="inner">
+    <div class="kicker"><span class="dot"></span>Interactive Notebook · Grades 7–8</div>
+    <h1>Build a tiny AI,<br>end to end</h1>
+    <p class="lede">A real Python notebook that runs entirely in your browser: nothing to install. Work through eight small builds: tokens, pixels, embeddings, a neuron, a learner, a language model, attention, and finally an agent. Edit any cell and run it again; every cell shares one Python memory, just like a lab notebook.</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="box">
+    <span class="kchip" id="kchip"><span class="kdot"></span><span id="kmsg">Kernel: loading Python…</span></span>
+    <button class="runall" id="runall" disabled>▶▶ Run all</button>
+    <span class="hint">Tip: press <b>Shift + Enter</b> inside a cell to run it</span>
+  </div>
+</div>
+
+<main>
+<!-- Section 1 · Tokens & numbers · Outcomes: LS.P1.1 (describe tokenisation), LS.P1.2 (hand-tokenise to tokens and IDs), LS.P1.3 (explain letter-miscounts) -->
+<section class="nb-sec" id="s1">
+  <span class="chip">01 · Representation · tokens</span>
+  <h2>Tokens &amp; numbers</h2>
+  <p class="ex">A language model never sees words; it sees <b>numbers</b>. First the text is chopped into <b>tokens</b>, then each token is swapped for an ID from a vocabulary. Run the cell to tokenise a sentence yourself. Notice that <code>the</code> appears twice but gets <b>one</b> ID: same token, same number, every time.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">tokenise → IDs</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">sentence = "the robot reads the book"
+tokens = sentence.split()
+print("Tokens:", tokens)
+
+vocab = {}
+for t in tokens:
+    if t not in vocab:
+        vocab[t] = len(vocab)
+print("Vocabulary:", vocab)
+
+ids = [vocab[t] for t in tokens]
+print("Token IDs:", ids)</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Now the famous gotcha. Ask a chatbot how many r&rsquo;s are in <code>strawberry</code> and it may say two. Why? A real tokeniser often stores a rare word as a few <b>chunks</b>, so the model receives about three chunk-IDs; it never sees the ten individual letters at all. Python, counting letters directly, gets it right: <b>3</b>.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">the letter-count gotcha</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">word = "strawberry"
+print("Letters we see:", list(word))
+
+# A real tokeniser often splits a rare word into chunks like this:
+chunks = ["str", "aw", "berry"]
+print("What the model sees:", chunks)
+
+# The model reads 3 chunk-IDs, not 10 letters -
+# so counting letters inside a word is genuinely hard for it.
+print("Actual number of r's:", word.count("r"))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> change the sentence to <code>"the cat and the dog and the bird"</code> and predict the ID list before you run. Then count the s&rsquo;s in <code>"mississippi"</code> with <code>.count("s")</code>.</p>
+</section>
+
+<!-- Section 2 · Pictures as numbers · Outcomes: LS.P1.5 (represent an image as a grid of number-pixels) -->
+<section class="nb-sec" id="s2">
+  <span class="chip">02 · Representation · pixels</span>
+  <h2>Pictures as numbers</h2>
+  <p class="ex">Images get the same treatment as text: they become numbers. Here a 5×5 picture is just a list of rows, where <code>1</code> means a dark pixel and <code>0</code> means a light one. The print loop redraws the numbers as squares. Run it and a diamond appears, made of 13 dark pixels.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">a 5×5 image</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">image = [
+    [0,0,1,0,0],
+    [0,1,1,1,0],
+    [1,1,1,1,1],
+    [0,1,1,1,0],
+    [0,0,1,0,0],
+]
+
+for row in image:
+    print("".join("⬛" if p == 1 else "⬜" for p in row))
+
+print("Dark pixels:", sum(sum(row) for row in image))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Because the picture <b>is</b> numbers, editing the picture means doing maths. One line of Python computes <code>1 - p</code> for every pixel, and the whole image inverts, like a photo negative. Every filter on your phone is number-crunching like this, just on millions of pixels with more shades than 0 and 1.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">maths on pixels = image editing</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">inverted = [[1 - p for p in row] for row in image]
+for row in inverted:
+    print("".join("⬛" if p == 1 else "⬜" for p in row))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> edit the 0s and 1s to draw your own initial, then re-run both cells. (The second cell reuses <code>image</code> from the first; that&rsquo;s the shared notebook memory at work.)</p>
+</section>
+
+<!-- Section 3 · Embeddings lite · Outcomes: LS.P1.4 (inspect an embedding space: similar words sit close together) -->
+<section class="nb-sec" id="s3">
+  <span class="chip">03 · Representation · embeddings</span>
+  <h2>Embeddings lite</h2>
+  <p class="ex">Once words are IDs, models go one better: each word gets a <b>position in space</b>, called an embedding. Words with similar meanings sit close together. Real models use hundreds of dimensions; ours uses two, <i>furriness</i> and <i>love of water</i>, so you can picture it. The distance formula is just Pythagoras: <code>cat</code> to <code>dog</code> comes out at 1.41, while <code>cat</code> to <code>shark</code> is a distant 9.22.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">words as coordinates</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">words = {
+    "cat":   (9, 2),   # (furriness, love of water)
+    "dog":   (8, 3),
+    "fish":  (1, 9),
+    "shark": (2, 8),
+    "towel": (5, 1),
+}
+
+def distance(a, b):
+    return ((a[0]-b[0])**2 + (a[1]-b[1])**2) ** 0.5
+
+print("cat to dog:  ", round(distance(words["cat"], words["dog"]), 2))
+print("cat to shark:", round(distance(words["cat"], words["shark"]), 2))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">This is exactly how AI answers &ldquo;which word is most similar?&rdquo;: it finds the <b>nearest neighbour</b> in the space. Run it and check the pairs make sense. Then look at <code>towel</code>: its nearest neighbour is <code>dog</code>! With only two dimensions there is nowhere sensible for a towel to sit, one reason real embeddings need so many dimensions.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">nearest neighbour = most similar</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">def closest(word):
+    best, best_d = None, 999
+    for other, vec in words.items():
+        if other == word:
+            continue
+        d = distance(words[word], vec)
+        if d &lt; best_d:
+            best, best_d = other, d
+    return best, round(best_d, 2)
+
+for w in words:
+    print(w, "->", closest(w))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> add <code>"otter": (7, 8)</code> to the dictionary and re-run both cells. Who is otter&rsquo;s nearest neighbour, and whose nearest neighbour does otter <i>steal</i>?</p>
+</section>
+
+<!-- Section 4 · A single neuron · Outcomes: LS.P2.1 (weighted sum + activation; the building block of networks) -->
+<section class="nb-sec" id="s4">
+  <span class="chip">04 · Learning · one neuron</span>
+  <h2>A single neuron</h2>
+  <p class="ex">Every neural network, including the giant ones behind chatbots, is stacked from one tiny building block. A <b>neuron</b> multiplies each input by a <b>weight</b>, adds a <b>bias</b>, then an <b>activation</b> decides whether to fire. Ours uses the simplest activation there is: a step. Total ≥ 0 → output 1; otherwise → 0. With weights <code>1, 1</code> and bias <code>-0.5</code>, this neuron computes OR: it fires if <i>either</i> input is 1.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">weighted sum + bias + step</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">def neuron(x1, x2, w1, w2, bias):
+    total = x1*w1 + x2*w2 + bias
+    return 1 if total >= 0 else 0   # step activation: fire or stay quiet
+
+w1, w2, bias = 1, 1, -0.5   # these weights make an OR gate
+for x1 in (0, 1):
+    for x2 in (0, 1):
+        print(x1, x2, "->", neuron(x1, x2, w1, w2, bias))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> without touching the function, change only the numbers on the <code>w1, w2, bias = …</code> line so the neuron computes <b>AND</b>, firing only for <code>1 1</code>. (Hint: keep the weights, make the bias more negative, e.g. <code>-1.5</code>.) When a network <i>learns</i>, this is all that changes: the weights and biases get nudged until the outputs come out right.</p>
+</section>
+
+<!-- Section 5 · Learn from data · Outcomes: LS.P2.2 (ways machines learn: supervised), LS.P2.3 (workflow data→train→test→evaluate; confusion counts), LS.P2.4 (code a simple classifier with a train/test split) -->
+<section class="nb-sec" id="s5">
+  <span class="chip">05 · Learning · k-nearest neighbours</span>
+  <h2>Learn from data</h2>
+  <p class="ex">Time to build a real classifier. This is <b>supervised learning</b>: every training example comes with a label. Each animal is a point, <code>(weight, ear length)</code>, labelled <code>rabbit</code> or <code>capybara</code>. Our learner is <b>1-nearest-neighbour</b>: to classify a new animal, find the closest training point and copy its label. Note the golden rule: the <b>test</b> animals are kept separate, so we can check the model on data it has never seen.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">data → train/test split → model</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">train = [
+    (2, 9, "rabbit"), (3, 8, "rabbit"), (2, 7, "rabbit"), (4, 9, "rabbit"),
+    (9, 2, "capybara"), (8, 3, "capybara"), (9, 4, "capybara"), (7, 2, "capybara"),
+]
+test = [
+    (3, 9, "rabbit"), (8, 1, "capybara"), (2, 8, "rabbit"), (6, 4, "rabbit"),
+]
+
+def predict(w, e):
+    """Copy the label of the nearest training animal (1-NN)."""
+    nearest = min(train, key=lambda a: (a[0]-w)**2 + (a[1]-e)**2)
+    return nearest[2]
+
+print(predict(2, 8))
+print(predict(8, 2))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Now <b>evaluate</b>: run every test animal through the model and tally the results. Accuracy comes out at <b>3 / 4 = 0.75</b>, and the confusion counts show exactly <i>where</i> it went wrong: one real rabbit was called a capybara. Look at the culprit: <code>(6, 4)</code> is an unusually big, small-eared rabbit sitting in capybara territory. Real models fail on unusual cases in exactly this way.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">accuracy + confusion counts</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">correct = 0
+confusion = {}
+for w, e, actual in test:
+    guess = predict(w, e)
+    mark = "✓" if guess == actual else "✗"
+    print(f"({w},{e}) actual={actual:&lt;8} guess={guess:&lt;8} {mark}")
+    confusion[(actual, guess)] = confusion.get((actual, guess), 0) + 1
+    if guess == actual:
+        correct += 1
+
+print("Accuracy:", correct, "/", len(test), "=", correct / len(test))
+print("Confusion counts:", confusion)</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> add a fifth training rabbit at <code>(6, 5)</code> and re-run both cells. Does the accuracy reach 1.0? More (good) data is often worth more than a cleverer algorithm.</p>
+</section>
+
+<!-- Section 6 · Be the LLM · Outcomes: LS.P3.1 (LLM predicts next token from learned probabilities), LS.P3.2 (build a bigram predictor and generate text) -->
+<section class="nb-sec" id="s6">
+  <span class="chip">06 · Generation · be the LLM</span>
+  <h2>Be the LLM</h2>
+  <p class="ex">A language model is, at heart, a next-word predictor. Training means reading text and remembering <b>what tends to follow what</b>. This cell builds a <b>bigram</b> model from a four-sentence story: for each word, it collects every word that ever came next. Repeats matter: <code>cat</code> appears twice in the followers of <code>the</code>, so it is twice as likely to be picked.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">training = counting followers</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">story = ("the cat sat on the mat . the cat ate a fish . "
+         "the dog sat on the rug . the dog ate a bone .")
+story_words = story.split()
+
+follows = {}
+for a, b in zip(story_words, story_words[1:]):
+    follows.setdefault(a, []).append(b)
+
+print("After 'the':", follows["the"])
+print("After 'sat':", follows["sat"])</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Generating is just predicting on repeat: pick a next word, then a next word after that. The first loop picks <b>at random from the follower list</b>: common followers win more often, but anything can happen. That randomness is the intuition behind an LLM&rsquo;s <b>temperature</b> setting. The second loop is temperature-zero: always take the most common follower, which here gives the same sentence every time: <code>the cat ate a bone .</code></p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">generate: sampled vs greedy</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">import random
+random.seed(7)          # change the seed for a different sentence
+
+word = "the"
+sentence = [word]
+while word != "." and len(sentence) &lt; 12:
+    word = random.choice(follows[word])   # weighted: frequent followers win more often
+    sentence.append(word)
+print("Sampled:", " ".join(sentence))
+
+word = "the"
+greedy = [word]
+while word != "." and len(greedy) &lt; 12:
+    options = follows[word]
+    word = max(sorted(set(options)), key=options.count)  # always the most common (ties: alphabetical)
+    greedy.append(word)
+print("Greedy: ", " ".join(greedy))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> change the seed and re-run a few times: the sampled sentence changes, the greedy one never does. Then add a sentence of your own to the story (keep the <code>.</code> spaced out) and watch the model pick up your words. Notice the model has no idea what a cat <i>is</i>; it only knows what follows what.</p>
+</section>
+
+<!-- Section 7 · Attention, tiny · Outcomes: LS.P3.3 (trace how attention re-weights earlier words and changes what comes next) -->
+<section class="nb-sec" id="s7">
+  <span class="chip">07 · Generation · attention</span>
+  <h2>Attention, tiny</h2>
+  <p class="ex">Our bigram model only ever looked at <b>one</b> previous word. Modern transformers use <b>attention</b>: for each new token they look back at <i>all</i> the earlier words and blend their meanings, giving more <b>weight</b> to the relevant ones. Take <i>&ldquo;the fish saw the net and <b>it</b> hid&rdquo;</i>: what does <code>it</code> mean? Below, each context word has a tiny meaning-vector, and the attention weights (which always sum to 1) say how much of each to mix in. With 0.7 on <code>fish</code>, the blend lands near fish&rsquo;s vector.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">a weighted mix of context</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">context = {
+    "fish": [9, 1],   # tiny meaning-vectors, like Section 3
+    "saw":  [2, 5],
+    "net":  [3, 8],
+}
+
+attention = {"fish": 0.7, "saw": 0.1, "net": 0.2}
+print("Weights sum to:", sum(attention.values()))
+
+mix = [0, 0]
+for word, vec in context.items():
+    for i in range(2):
+        mix[i] += attention[word] * vec[i]
+print("Blended meaning of 'it':", [round(v, 2) for v in mix])</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Now shift the attention to <code>net</code> and the very same sentence &ldquo;means&rdquo; something different: the blend <code>[3.5, 7.0]</code> sits right next to net&rsquo;s own vector <code>[3, 8]</code>. Which word the model attends to changes what it thinks <code>it</code> refers to, and therefore which token it predicts next. (Real attention <i>computes</i> these weights from the vectors themselves; here we set them by hand to see the effect.)</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">re-weight → new meaning</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">attention = {"fish": 0.1, "saw": 0.1, "net": 0.8}
+
+mix = [0, 0]
+for word, vec in context.items():
+    for i in range(2):
+        mix[i] += attention[word] * vec[i]
+print("Blended meaning of 'it':", [round(v, 2) for v in mix])
+print("net's own vector:       ", context["net"])</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> set the weights to a perfectly even <code>1/3</code> each. Where does the blend land? Then invent weights that make <code>it</code> mean <code>saw</code>. Remember the rule: the weights must sum to 1.</p>
+</section>
+
+<!-- Section 8 · A tiny agent · Outcomes: LS.P4.3 (trace an agent's Sense/Think→Act loop with tool calls), LS.P4.4 (identify where a tool call is needed); closes with LS.P5 verification habit (LS.P5.1/P5.3: plausible ≠ true, verify before trusting) -->
+<section class="nb-sec" id="s8">
+  <span class="chip">08 · Agency · think → act → observe</span>
+  <h2>A tiny agent</h2>
+  <p class="ex">Finally, put it together. A plain chatbot just predicts text, and Section 6 showed that predicting-what-sounds-right is a risky way to do arithmetic. An <b>agent</b> runs a loop: <b>think</b> about the goal, <b>act</b> by calling a <b>tool</b>, <b>observe</b> the result, then answer. Here the tool is a percentage calculator, so &ldquo;17% of 240&rdquo; comes back as exactly <code>40.8</code>: computed, not guessed.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">the loop, hard-wired</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">def calculator(part, whole):
+    """A TOOL the agent can call. It only does percentages."""
+    return whole * part / 100
+
+def agent(question):
+    print("QUESTION:", question)
+    print("THINK:   this needs exact maths - I should not guess.")
+    print("ACT:     calling calculator(17, 240)")
+    answer = calculator(17, 240)
+    print("OBSERVE: the tool returned", answer)
+    print("ANSWER:  17% of 240 is", answer)
+
+agent("What is 17% of 240?")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">A better agent also knows its <b>limits</b>. This version checks whether the question fits its one tool: if yes, it parses out the numbers, calls the tool, and, crucially, <b>verifies</b> the observation with a sanity check before answering. If not, it <b>refuses</b> rather than bluffing. That final habit is the whole of Pillar 5 in one line: a confident-sounding answer is not evidence: check before you trust, whether the answerer is an AI or you.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">scope check + verify + refusal</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">def agent2(question):
+    print("QUESTION:", question)
+    print("THINK:   is this a percentage question?")
+    if "% of" not in question:
+        print("ANSWER:  Sorry, that is outside my scope.")
+        print("         My only tool is a percentage calculator.")
+        return
+    bits = question.replace("%", "").replace("?", "").split()
+    part, whole = float(bits[2]), float(bits[4])
+    print("ACT:     calling calculator(", part, ",", whole, ")")
+    result = calculator(part, whole)
+    print("OBSERVE: the tool returned", result)
+    print("VERIFY:  a percentage under 100 should shrink the number:", result &lt; whole)
+    print("ANSWER: ", result)
+
+agent2("What is 17% of 240?")
+print("-" * 30)
+agent2("What is the capital of Peru?")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> ask <code>agent2("What is 35% of 80?")</code>. Check the answer by hand (it should be 28.0). Then find a question shaped like <code>"What is X% of Y?"</code> that fools the crude parser, and suggest one line that would fix it. Congratulations, you have now built every layer of a modern AI system in miniature: representation, learning, generation, attention and agency.</p>
+</section>
+
+</main>
+
+<footer class="pills">
+  <a class="pill" href="seclow-syllabus.html">← Back to syllabus</a>
+  <a class="pill" href="seclow-lab.html">Practice Lab</a>
+  <a class="pill solid" href="seclow-problem-set-b.html">Problem sets →</a>
+</footer>
+<footer class="credit">IJAIO 2026 · Lower Secondary · In-browser Python Notebook (Pyodide)</footer>
+
+<script>
+(function(){
+  'use strict';
+  var pyodide = null, state = 'loading', execCount = 0, busy = false;
+  var kchip = document.getElementById('kchip');
+  var kmsg  = document.getElementById('kmsg');
+  var runallBtn = document.getElementById('runall');
+  var OFFLINE_MSG = 'Python could not load (are you offline?). The cells above still read as a worked example. Reconnect and reload this page to run them for real.';
+
+  function setState(s, msg){
+    state = s;
+    kchip.className = 'kchip ' + s;
+    kmsg.textContent = msg;
+    runallBtn.disabled = (s !== 'ready');
+  }
+
+  /* ---------- kernel boot with graceful offline fallback ---------- */
+  var loader = document.createElement('script');
+  loader.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+  loader.onload = function(){
+    loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' }).then(function(py){
+      pyodide = py;
+      pyodide.runPython(RUNNER_SRC);
+      setState('ready', 'Kernel: ready (Python 3.12)');
+    }).catch(function(){ setState('offline', 'Kernel: offline'); });
+  };
+  loader.onerror = function(){ setState('offline', 'Kernel: offline'); };
+  document.head.appendChild(loader);
+
+  /* ---------- Python-side cell runner: shared namespace, stdout capture, last-expression repr ---------- */
+  var RUNNER_SRC = [
+    'import sys, ast, io, json',
+    '__nb_ns__ = {"__name__": "__main__"}',
+    'def __run_cell__(code):',
+    '    buf = io.StringIO()',
+    '    old_out, old_err = sys.stdout, sys.stderr',
+    '    sys.stdout = sys.stderr = buf',
+    '    ok, result = True, None',
+    '    try:',
+    '        tree = ast.parse(code)',
+    '        last = None',
+    '        if tree.body and isinstance(tree.body[-1], ast.Expr):',
+    '            last = ast.Expression(tree.body[-1].value)',
+    '            tree.body = tree.body[:-1]',
+    '        exec(compile(tree, "<cell>", "exec"), __nb_ns__)',
+    '        if last is not None:',
+    '            val = eval(compile(last, "<cell>", "eval"), __nb_ns__)',
+    '            if val is not None:',
+    '                result = repr(val)',
+    '    except SyntaxError as e:',
+    '        ok = False',
+    '        result = "SyntaxError: %s (line %s)" % (e.msg, e.lineno)',
+    '    except BaseException as e:',
+    '        ok = False',
+    '        where = ""',
+    '        tb = e.__traceback__',
+    '        while tb is not None:',
+    '            if tb.tb_frame.f_code.co_filename == "<cell>":',
+    '                where = " (line %d)" % tb.tb_lineno',
+    '            tb = tb.tb_next',
+    '        result = type(e).__name__ + ": " + str(e) + where',
+    '    finally:',
+    '        sys.stdout, sys.stderr = old_out, old_err',
+    '    return json.dumps({"ok": ok, "out": buf.getvalue(), "result": result})'
+  ].join('\n');
+
+  /* ---------- cell UI wiring ---------- */
+  var cells = Array.prototype.slice.call(document.querySelectorAll('.cell'));
+
+  function fit(ta){ ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
+
+  function render(cell, data){
+    var out = cell.querySelector('pre.out');
+    out.hidden = false;
+    out.textContent = '';
+    if (data.out) out.appendChild(document.createTextNode(data.out));
+    if (data.result !== null && data.result !== undefined){
+      var span = document.createElement('span');
+      span.className = data.ok ? 'res' : 'err';
+      span.textContent = data.result + '\n';
+      out.appendChild(span);
+    }
+    if (!data.out && (data.result === null || data.result === undefined)){
+      var s = document.createElement('span');
+      s.className = 'sys';
+      s.textContent = '(ran fine, nothing to print)';
+      out.appendChild(s);
+    }
+  }
+
+  function sysMsg(cell, text){
+    var out = cell.querySelector('pre.out');
+    out.hidden = false;
+    out.innerHTML = '';
+    var s = document.createElement('span');
+    s.className = 'sys';
+    s.textContent = text;
+    out.appendChild(s);
+  }
+
+  function runCell(cell){
+    if (state === 'offline'){ sysMsg(cell, OFFLINE_MSG); return Promise.resolve(); }
+    if (state === 'loading'){ sysMsg(cell, 'The Python kernel is still loading. Give it a few seconds, then try again.'); return Promise.resolve(); }
+    if (busy) return Promise.resolve();
+    busy = true;
+    setState('running', 'Kernel: running…');
+    kchip.className = 'kchip running';
+    var cno = cell.querySelector('.cno');
+    cno.textContent = 'In [*]';
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        var code = cell.querySelector('textarea.code').value;
+        var data;
+        try {
+          pyodide.globals.set('__cell_code__', code);
+          data = JSON.parse(pyodide.runPython('__run_cell__(__cell_code__)'));
+        } catch (e) {
+          data = { ok: false, out: '', result: 'Kernel error: ' + (e && e.message ? e.message.split('\n')[0] : e) };
+        }
+        execCount += 1;
+        cno.textContent = 'In [' + execCount + ']';
+        render(cell, data);
+        busy = false;
+        setState('ready', 'Kernel: ready (Python 3.12)');
+        resolve();
+      }, 30);
+    });
+  }
+
+  cells.forEach(function(cell){
+    var ta = cell.querySelector('textarea.code');
+    fit(ta);
+    ta.addEventListener('input', function(){ fit(ta); });
+    ta.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && e.shiftKey){ e.preventDefault(); runCell(cell); }
+      else if (e.key === 'Tab'){
+        e.preventDefault();
+        var s = ta.selectionStart, t = ta.selectionEnd;
+        ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(t);
+        ta.selectionStart = ta.selectionEnd = s + 4;
+        fit(ta);
+      }
+    });
+    cell.querySelector('.runbtn').addEventListener('click', function(){ runCell(cell); });
+  });
+
+  window.addEventListener('load', function(){ cells.forEach(function(c){ fit(c.querySelector('textarea.code')); }); });
+
+  runallBtn.addEventListener('click', function(){
+    var chain = Promise.resolve();
+    cells.forEach(function(cell){
+      chain = chain.then(function(){ return runCell(cell); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

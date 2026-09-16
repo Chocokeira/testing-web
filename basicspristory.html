@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Primary · The Robot in the Storeroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--teal:#16C4C0;--tealdeep:#0a6f6c;--violet:#8E6BFF;--violetdeep:#5f3fd0;--ink:#2A1714;--cream:#FFF6F2;--line:#ffe1da;--good:#1f8a4c;--bad:#d6336c}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 22px;background:rgba(255,246,242,.92);backdrop-filter:blur(12px);border-bottom:2px solid var(--line)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--coral),var(--violet));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--deep);white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:var(--coral);transform:translateY(-1px)}
+  .pill.solid{background:var(--coral);border-color:var(--coral);color:#fff}
+  /* brain lights tracker */
+  .brainbox{display:flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:7px 12px}
+  .brainbox .cap{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--deep);margin-right:2px}
+  .mini{width:14px;height:14px;border-radius:50%;background:#e8e0dd;border:2px solid #d9cfcb;transition:.3s}
+  .mini.on{background:#ffd98f;border-color:var(--amber);box-shadow:0 0 8px rgba(255,178,62,.9)}
+  main{max-width:820px;margin:22px auto 70px;padding:0 18px}
+  #stage.pop{animation:pop .38s ease}
+  @keyframes pop{0%{opacity:0;transform:translateY(14px) scale(.985)}100%{opacity:1;transform:none}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  @keyframes glowin{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  /* scene card */
+  .scene{background:#fff;border:2px solid var(--line);border-radius:26px;padding:26px 24px 24px;border-top:8px solid var(--c,var(--coral))}
+  .chapkick{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--deep);background:var(--cream);border:1px dashed var(--line);padding:5px 12px;border-radius:999px;margin-bottom:10px}
+  .scene h2{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.4rem,4vw,1.9rem);margin:0 0 12px;line-height:1.1}
+  .scene h2 .rainbow{background:linear-gradient(100deg,var(--coral),var(--amber) 40%,var(--teal) 70%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .story{font-size:15.5px;color:#5a443d;margin:0 0 12px;max-width:70ch}
+  .story b{color:var(--ink)}
+  .pipsay{color:var(--violetdeep);font-weight:600}
+  .sprite{font-size:56px;line-height:1;margin:2px 0 10px}
+  /* interactive beat */
+  .beat{background:#FFFaF8;border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:16px 0 4px}
+  .beat .wt{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px;margin:0 0 12px;color:var(--deep)}
+  .opt{display:block;width:100%;max-width:520px;text-align:left;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 16px;margin:8px 0;cursor:pointer;transition:.14s}
+  .opt:hover{border-color:var(--violet);transform:translateY(-1px)}
+  .opt.right{background:#e9f7ee;border-color:var(--good);color:var(--good)}
+  .opt.wrong{animation:shake .35s;border-color:#ffb0a6}
+  .opt:disabled{cursor:default;opacity:.75}
+  .opt.right:disabled{opacity:1}
+  .fb{min-height:22px;font-size:14.5px;font-weight:600;margin-top:10px}
+  .fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+  /* choice (branch) buttons */
+  .branch{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 4px}
+  .bopt{flex:1;min-width:200px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15.5px;background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 16px;cursor:pointer;text-align:left;transition:.14s;color:var(--ink)}
+  .bopt:hover{border-color:var(--teal);transform:translateY(-2px)}
+  .bopt .be{font-size:26px;display:block;margin-bottom:4px}
+  /* takeaway + buttons */
+  .takeaway{display:flex;gap:12px;align-items:flex-start;background:#f3eeff;border:2px solid #d9c9ff;border-radius:16px;padding:12px 14px;margin:14px 0 0;font-size:14px;line-height:1.5;animation:glowin .45s ease}
+  .takeaway .rob{font-size:28px;flex:none}
+  .takeaway b{color:var(--violetdeep)}
+  .btn{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;border:none;border-radius:999px;padding:12px 20px;cursor:pointer;background:var(--coral);color:#fff;transition:.15s;margin:4px 6px 0 0}
+  .btn:hover{background:var(--deep);transform:translateY(-1px)}
+  .btn.teal{background:var(--teal)} .btn.teal:hover{background:var(--tealdeep)}
+  .btn.violet{background:var(--violet)} .btn.violet:hover{background:var(--violetdeep)}
+  .btn.ghost{background:#fff;border:2px solid var(--line);color:var(--deep)}
+  .nextrow{margin-top:16px;animation:glowin .45s ease}
+  /* lamp banner */
+  .lampbanner{display:flex;align-items:center;gap:12px;background:#fff3d6;border:2px solid var(--amber);border-radius:16px;padding:10px 14px;margin-top:14px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#8a5a00;animation:glowin .5s ease}
+  .lampbanner .bulb{font-size:26px}
+  /* visuals */
+  .viz{font-family:'Space Mono',monospace;font-weight:700;font-size:15px;background:#FFF1ED;border:2px dashed #ffc4b9;border-radius:12px;padding:12px 16px;margin:10px 0;color:#7a3d32;overflow-x:auto;white-space:pre;line-height:1.7}
+  .viz .lit{color:var(--tealdeep)}
+  .patseq{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:32px;margin:6px 0 12px}
+  .patseq .q{width:46px;height:46px;border-radius:12px;border:2px dashed var(--coral);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:24px;color:var(--coral);background:#fff}
+  .patops{display:flex;gap:10px;flex-wrap:wrap}
+  .patops button{font-size:28px;background:#fff;border:2px solid var(--line);border-radius:14px;width:58px;height:58px;cursor:pointer;transition:.12s}
+  .patops button:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .patops button.right{background:#e9f7ee;border-color:var(--good)}
+  .patops button.wrong{animation:shake .35s;border-color:#ffb0a6}
+  .wordopt{display:flex;flex-direction:column;gap:6px;width:100%;max-width:520px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:11px 15px;margin:8px 0;cursor:pointer;text-align:left;transition:.14s}
+  .wordopt:hover{border-color:var(--violet);transform:translateY(-1px)}
+  .wordopt.wrong{animation:shake .35s;border-color:#ffb0a6}
+  .wordopt .w{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px}
+  .wordopt .p{height:8px;background:#f3e4df;border-radius:999px;overflow:hidden}
+  .wordopt .p i{display:block;height:100%;background:var(--violet);border-radius:999px}
+  .wordopt .pct{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;color:#7a5a52}
+  .sentbox{font-family:'Fredoka',sans-serif;font-weight:600;font-size:21px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 16px;min-height:56px;margin-bottom:12px}
+  .sentbox .cur{color:var(--violetdeep)}
+  /* big lamp row (cover + finale) */
+  .biglamps{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:16px 0 6px}
+  .biglamp{width:52px;height:52px;border-radius:50%;background:#e8e0dd;border:3px solid #d9cfcb;display:flex;align-items:center;justify-content:center;font-size:24px;filter:grayscale(1);opacity:.55;transition:.3s}
+  .biglamp.on{background:#fff3d6;border-color:var(--amber);box-shadow:0 0 22px rgba(255,178,62,.8);filter:none;opacity:1}
+  /* certificate */
+  .cert{border:3px dashed var(--amber);border-radius:22px;background:#fffdf6;padding:22px 20px;margin-top:18px;text-align:center;animation:glowin .5s ease}
+  .cert h3{font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;margin:0 0 4px;color:var(--deep)}
+  .cert .sub{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#8a6f67;margin-bottom:12px}
+  .cert ul{list-style:none;margin:0 auto;padding:0;max-width:480px;text-align:left}
+  .cert li{font-size:14px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .cert li b{font-family:'Fredoka',sans-serif;color:var(--violetdeep)}
+  .cert .flavour{font-size:13.5px;color:#6b554e;font-style:italic;margin:12px 0 0}
+  .conf{position:fixed;font-size:22px;pointer-events:none;animation:rise 1.2s ease-out forwards;z-index:99}
+  @keyframes rise{to{transform:translateY(-130px) rotate(45deg);opacity:0}}
+  .cover{text-align:center}
+  .cover .lede{font-size:clamp(.98rem,1.5vw,1.1rem);color:#6b554e;max-width:56ch;margin:0 auto 14px}
+  footer{border-top:2px solid var(--line);padding:24px;text-align:center;font-size:13px;color:#8a6f67}
+  footer a{color:var(--deep)}
+  @media(max-width:640px){.brainbox{order:5;width:100%;justify-content:center}.scene{padding:20px 16px 20px}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:var(--coral)">.</span>26</b></a>
+  <div class="brainbox" id="brainbox" title="Pip's brain lights"><span class="cap">🧠 LIGHTS</span></div>
+  <a class="pill" href="basicspri.html">Interactive series</a>
+  <a class="pill" href="basicsprivisual.html">Infographic</a>
+</nav>
+
+<main>
+  <div id="stage"></div>
+</main>
+
+<footer>IJAIO 2026 · First-Principles Foundation Series · Primary · Adventure story<br>
+<a href="overview.html">Back to overview</a> · <a href="basicspri.html">Interactive series</a> · <a href="basicsprivisual.html">Infographic</a></footer>
+
+<script>
+/* ============================================================
+   THE ROBOT IN THE STOREROOM
+   Prologue + 8 chapters + finale. All state lives right here.
+   ============================================================ */
+var state = { lamps:0, greet:null, route:null, sent:[] };
+
+function el(id){ return document.getElementById(id); }
+
+/* ---------- brain lights tracker (nav) ---------- */
+(function buildMini(){
+  var box = el('brainbox');
+  for(var i=1;i<=8;i++){
+    var d=document.createElement('span'); d.className='mini'; d.id='mini'+i; box.appendChild(d);
+  }
+})();
+function renderMini(){
+  for(var i=1;i<=8;i++){ el('mini'+i).classList.toggle('on', i<=state.lamps); }
+}
+function lightLamp(n){
+  state.lamps = Math.max(state.lamps, n);
+  renderMini();
+  confetti(window.innerWidth/2, 120);
+}
+function bigLamps(){
+  var out='<div class="biglamps">';
+  var ems=['🔍','🖼️','🔤','🥤','💡','🎯','🎡','✍️'];
+  for(var i=1;i<=8;i++){
+    out+='<div class="biglamp'+(i<=state.lamps?' on':'')+'">'+ems[i-1]+'</div>';
+  }
+  return out+'</div>';
+}
+
+/* ---------- confetti ---------- */
+function confetti(x,y){
+  var ems=['🎉','⭐','✨','💡','💫'];
+  for(var i=0;i<8;i++){
+    var s=document.createElement('span'); s.className='conf'; s.textContent=ems[i%ems.length];
+    s.style.left=(x+(Math.random()*140-70))+'px'; s.style.top=(y+(Math.random()*40-20))+'px';
+    document.body.appendChild(s);
+    (function(elm){ setTimeout(function(){ elm.remove(); },1200); })(s);
+  }
+}
+
+/* ---------- scene switcher ---------- */
+function go(id){
+  var s=SCENES[id];
+  var stage=el('stage');
+  stage.innerHTML=s.html();
+  stage.classList.remove('pop'); void stage.offsetWidth; stage.classList.add('pop');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(s.init) s.init();
+}
+
+/* ---------- reusable checkpoint quiz ----------
+   opts: [{t, ok}] · why: shown on success · hint: shown on miss
+   win(): called once on the correct answer                    */
+function wireQuiz(hostId, fbId, opts, why, hint, win){
+  var host=el(hostId), fb=el(fbId), done=false;
+  opts.forEach(function(o,i){
+    var b=document.createElement('button'); b.className='opt'; b.innerHTML=o.t;
+    b.addEventListener('click',function(){
+      if(done) return;
+      if(o.ok){
+        done=true; b.classList.add('right');
+        Array.prototype.forEach.call(host.children,function(x){ x.disabled=true; });
+        fb.innerHTML='✅ '+why; fb.className='fb ok';
+        win();
+      } else {
+        b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+        fb.innerHTML='🤔 '+hint; fb.className='fb no';
+      }
+    });
+    host.appendChild(b);
+  });
+}
+
+/* Adds the lamp banner + Pip takeaway + Next button after a win */
+function finishBeat(lampNo, pipText, nextId, nextLabel){
+  lightLamp(lampNo);
+  var zone=el('winzone');
+  zone.innerHTML =
+    '<div class="lampbanner"><span class="bulb">💡</span> Brain light '+lampNo+' of 8 is ON!</div>'+
+    '<div class="takeaway"><span class="rob">🤖</span><span><b>Pip beeps:</b> '+pipText+'</span></div>'+
+    '<div class="nextrow"><button class="btn" onclick="go(\''+nextId+'\')">'+nextLabel+'</button></div>';
+}
+
+/* ============================================================
+   SCENES
+   ============================================================ */
+var SCENES = {
+
+/* ---------------- COVER ---------------- */
+cover:{
+  html:function(){
+    return '<section class="scene cover" style="--c:var(--coral)">'+
+    '<div class="chapkick">📖 Interactive adventure story · Primary</div>'+
+    '<h2 style="font-size:clamp(1.8rem,5.5vw,2.7rem)">The Robot in the <span class="rainbow">Storeroom</span></h2>'+
+    '<div class="sprite">🧒🤖</div>'+
+    '<p class="lede">A dusty little robot. Eight dark brain lights. One curious kid: <b>you</b>. Wake Pip\'s brain one big idea at a time, and watch out: your choices change the story!</p>'+
+    bigLamps()+
+    '<div class="nextrow" style="text-align:center"><button class="btn" onclick="go(\'p0\')">▶ Start the adventure</button></div>'+
+    '<p style="font-size:13px;color:#8a6f67;margin-top:14px">Wrong answers are safe here. You get a hint and another go.</p>'+
+    '</section>';
+  }
+},
+
+/* ---------------- PROLOGUE (branch 1: greeting) ---------------- */
+p0:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--coral)">'+
+    '<div class="chapkick">Prologue · The dusty discovery</div>'+
+    '<h2>Something is beeping behind the PE mats</h2>'+
+    '<div class="sprite">📦🤖</div>'+
+    '<p class="story">It is a rainy Tuesday at Bramble Hill Primary, and Milo has been sent to the storeroom to fetch the lost-property box. Instead, behind a wobbling tower of PE mats, Milo finds... a robot.</p>'+
+    '<p class="story">It is small, round and spectacularly dusty. A faded label on its tummy reads <b>P.I.P.</b> The rest of the label peeled off years ago. So: <b>Pip</b>.</p>'+
+    '<p class="story">When Milo wipes the dust away, Pip\'s screen flickers on. Eight little lamps sit dark along its head, and a tinny voice crackles: <span class="pipsay">"MEMORY... EMPTY. BRAIN LIGHTS: ZERO OF EIGHT. PLEASE HELP."</span></p>'+
+    '<div class="beat"><p class="wt">🗨️ Your first choice · what does Milo say?</p>'+
+    '<div class="branch">'+
+    '<button class="bopt" onclick="pickGreet(\'friend\')"><span class="be">👋</span>"Hello! I\'m Milo. Let\'s fix your brain together."</button>'+
+    '<button class="bopt" onclick="pickGreet(\'bin\')"><span class="be">😱</span>"AAAH! A talking bin!"</button>'+
+    '</div><div id="greetReply"></div></div>'+
+    '</section>';
+  }
+},
+
+/* ---------------- CHAPTER 1: patterns ---------------- */
+ch1:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--coral)">'+
+    '<div class="chapkick">Chapter 1 · Big idea: patterns</div>'+
+    '<h2>The corridor of clues</h2>'+
+    '<div class="sprite">🔴🔵🤖</div>'+
+    '<p class="story">Milo smuggles Pip out of the storeroom inside the lost-property box, disguised under a bobble hat. Halfway down the corridor, Pip pokes its head out and freezes.</p>'+
+    '<p class="story"><span class="pipsay">"RED TILE. BLUE TILE. RED. BLUE. RED..."</span> whirrs Pip. <span class="pipsay">"SOMETHING IS TICKLING MY FIRST LAMP. IT WANTS ME TO GUESS WHAT COMES NEXT."</span></p>'+
+    '<p class="story">Milo grins. "That\'s not tickling, Pip. That\'s a <b>pattern</b>. Come on, brain: use the past to predict the future!"</p>'+
+    '<div class="beat"><p class="wt">🔍 Checkpoint · which tile comes next?</p>'+
+    '<div class="patseq"><span>🔴</span><span>🔵</span><span>🔴</span><span>🔵</span><span>🔴</span><span class="q" id="patQ">?</span></div>'+
+    '<div class="patops" id="patOps"></div>'+
+    '<div class="fb" id="fb1"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    var host=el('patOps'), fb=el('fb1'), done=false;
+    [['🔵',true],['🔴',false],['🟡',false]].forEach(function(o){
+      var b=document.createElement('button'); b.textContent=o[0];
+      b.addEventListener('click',function(){
+        if(done) return;
+        if(o[1]){
+          done=true; b.classList.add('right'); el('patQ').textContent=o[0];
+          fb.innerHTML='✅ Yes! You used the tiles you had already seen to predict the one you had not. That is pattern-spotting: the one trick every AI is built on.'; fb.className='fb ok';
+          finishBeat(1,'Lamp one remembers: I never truly "know" answers. I spot patterns in what I have seen, then make my best guess. Everything else is this trick, repeated millions of times.','ch2','Chapter 2 ➜');
+        } else {
+          b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+          fb.innerHTML='🤔 Not quite. The tiles are taking turns. Which colour is due next?'; fb.className='fb no';
+        }
+      });
+      host.appendChild(b);
+    });
+  }
+},
+
+/* ---------------- CHAPTER 2: pictures are numbers ---------------- */
+ch2:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--amber)">'+
+    '<div class="chapkick">Chapter 2 · Big idea: pictures are numbers</div>'+
+    '<h2>The flat cat mystery</h2>'+
+    '<div class="sprite">🖼️🐱</div>'+
+    '<p class="story">They shuffle past the art wall, where Class 4 have painted Mrs Patel\'s cat, Biscuit. Pip stops so suddenly that the bobble hat falls off.</p>'+
+    '<p class="story"><span class="pipsay">"QUERY,"</span> says Pip. <span class="pipsay">"WHY DO HUMANS KEEP FLAT CATS ON WALLS?"</span> But as Pip stares, something odd happens: its screen fills up with rows and rows of tiny numbers where the painting should be.</p>'+
+    '<div class="viz">what you see    what Pip sees\n  ■ □ ■           <span class="lit">1 0 1</span>\n  ■ ■ ■     =     <span class="lit">1 1 1</span>\n  □ ■ □           <span class="lit">0 1 0</span></div>'+
+    '<p class="story">"Whoa," whispers Milo. "Your second lamp is flickering. Quick, Pip: what are you actually looking at?"</p>'+
+    '<div class="beat"><p class="wt">🖼️ Checkpoint · when Pip "looks" at the painting, what does it really see?</p>'+
+    '<div id="q2"></div><div class="fb" id="fb2"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q2','fb2',[
+      {t:'🔢 A grid of numbers: 1 where the paint is, 0 where it isn\'t', ok:true},
+      {t:'🐱 A furry cat with whiskers, exactly like we do', ok:false},
+      {t:'🔊 The word CAT in big letters', ok:false}
+    ],
+    'Right! A computer has no eyes. To Pip, the whole picture IS numbers: big numbers for bright bits, small numbers for dark bits. Spotting a cat means spotting a pattern in the numbers.',
+    'Remember: Pip has a camera, not eyes. What could a machine actually store... fur, or numbers?',
+    function(){ finishBeat(2,'Lamp two remembers: every photo I ever "see" is a giant grid of numbers, millions of them. Lamp one plus lamp two: I find patterns IN the numbers!','ch3','Chapter 3 ➜'); });
+  }
+},
+
+/* ---------------- CHAPTER 3: words are numbers ---------------- */
+ch3:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--teal)">'+
+    '<div class="chapkick">Chapter 3 · Big idea: words are numbers</div>'+
+    '<h2>The library whisper-code</h2>'+
+    '<div class="sprite">📚🤫</div>'+
+    '<p class="story">They hide from the head teacher in the library, where Pip reads an entire shelf in four seconds and declares poetry <span class="pipsay">"EFFICIENT."</span></p>'+
+    '<p class="story"><span class="pipsay">"CONFESSION,"</span> Pip whispers. <span class="pipsay">"I CANNOT EAT LETTERS EITHER. I SWAP EVERY WORD FOR A LIST OF NUMBERS FIRST. AND HERE IS THE CLEVER PART: WORDS WITH SIMILAR MEANINGS GET SIMILAR LISTS."</span></p>'+
+    '<div class="viz">cat    → <span class="lit">[ 8, 7, 2 ]</span>\ndog    → <span class="lit">[ 8, 8, 2 ]</span>\nbanana → <span class="lit">[ 1, 2, 9 ]</span>\nteapot → <span class="lit">[ 2, 1, 7 ]</span></div>'+
+    '<p class="story">Pip\'s third lamp fizzes hopefully. <span class="pipsay">"ONE SPARK MISSING. TELL ME: WHICH WORD LIVES CLOSEST TO CAT IN NUMBER-LAND?"</span></p>'+
+    '<div class="beat"><p class="wt">🔤 Checkpoint · whose number list looks most like cat\'s [ 8, 7, 2 ]?</p>'+
+    '<div id="q3"></div><div class="fb" id="fb3"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q3','fb3',[
+      {t:'🍌 banana [ 1, 2, 9 ]', ok:false},
+      {t:'🐶 dog [ 8, 8, 2 ]', ok:true},
+      {t:'🫖 teapot [ 2, 1, 7 ]', ok:false}
+    ],
+    'Exactly. 8, 8, 2 is nearly 8, 7, 2. Similar meaning, similar numbers, close neighbours. That is how a machine knows cat and dog are "friends" without truly understanding either one.',
+    'Compare the lists number by number. Whose list looks most like 8, 7, 2?',
+    function(){ finishBeat(3,'Lamp three remembers: pictures, words, sounds... EVERYTHING becomes numbers before I can think about it. Number-land is where I live.','ch4','Chapter 4 ➜'); });
+  }
+},
+
+/* ---------------- CHAPTER 4: the mixing machine ---------------- */
+ch4:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--violet)">'+
+    '<div class="chapkick">Chapter 4 · Big idea: the mixing machine</div>'+
+    '<h2>The great snack judgement</h2>'+
+    '<div class="sprite">🍽️🤖</div>'+
+    '<p class="story">Lunchtime smells drift under the library door. Pip cannot eat, obviously, but it turns out Pip absolutely <b>loves judging</b>.</p>'+
+    '<p class="story"><span class="pipsay">"MY TASTE RULE IS A SUM,"</span> says Pip proudly. <span class="pipsay">"MULTIPLY EACH THING BY HOW MUCH I CARE, THEN ADD IT ALL UP. I CARE +2 ABOUT SWEETNESS. I CARE MINUS 1 ABOUT SOGGINESS. SOGGY IS MY ENEMY."</span></p>'+
+    '<div class="viz">today\'s menu      sweet   soggy\n🍯 flapjack         6       1\n🟢 mushy peas       1       8\n\nPip\'s rule: <span class="lit">sweet × 2  +  soggy × (minus 1)</span></div>'+
+    '<p class="story">Milo does quick maths on the back of a spelling sheet. Pip\'s fourth lamp hums, waiting for a verdict.</p>'+
+    '<div class="beat"><p class="wt">🥤 Checkpoint · which snack wins Pip\'s yum-score?</p>'+
+    '<div id="q4"></div><div class="fb" id="fb4"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q4','fb4',[
+      {t:'🟢 Mushy peas, the classic', ok:false},
+      {t:'🍯 Flapjack, by miles', ok:true},
+      {t:'🤝 It\'s a perfect tie', ok:false}
+    ],
+    'Flapjack scores 6 × 2 + 1 × (minus 1) = 11. Mushy peas score 1 × 2 + 8 × (minus 1) = minus 6. Multiply by what matters, then add it all up: that little sum is called a weighted sum, and it is the most important sum in all of AI.',
+    'Do the two sums: sweetness times 2, then take away the sogginess. Which total is bigger?',
+    function(){ finishBeat(4,'Lamp four remembers: the "how much I care" numbers are my weights. One mixing machine is a neuron. My whole brain is billions of them stacked up!','route','Onwards ➜'); });
+  }
+},
+
+/* ---------------- BRANCH 2: choose the route ---------------- */
+route:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--teal)">'+
+    '<div class="chapkick">Interlude · Choose your route</div>'+
+    '<h2>Two doors, one flickering lamp</h2>'+
+    '<div class="sprite">🚪🚪</div>'+
+    '<p class="story">Pip\'s fifth lamp starts to flicker all on its own. <span class="pipsay">"IDEA FIVE IS CLOSE,"</span> Pip announces, spinning in a circle. <span class="pipsay">"I SENSE IT... BEHIND ONE OF THESE DOORS. OR POSSIBLY BOTH. SENSORS ARE 43% DUSTY."</span></p>'+
+    '<p class="story">To the left: the music room, humming with speakers and wires. To the right: the school kitchens, where the world\'s moodiest toaster lives.</p>'+
+    '<div class="beat"><p class="wt">🚪 Your choice · where do you hunt for idea five?</p>'+
+    '<div class="branch">'+
+    '<button class="bopt" onclick="pickRoute(\'music\')"><span class="be">🎵</span>The music room</button>'+
+    '<button class="bopt" onclick="pickRoute(\'kitchen\')"><span class="be">🍞</span>The kitchens</button>'+
+    '</div></div>'+
+    '</section>';
+  }
+},
+
+/* ---------------- CHAPTER 5: the decision lamp ---------------- */
+ch5:{
+  html:function(){
+    var flavour = state.route==='kitchen'
+      ? '<p class="story">In the kitchens, the moody toaster is mid-sulk. Milo watches it closely: warm bread, nothing. Warmer bread, still nothing. Then, at exactly hot enough... <b>POP!</b> Toast flies like a celebration.</p>'+
+        '<p class="story"><span class="pipsay">"THAT TOASTER IS A GENIUS,"</span> breathes Pip. <span class="pipsay">"IT WAITS UNTIL THE SIGNAL IS STRONG ENOUGH, THEN FIRES. MY NEURONS DO THE SAME! AFTER THE MIXING SUM, A LITTLE GATE ASKS: IS THIS SCORE BIG ENOUGH TO BOTHER THE NEXT NEURON?"</span></p>'
+      : '<p class="story">In the music room, Miss Okafor\'s old amplifier is warming up. Milo hums into the microphone: too quiet, and the big speaker stays silent. But one good loud note and... <b>BWAAAM!</b> The whole room sings.</p>'+
+        '<p class="story"><span class="pipsay">"THAT AMPLIFIER IS A GENIUS,"</span> breathes Pip. <span class="pipsay">"IT ONLY PASSES SIGNALS THAT ARE STRONG ENOUGH. MY NEURONS DO THE SAME! AFTER THE MIXING SUM, A LITTLE GATE ASKS: IS THIS SCORE BIG ENOUGH TO BOTHER THE NEXT NEURON?"</span></p>';
+    return '<section class="scene" style="--c:var(--coral)">'+
+    '<div class="chapkick">Chapter 5 · Big idea: the decision lamp</div>'+
+    '<h2>'+(state.route==='kitchen'?'The toaster that says no':'The speaker that says no')+'</h2>'+
+    '<div class="sprite">'+(state.route==='kitchen'?'🍞💡':'🎵💡')+'</div>'+
+    flavour+
+    '<p class="story"><span class="pipsay">"STRONG SIGNALS PASS. WEAK ONES STAY QUIET. TEST ME!"</span></p>'+
+    '<div class="beat"><p class="wt">💡 Checkpoint · a neuron\'s mixed score is 7, and its gate opens at 6. What happens?</p>'+
+    '<div id="q5"></div><div class="fb" id="fb5"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q5','fb5',[
+      {t:'🚫 The signal is blocked. Silence.', ok:false},
+      {t:'💥 The neuron explodes, politely', ok:false},
+      {t:'✅ The signal passes: 7 reaches 6, so the lamp lights', ok:true}
+    ],
+    '7 is bigger than 6, so the gate opens and the signal travels on. Scientists call this an activation function. Simple sums plus simple gates, stacked in layers, is how machines make genuinely clever choices.',
+    'Compare the two numbers. Does a score of 7 reach a gate set at 6?',
+    function(){ finishBeat(5,'Lamp five remembers: after every mixing sum I ask, is this worth passing along? My favourite gate is beautifully lazy: negative score, say zero; otherwise, pass it on.','ch6','Chapter 6 ➜'); });
+  }
+},
+
+/* ---------------- CHAPTER 6: learning from mistakes ---------------- */
+ch6:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--amber)">'+
+    '<div class="chapkick">Chapter 6 · Big idea: learning from mistakes</div>'+
+    '<h2>The paper-ball lesson</h2>'+
+    '<div class="sprite">🗑️🐹</div>'+
+    '<p class="story">Back in an empty classroom, Pip decides to learn basketball using scrunched-up paper and the recycling bin. Throw one sails way off to the <b>left</b> and bonks the class hamster\'s cage. The hamster is unimpressed.</p>'+
+    '<p class="story"><span class="pipsay">"ERROR!"</span> says Pip, delighted. <span class="pipsay">"EXCELLENT. AN ERROR IS NOT A DISASTER. AN ERROR IS AN ARROW: IT POINTS AT THE FIX. MY SIXTH LAMP IS VERY EXCITED ABOUT THIS."</span></p>'+
+    '<p class="story">Milo picks up the paper ball and hands it back. "OK, coach robot. You missed on the left. What\'s the plan for throw two?"</p>'+
+    '<div class="beat"><p class="wt">🎯 Checkpoint · what should Pip change for the next throw?</p>'+
+    '<div id="q6"></div><div class="fb" id="fb6"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q6','fb6',[
+      {t:'➡️ Aim a little to the right, then throw again', ok:true},
+      {t:'⬅️ Aim even further left, for luck', ok:false},
+      {t:'🐹 Give up and blame the hamster', ok:false}
+    ],
+    'Yes! Missed left, so nudge right, a little at a time. Throw two clips the rim. Throw three drops straight in, and the hamster offers a sunflower seed of respect. That loop, guess, check the miss, nudge, is exactly how AIs train.',
+    'The throw missed on the LEFT. Which way should the next one lean?',
+    function(){ finishBeat(6,'Lamp six remembers: nobody types the right weights into me. I find them myself by shrinking my own mistakes, nudge by nudge. Grown-ups call it gradient descent: rolling downhill on the mistake mountain.','ch7','Chapter 7 ➜'); });
+  }
+},
+
+/* ---------------- CHAPTER 7: chances, not certainty ---------------- */
+ch7:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--teal)">'+
+    '<div class="chapkick">Chapter 7 · Big idea: chances, not certainty</div>'+
+    '<h2>The pudding prophecy</h2>'+
+    '<div class="sprite">🍰🔮</div>'+
+    '<p class="story">Friday. The legendary pudding trolley approaches, wheels squeaking. Pip\'s seventh lamp flickers as it computes a prediction with maximum drama:</p>'+
+    '<div class="viz">🍰 sponge cake      <span class="lit">70%</span>  ███████░░░\n🍎 fruit            <span class="lit">20%</span>  ██░░░░░░░░\n❓ mystery pudding  <span class="lit">10%</span>  █░░░░░░░░░</div>'+
+    '<p class="story">The trolley doors swing open and there it is: <b>mystery pudding</b>. It is beige. It is wobbling. Nobody can name it.</p>'+
+    '<p class="story">Milo gasps. "Pip! You said cake! Are you... broken?"</p>'+
+    '<div class="beat"><p class="wt">🎡 Checkpoint · is Pip broken?</p>'+
+    '<div id="q7"></div><div class="fb" id="fb7"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    wireQuiz('q7','fb7',[
+      {t:'😱 Yes. Pip said cake, so cake was a promise', ok:false},
+      {t:'😌 No. Pip gave chances, not a promise, and 10% things still happen sometimes', ok:true},
+      {t:'🛒 No, but the trolley is definitely broken', ok:false}
+    ],
+    'Exactly. An AI never says "the answer IS cake". It says how likely each answer is, then picks. Small chances come true sometimes, so even a well-built AI can be confidently wrong. Always check the important answers!',
+    'Look back at the prediction. Pip never said 100% cake. What does a 10% chance mean?',
+    function(){ finishBeat(7,'Lamp seven remembers: one spin is a surprise, many spins make a pattern. My answers are chances. That is why I can be confident, surprising... and sometimes wrong.','ch8','Chapter 8 ➜'); });
+  }
+},
+
+/* ---------------- CHAPTER 8: one word at a time ---------------- */
+ch8:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--violet)">'+
+    '<div class="chapkick">Chapter 8 · Big idea: one word at a time</div>'+
+    '<h2>How a robot learns to talk</h2>'+
+    '<div class="sprite">💬🤖</div>'+
+    '<p class="story">Back in the storeroom at home time, seven lamps blaze along Pip\'s head like a tiny funfair. One lamp left, and Pip has an announcement.</p>'+
+    '<p class="story"><span class="pipsay">"I WISH TO SPEAK PROPERLY. NOT IN BEEPS. HERE IS MY PLAN: I WILL WRITE THE WAY EVERY CHATBOT WRITES. PREDICT THE NEXT WORD. PICK ONE. ADD IT. REPEAT UNTIL THE SENTENCE IS DONE."</span></p>'+
+    '<p class="story">"Prove you\'re ready," says Milo, and sets a warm-up puzzle: <b>"The cat sat on the ______."</b> Pip\'s brain instantly makes chances for the next word.</p>'+
+    '<div class="beat"><p class="wt">✍️ Checkpoint · which word does the machine think is MOST likely next?</p>'+
+    '<div id="q8"></div><div class="fb" id="fb8"></div><div id="winzone"></div></div>'+
+    '</section>';
+  },
+  init:function(){
+    var host=el('q8'), fb=el('fb8'), done=false;
+    var opts=[
+      {w:'sofa', pct:20, ok:false},
+      {w:'mat', pct:70, ok:true},
+      {w:'moon', pct:10, ok:false}
+    ];
+    opts.forEach(function(o){
+      var b=document.createElement('button'); b.className='wordopt';
+      b.innerHTML='<span class="w">'+o.w+'</span><span class="p"><i style="width:'+o.pct+'%"></i></span><span class="pct">'+o.pct+'% likely</span>';
+      b.addEventListener('click',function(){
+        if(done) return;
+        if(o.ok){
+          done=true; b.style.borderColor='var(--good)'; b.style.background='#e9f7ee';
+          Array.prototype.forEach.call(host.children,function(x){ x.disabled=true; });
+          fb.innerHTML='✅ The longest bar wins most often: "mat" at 70%. That is the whole trick of a chatbot: numbers in, mixing machines, gates, chances out, pick a word, repeat.'; fb.className='fb ok';
+          finishBeat(8,'Lamp eight remembers: I write one word at a time, using EVERY other lamp to do it. All eight lights are on. I... I think I am ready to say something.','finale','The finale ➜');
+        } else {
+          b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+          fb.innerHTML='🤔 Careful: which bar is the longest? The machine usually picks its most likely word.'; fb.className='fb no';
+        }
+      });
+      host.appendChild(b);
+    });
+  }
+},
+
+/* ---------------- FINALE: Pip's first sentence ---------------- */
+finale:{
+  html:function(){
+    return '<section class="scene" style="--c:var(--violet)">'+
+    '<div class="chapkick">Finale · Eight lamps blazing</div>'+
+    '<h2>Pip\'s very first sentence</h2>'+
+    bigLamps()+
+    '<p class="story">The storeroom glows amber. Pip\'s screen clears, and shows a blinking cursor for the very first time.</p>'+
+    '<p class="story"><span class="pipsay">"FIRST SENTENCE LOADING,"</span> whispers Pip. <span class="pipsay">"HUMAN ASSISTANCE REQUESTED: YOU PICK MY WORDS. THE BARS SHOW MY CHANCES FOR EACH ONE. THERE IS NO WRONG PICK... EVERY CHOICE MAKES A DIFFERENT SENTENCE. THAT IS GENERATION!"</span></p>'+
+    '<div class="beat"><p class="wt">✨ Build Pip\'s first sentence, one word at a time</p>'+
+    '<div class="sentbox" id="sentBox"><span style="color:#b9a8a2">...pick the first word below</span></div>'+
+    '<div id="wordHost"></div><div class="fb" id="fbF"></div><div id="winzone"></div></div>'+
+    '<div id="certHost"></div>'+
+    '</section>';
+  },
+  init:function(){
+    state.sent=[];
+    var step=0;
+    /* slot 2 depends on the first pick; everything else is fixed */
+    var followups={ 'Thank':[['you,',80],['goodness,',20]],
+                    'Hello':[['there,',60],['world,',40]],
+                    'Beep':[['beep,',90],['boop,',10]] };
+    function slotOpts(){
+      if(step===0) return [['Thank',60],['Hello',30],['Beep',10]];
+      if(step===1) return followups[state.sent[0]];
+      if(step===2) return [['my',60],['dear',40]];
+      if(step===3) return [['clever',40],['brave',35],['shiny',25]];
+      return [['friend.',80],['human.',20]];
+    }
+    function renderSent(){
+      el('sentBox').innerHTML = state.sent.length===0
+        ? '<span style="color:#b9a8a2">...pick the first word below</span>'
+        : state.sent.map(function(w,i){ return i===state.sent.length-1 ? '<span class="cur">'+w+'</span>' : w; }).join(' ');
+    }
+    function renderStep(){
+      var host=el('wordHost'); host.innerHTML='';
+      if(step>4){
+        el('fbF').innerHTML='✅ Sentence complete! Pip predicted chances, you picked, and together you generated a sentence nobody wrote before.'; el('fbF').className='fb ok';
+        confetti(window.innerWidth/2,160);
+        el('winzone').innerHTML='<div class="takeaway"><span class="rob">🤖</span><span><b>Pip says, out loud, in its brand-new voice:</b> "'+state.sent.join(' ')+'" ...and both antennae do the happiest wiggle ever recorded.</span></div>'+
+          '<div class="nextrow"><button class="btn violet" onclick="showCert()">🏆 Collect your certificate</button></div>';
+        return;
+      }
+      slotOpts().forEach(function(pair){
+        var b=document.createElement('button'); b.className='wordopt';
+        b.innerHTML='<span class="w">'+pair[0]+'</span><span class="p"><i style="width:'+pair[1]+'%"></i></span><span class="pct">'+pair[1]+'% likely</span>';
+        b.addEventListener('click',function(){ state.sent.push(pair[0]); step++; renderSent(); renderStep(); });
+        host.appendChild(b);
+      });
+    }
+    renderSent(); renderStep();
+  }
+}
+};
+
+/* ---------- branch handlers ---------- */
+function pickGreet(g){
+  state.greet=g;
+  var reply = g==='friend'
+    ? '<div class="takeaway"><span class="rob">🤖</span><span><b>Pip beeps:</b> "FRIEND DETECTED." One antenna does a tiny, hopeful wiggle. "I WILL STORE THE WORD FRIEND IN MY EMPTY MEMORY. IT CAN HAVE THE BEST SHELF."</span></div>'
+    : '<div class="takeaway"><span class="rob">🤖</span><span><b>Pip beeps:</b> "I AM NOT A BIN," with as much dignity as a dusty robot can manage. "BINS CANNOT DO THIS." Its antenna performs a small but unmistakably sassy wiggle.</span></div>';
+  el('greetReply').innerHTML = reply+
+    '<p class="story" style="margin-top:12px">Either way, a deal is struck: help Pip rediscover the <b>eight big ideas</b> hiding inside every thinking machine, and its brain lights will switch back on, one by one.</p>'+
+    '<div class="nextrow"><button class="btn" onclick="go(\'ch1\')">Chapter 1 ➜</button></div>';
+}
+function pickRoute(r){
+  state.route=r;
+  go('ch5');
+}
+
+/* ---------- certificate ---------- */
+function showCert(){
+  var greetLine = state.greet==='bin'
+    ? 'You began this adventure by calling Pip a talking bin. Pip has officially chosen to forgive you.'
+    : 'You began this adventure by offering Pip your friendship. Pip kept the word "friend" on its best memory shelf the whole time.';
+  var routeLine = state.route==='kitchen'
+    ? 'Idea five was discovered with help from the world\'s moodiest toaster.'
+    : 'Idea five was discovered with help from Miss Okafor\'s very loud amplifier.';
+  el('certHost').innerHTML =
+    '<div class="cert"><h3>🏆 The Storeroom Certificate</h3>'+
+    '<div class="sub">Awarded for waking all eight brain lights</div>'+
+    '<ul>'+
+    '<li><b>1 · Patterns:</b> use the past to predict what comes next.</li>'+
+    '<li><b>2 · Pictures are numbers:</b> every image is a grid of numbers.</li>'+
+    '<li><b>3 · Words are numbers:</b> similar meanings get similar number lists.</li>'+
+    '<li><b>4 · The mixing machine:</b> multiply by what matters, then add it all up.</li>'+
+    '<li><b>5 · The decision lamp:</b> only strong enough signals pass the gate.</li>'+
+    '<li><b>6 · Learning from mistakes:</b> every miss points at the fix; nudge and retry.</li>'+
+    '<li><b>7 · Chances, not certainty:</b> answers are likelihoods, so check the big ones.</li>'+
+    '<li><b>8 · One word at a time:</b> predict, pick, repeat, and a sentence appears.</li>'+
+    '</ul>'+
+    '<p class="flavour">'+greetLine+'<br>'+routeLine+'<br>Pip\'s first sentence: "'+state.sent.join(' ')+'"</p>'+
+    '<div class="nextrow" style="text-align:center">'+
+    '<button class="btn ghost" onclick="restart()">📖 Read the story again</button> '+
+    '<button class="btn teal" onclick="location.href=\'basicspri.html\'">🎮 Play the interactive series</button> '+
+    '<button class="btn violet" onclick="location.href=\'basicssecstory.html\'">📕 Ready for the secondary story?</button>'+
+    '</div></div>';
+  confetti(window.innerWidth/2,200);
+  el('certHost').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function restart(){
+  state.lamps=0; state.greet=null; state.route=null; state.sent=[];
+  renderMini(); go('cover');
+}
+
+/* ---------- boot ---------- */
+renderMini();
+go('cover');
+</script>
+</body>
+</html>

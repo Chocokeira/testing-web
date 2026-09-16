@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · Robo-Pet Trainer · Lower Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1714;--cream:#FFF6F2;--line:#ffe1da}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:900px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7a5a52;margin-top:4px}
+  main{max-width:900px;margin:10px auto 60px;padding:0 18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:20px 22px;margin-top:16px}
+  .petbox{text-align:center;border-top:6px solid var(--coral)}
+  .pet{font-size:92px;line-height:1.1;display:inline-block;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  .stage{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin-top:4px}
+  .meterwrap{max-width:420px;margin:12px auto 0}
+  .meterlabel{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;color:#7a5a52;display:flex;justify-content:space-between;margin-bottom:4px}
+  .meter{background:#f3e4df;border-radius:999px;height:20px;overflow:hidden}
+  .meter .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--coral),var(--amber));transition:width .6s ease}
+  .speech{max-width:520px;margin:14px auto 0;background:#FFFaF8;border:2px dashed var(--line);border-radius:16px;padding:11px 15px;font-weight:500;font-size:15px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0 0 4px}
+  .hint{font-size:13.5px;color:#7a5a52;margin:0 0 14px}
+  .food{font-size:58px;text-align:center;margin:6px 0 2px}
+  .foodname{text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:17px;margin-bottom:12px}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:11px 20px;cursor:pointer;color:#fff;background:var(--coral)}
+  .btn:hover{filter:brightness(.94)}
+  .btn.teal{background:var(--teal)} .btn.violet{background:var(--violet)}
+  .btn.ghost{background:#fff;border:2px solid var(--line);color:var(--deep)}
+  .btn:disabled{opacity:.45;cursor:default}
+  .fb{min-height:24px;text-align:center;font-weight:600;font-size:15px;margin-top:12px}
+  .fb.ok{color:#1f8a4c}.fb.no{color:#d6336c}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:700px){.split{grid-template-columns:1fr}}
+  .counts{display:flex;gap:10px;justify-content:center;margin-top:10px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700}
+  .counts span{background:#FFF1ED;border:1px dashed #ffc4b9;border-radius:10px;padding:6px 11px;color:#7a3d32}
+  .full{background:#fff4c2;border:2px solid #ffd66e;border-radius:16px;padding:12px 16px;text-align:center;font-weight:600;margin-top:12px}
+  footer{max-width:900px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🤖 Robo-Pet Trainer</h1>
+  <div class="sub">Meet <b>Chirp</b>! Chirp learns from the examples you feed it, a little every day. Machines get smart <b>slowly</b>, with many examples!</div>
+</header>
+<main>
+
+  <div class="card petbox">
+    <div class="pet" id="pet">🥚</div>
+    <div class="stage" id="stage">A mystery egg…</div>
+    <div class="meterwrap">
+      <div class="meterlabel"><span>SMARTNESS</span><span id="meterPct">0%</span></div>
+      <div class="meter"><div class="fill" id="meterFill" style="width:0%"></div></div>
+    </div>
+    <div class="counts"><span id="cFruit">🍎 fruit examples: 0</span><span id="cAnimal">🐾 animal examples: 0</span><span id="cDays">📅 days trained: 0</span></div>
+    <div class="speech" id="speech">Feed me examples and tell me what they are. That is how I learn!</div>
+  </div>
+
+  <div class="split">
+    <div class="card" style="border-top:6px solid var(--teal)">
+      <h2>🍽️ Feed &amp; teach</h2>
+      <p class="hint">Show Chirp an example and tell it what it is. Right labels make Chirp smart. Wrong labels make Chirp confused!</p>
+      <div class="food" id="food"></div>
+      <div class="foodname" id="foodname"></div>
+      <div class="row">
+        <button class="btn" id="btnFruit" onclick="feed('fruit')">It's a FRUIT 🍎</button>
+        <button class="btn teal" id="btnAnimal" onclick="feed('animal')">It's an ANIMAL 🐾</button>
+      </div>
+      <div class="fb" id="feedFb"></div>
+      <div class="full" id="fullNote" style="display:none">😋 Chirp is full for today! Learning works best in small helpings.<br>Come back tomorrow; Chirp will remember everything!
+        <div class="row" style="margin-top:8px"><button class="btn ghost" onclick="pretendTomorrow()">🌙 Pretend it's tomorrow (for class demos)</button></div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:6px solid var(--violet)">
+      <h2>🎓 Quiz Chirp</h2>
+      <p class="hint">Show Chirp something NEW and see if it guesses right. The more examples it has eaten, the better it guesses!</p>
+      <div class="food" id="quizFood">❓</div>
+      <div class="row"><button class="btn violet" onclick="quiz()">Show Chirp a new one!</button></div>
+      <div class="fb" id="quizFb"></div>
+    </div>
+  </div>
+
+  <div class="card" style="border-top:6px solid var(--amber)">
+    <h2>💡 What did we learn?</h2>
+    <p class="hint" style="margin:0">Chirp did not get smart from one big meal. It learned from <b>many examples over many days</b>, and it only knows what your examples taught it. Real AI learns the same way. (Grown-ups: progress is saved on this device. <button class="btn ghost" style="font-size:12px;padding:6px 12px" onclick="resetPet()">Start over</button>)</p>
+  </div>
+
+</main>
+<footer>
+  <a class="link" href="prilow-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="prilow-play-explorables.html">🎛️ How scientists explore</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+const FOODS=[
+  {e:'🍎',n:'apple',g:'fruit'},{e:'🐶',n:'dog',g:'animal'},{e:'🍌',n:'banana',g:'fruit'},
+  {e:'🐱',n:'cat',g:'animal'},{e:'🍇',n:'grapes',g:'fruit'},{e:'🐰',n:'rabbit',g:'animal'},
+  {e:'🍊',n:'orange',g:'fruit'},{e:'🐟',n:'fish',g:'animal'},{e:'🍓',n:'strawberry',g:'fruit'},
+  {e:'🐸',n:'frog',g:'animal'},{e:'🍉',n:'watermelon',g:'fruit'},{e:'🦆',n:'duck',g:'animal'},
+];
+const KEY='ijaio-prilow-robopet';
+const FEEDS_PER_DAY=6;
+let S=load();
+function load(){
+  try{ const s=JSON.parse(localStorage.getItem(KEY)); if(s&&typeof s.fruit==='number') return s; }catch(e){}
+  return {fruit:0,animal:0,confused:0,days:[],today:'',fedToday:0};
+}
+function save(){ localStorage.setItem(KEY,JSON.stringify(S)); }
+function dayStr(){ return new Date().toISOString().slice(0,10); }
+function checkDay(){
+  const d=S.pretend||dayStr();
+  if(S.today!==d){ S.today=d; S.fedToday=0; if(!S.days.includes(d)) S.days.push(d); save(); }
+}
+function totalEx(){ return S.fruit+S.animal; }
+function smartness(){ return Math.max(0,Math.min(95, totalEx()*6 - S.confused*8)); }
+function stageInfo(){
+  const t=totalEx();
+  if(t===0) return ['🥚','A mystery egg…'];
+  if(t<4)  return ['🐣','Baby Chirp, just hatched!'];
+  if(t<9)  return ['🤖','Little Chirp, learning fast!'];
+  if(t<15) return ['🤖✨','Clever Chirp, getting sharp!'];
+  return ['🤖🏅','Super Chirp, example expert!'];
+}
+let currentFood=null;
+function newFood(){ currentFood=FOODS[Math.floor(Math.random()*FOODS.length)];
+  document.getElementById('food').textContent=currentFood.e;
+  document.getElementById('foodname').textContent='a '+currentFood.n;
+}
+function feed(label){
+  checkDay();
+  if(S.fedToday>=FEEDS_PER_DAY) return;
+  const fb=document.getElementById('feedFb');
+  if(label===currentFood.g){
+    S[label]++; S.fedToday++;
+    fb.className='fb ok'; fb.textContent='😋 Yum! Chirp learned: '+currentFood.n+' = '+label+'!';
+    say('Mmm, a '+currentFood.n+'! Now I know one more '+label+'.');
+  } else {
+    S.confused++; S.fedToday++;
+    fb.className='fb no'; fb.textContent='😵 Oh no! That label is wrong, so Chirp learned something WRONG. Wrong examples make AI confused!';
+    say('Wait… a '+currentFood.n+' is a '+label+'? I feel a bit muddled…');
+  }
+  save(); refresh(); newFood();
+}
+function quiz(){
+  checkDay();
+  const item=FOODS[Math.floor(Math.random()*FOODS.length)];
+  document.getElementById('quizFood').textContent=item.e;
+  const fb=document.getElementById('quizFb');
+  const known=S[item.g];
+  const p=Math.max(.25,Math.min(.95,.25+known*.11-S.confused*.08));
+  const correct=Math.random()<p;
+  const guess=correct?item.g:(item.g==='fruit'?'animal':'fruit');
+  if(correct){ fb.className='fb ok'; fb.textContent='🎉 Chirp says: "'+item.n+' is a '+guess.toUpperCase()+'!" Correct!'; }
+  else{
+    fb.className='fb no';
+    fb.textContent='🤔 Chirp says: "'+item.n+' is a '+guess.toUpperCase()+'?" Not right. '+(known<4?'Chirp has only eaten '+known+' '+item.g+' examples. Feed it more!':'Even smart pets make mistakes sometimes!');
+  }
+}
+function say(t){ document.getElementById('speech').textContent=t; }
+function pretendTomorrow(){
+  const d=new Date(); d.setDate(d.getDate()+ (S.days.length+1));
+  S.pretend=d.toISOString().slice(0,10); checkDay(); refresh();
+  say('A brand new day! I remember everything you taught me. More examples, please!');
+}
+function resetPet(){ if(confirm('Start over with a new egg? Chirp will forget everything.')){ localStorage.removeItem(KEY); S=load(); checkDay(); refresh(); say('Feed me examples and tell me what they are. That is how I learn!'); } }
+function refresh(){
+  const [emo,st]=stageInfo();
+  document.getElementById('pet').textContent=emo;
+  document.getElementById('stage').textContent=st;
+  const pct=Math.round(smartness());
+  document.getElementById('meterPct').textContent=pct+'%';
+  document.getElementById('meterFill').style.width=pct+'%';
+  document.getElementById('cFruit').textContent='🍎 fruit examples: '+S.fruit;
+  document.getElementById('cAnimal').textContent='🐾 animal examples: '+S.animal;
+  document.getElementById('cDays').textContent='📅 days trained: '+S.days.length;
+  const full=S.fedToday>=FEEDS_PER_DAY;
+  document.getElementById('fullNote').style.display=full?'block':'none';
+  document.getElementById('btnFruit').disabled=full;
+  document.getElementById('btnAnimal').disabled=full;
+}
+checkDay(); newFood(); refresh();
+</script>
+</body>
+</html>

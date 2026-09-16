@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0}
+  ::selection{background:#8E6BFF;color:#fff}
+  @keyframes ovDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-30px) scale(1.12)}100%{transform:translate(0,0) scale(1)}}
+  @keyframes ovDrift2{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,30px) scale(1.18)}100%{transform:translate(0,0) scale(1)}}
+  @keyframes ovFloat{0%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}100%{transform:translateY(0) rotate(-2deg)}}
+  @keyframes ovMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes ovBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+  @keyframes ovSpin{to{transform:rotate(360deg)}}
+  @keyframes ovBob{0%{transform:translateY(0)}50%{transform:translateY(8px)}100%{transform:translateY(0)}}
+  @keyframes ovReveal{from{transform:translateY(28px)}to{transform:none}}
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="font-family:'Spline Sans',system-ui,sans-serif;background:#f6f4ee;color:#14161d;overflow-x:hidden;line-height:1.6">
+
+  <div style="height:6px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF);position:relative;z-index:60"></div>
+
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(246,244,238,.82);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,22,29,.08)">
+    <a href="#top" style="display:flex;align-items:center;gap:11px;text-decoration:none;color:#14161d">
+      <span style="width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px;letter-spacing:-1px">AI</span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em">IJAIO<span style="color:#8E6BFF">.</span>26</span>
+    </a>
+    <div style="display:none;gap:4px;margin-left:8px" data-navlinks>
+      <a href="#thinking" style="text-decoration:none;color:#3a3d49;font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px" style-hover="background:rgba(20,22,29,.06);color:#14161d">Thinking model</a>
+      <a href="#pillars" style="text-decoration:none;color:#3a3d49;font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px" style-hover="background:rgba(20,22,29,.06);color:#14161d">Pillars</a>
+      <a href="#library" style="text-decoration:none;color:#3a3d49;font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px" style-hover="background:rgba(20,22,29,.06);color:#14161d">Library</a>
+      <a href="#categories" style="text-decoration:none;color:#3a3d49;font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px" style-hover="background:rgba(20,22,29,.06);color:#14161d">Levels</a>
+      <a href="#format" style="text-decoration:none;color:#3a3d49;font-size:14px;font-weight:500;padding:8px 12px;border-radius:9px" style-hover="background:rgba(20,22,29,.06);color:#14161d">Format</a>
+    </div>
+    <a href="#categories" style="margin-left:auto;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;letter-spacing:.02em;padding:10px 16px;border-radius:999px;background:#14161d;color:#fff;display:inline-flex;align-items:center;gap:8px" style-hover="background:#8E6BFF">Choose your level <span style="font-size:14px">↓</span></a>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header id="top" style="position:relative;background:#14161d;color:#f6f4ee;padding:clamp(64px,10vw,120px) 28px clamp(72px,9vw,110px);overflow:hidden">
+    <div data-anim style="position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,106,90,.5),transparent 68%);filter:blur(40px);top:-160px;left:-120px;animation:ovDrift 16s ease-in-out infinite;pointer-events:none"></div>
+    <div data-anim style="position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.46),transparent 68%);filter:blur(40px);bottom:-200px;right:-100px;animation:ovDrift2 19s ease-in-out infinite;pointer-events:none"></div>
+    <div data-anim style="position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(22,196,192,.4),transparent 68%);filter:blur(46px);top:30%;right:18%;animation:ovDrift 22s ease-in-out infinite;pointer-events:none"></div>
+
+    <div style="position:relative;z-index:2;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:40px;align-items:center" data-herogrid>
+      <div>
+        <div data-reveal style="display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:#9ea3b6;border:1px solid rgba(255,255,255,.16);padding:7px 14px;border-radius:999px;margin-bottom:24px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#16C4C0;display:inline-block"></span>SIMCC · Syllabus 2026
+        </div>
+        <h1 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.7rem,6.4vw,5.4rem);line-height:.98;letter-spacing:-.03em;margin:0 0 22px">
+          International<br>Junior <span style="background:linear-gradient(105deg,#FF6A5A,#FFB23E 38%,#16C4C0 68%,#8E6BFF);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent">AI</span> Olympiad
+        </h1>
+        <p data-reveal style="font-size:clamp(1.05rem,1.5vw,1.3rem);color:#c7cad6;max-width:46ch;margin:0 0 14px;font-weight:500">The accessible first rung of the AI Olympiad ladder, where Grades 1 to 12 learn to think <em style="color:#fff;font-style:normal;border-bottom:2px solid #FFB23E">computationally</em> and <em style="color:#fff;font-style:normal;border-bottom:2px solid #8E6BFF">about AI</em>.</p>
+        <p data-reveal style="font-family:'Space Mono',monospace;font-size:13px;color:#8a8fa3;margin:0 0 30px">Computational Thinking · Generative-AI Fundamentals · First-Principles Problem Solving</p>
+      </div>
+      <sc-if value="{{ showMascot }}" hint-placeholder-val="{{ true }}">
+      <div data-reveal style="justify-self:center">
+        <div data-anim style="animation:ovFloat 6s ease-in-out infinite">
+          <div style="position:relative;width:200px;height:200px;border-radius:54px;background:linear-gradient(150deg,#1f2230,#2a2e40);border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)">
+            <div style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:4px;height:22px;background:#8E6BFF"></div>
+            <div style="position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#FFB23E;box-shadow:0 0 24px #FFB23E"></div>
+            <div style="position:absolute;top:64px;left:42px;width:34px;height:42px;border-radius:18px;background:#16C4C0;animation:ovBlink 5s ease-in-out infinite"></div>
+            <div style="position:absolute;top:64px;right:42px;width:34px;height:42px;border-radius:18px;background:#16C4C0;animation:ovBlink 5s ease-in-out infinite"></div>
+            <div style="position:absolute;bottom:42px;left:50%;transform:translateX(-50%);width:64px;height:28px;border:5px solid #FF6A5A;border-top:none;border-radius:0 0 40px 40px"></div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </header>
+
+  <!-- ============ MARQUEE ============ -->
+  <div style="background:#FFB23E;color:#14161d;overflow:hidden;padding:13px 0;border-bottom:3px solid #14161d">
+    <div data-anim style="display:flex;width:max-content;animation:ovMarquee 28s linear infinite;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;letter-spacing:.04em">
+      <span style="display:flex">{{ marqueeText }}{{ marqueeText }}</span>
+    </div>
+  </div>
+
+  <main style="max-width:1180px;margin:0 auto;padding:0 28px">
+
+    <!-- ============ INTRO CARDS ============ -->
+    <section style="padding:clamp(56px,8vw,96px) 0 0">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px" data-intro>
+        <div data-reveal style="background:#14161d;color:#f6f4ee;border-radius:28px;padding:clamp(28px,4vw,44px);position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:180px;height:180px;background:radial-gradient(circle at top right,rgba(142,107,255,.4),transparent 70%)"></div>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.6rem,2.6vw,2.3rem);line-height:1.08;letter-spacing:-.02em;margin:0 0 16px;position:relative">An accessible learning pathway</h2>
+          <p style="color:#bcc0cf;font-size:16px;margin:0;position:relative;max-width:54ch">A structured route from early recognition and safe use, through understanding, to principled design, evaluation and creation, to build AI literacy and fluency.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;position:relative">
+            <div style="border-top:2px solid #FF6A5A;padding-top:12px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;line-height:1.25">Age group appropriate</div></div>
+            <div style="border-top:2px solid #16C4C0;padding-top:12px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;line-height:1.25">Attitudes + Knowledge + Skills</div></div>
+            <div style="border-top:2px solid #8E6BFF;padding-top:12px"><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;line-height:1.25">Mechanism + Judgement</div></div>
+          </div>
+        </div>
+        <div data-reveal style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:28px;padding:clamp(28px,4vw,40px);box-shadow:0 24px 50px rgba(20,22,29,.06)">
+          <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5d6275;margin-bottom:18px">How to use this site</div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;gap:14px;align-items:flex-start"><span style="flex:none;width:30px;height:30px;border-radius:9px;background:#FF6A5A;color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px">1</span><div><b style="font-size:15px">Read the overview</b><div style="font-size:13.5px;color:#5d6275">Philosophy, pillars and format.</div></div></div>
+            <div style="display:flex;gap:14px;align-items:flex-start"><span style="flex:none;width:30px;height:30px;border-radius:9px;background:#16C4C0;color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px">2</span><div><b style="font-size:15px">Pick a grade level</b><div style="font-size:13.5px;color:#5d6275">Open the detailed syllabus.</div></div></div>
+            <div style="display:flex;gap:14px;align-items:flex-start"><span style="flex:none;width:30px;height:30px;border-radius:9px;background:#8E6BFF;color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px">3</span><div><b style="font-size:15px">Attempt the problem sets</b><div style="font-size:13.5px;color:#5d6275">Three interactive sets (A · B · C) per band, linked from each band card below.</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WHAT IS / OBJECTIVE ============ -->
+    <section id="about" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8E6BFF;margin-bottom:18px">/ what is the IJAIO</div>
+      <p data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(1.5rem,3.2vw,2.7rem);line-height:1.18;letter-spacing:-.02em;margin:0;max-width:24ch;text-wrap:balance">The IJAIO completes SIMCC's informatics suite, empowering young learners to become <span style="color:#FF6A5A">future-oriented</span>, <span style="color:#16C4C0">innovative</span> and <span style="color:#8E6BFF">responsible</span> problem solvers.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:40px">
+        <sc-for list="{{ suite }}" as="s" hint-placeholder-count="4">
+          <div data-reveal style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:18px;padding:22px;border-top:4px solid #d8d6cf" style-hover="transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,22,29,.08)">
+            <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9aa0ae">{{ s.kind }}</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:18px;margin:8px 0 6px">{{ s.name }}</div>
+            <div style="font-size:13.5px;color:#5d6275">{{ s.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- ============ THINKING MODEL ============ -->
+    <section id="thinking" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#16C4C0;margin-bottom:14px">/ the thinking model</div>
+      <h2 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px">Computational Thinking <span style="color:#9aa0ae">+</span> AI Thinking</h2>
+      <p data-reveal style="font-size:16px;color:#5d6275;max-width:62ch;margin:0 0 36px">Classical computational thinking is the deterministic foundation; AI thinking augments it for the probabilistic, data-driven nature of modern generative AI.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px" data-think>
+        <div data-reveal style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:24px;padding:clamp(24px,3vw,34px)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><span style="width:38px;height:38px;border-radius:11px;background:#16C4C0;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Space Mono',monospace;font-weight:700">CT</span><h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;margin:0">Computational Thinking</h3></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <sc-for list="{{ ctIdeas }}" as="p" hint-placeholder-count="4">
+              <div style="background:#f1f6f6;border:1px solid #d7eceb;border-radius:14px;padding:14px"><b style="display:block;color:#0e8f8b;font-size:14px;margin-bottom:3px">{{ p.t }}</b><span style="font-size:12.5px;color:#566">{{ p.d }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+        <div data-reveal style="background:#14161d;color:#f6f4ee;border-radius:24px;padding:clamp(24px,3vw,34px)">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px"><span style="width:38px;height:38px;border-radius:11px;background:#8E6BFF;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Space Mono',monospace;font-weight:700">AI</span><h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:20px;margin:0">AI Thinking</h3></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <sc-for list="{{ aiIdeas }}" as="p" hint-placeholder-count="4">
+              <div style="background:rgba(142,107,255,.12);border:1px solid rgba(142,107,255,.3);border-radius:14px;padding:14px"><b style="display:block;color:#c3b2ff;font-size:14px;margin-bottom:3px">{{ p.t }}</b><span style="font-size:12.5px;color:#aab">{{ p.d }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ AI PILLARS ============ -->
+    <section id="pillars" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8E6BFF;margin-bottom:14px">/ the five AI pillars</div>
+      <h2 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px">One spine, from first principles</h2>
+      <p data-reveal style="font-size:16px;color:#5d6275;max-width:66ch;margin:0 0 36px">Five Pillars spiral across every band, each led by a disposition and deepening from play to design. Generative AI sits at their heart, because the aim is to grow learners from <em style="font-style:normal;border-bottom:2px solid #8E6BFF">users of AI</em> into <em style="font-style:normal;border-bottom:2px solid #FF6A5A">creators of it</em>.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px">
+        <sc-for list="{{ ovPillars }}" as="p" hint-placeholder-count="5">
+          <div data-reveal style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:18px;padding:20px 22px;border-top:4px solid {{ p.c }}" style-hover="transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,22,29,.08)">
+            <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9aa0ae">Pillar {{ p.n }}</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:17px;margin:7px 0 6px;color:#14161d">{{ p.t }}</div>
+            <div style="font-size:13.5px;color:#5d6275">{{ p.d }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- ============ FIRST PRINCIPLES LIBRARY ============ -->
+    <section id="library" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#FF6A5A;margin-bottom:14px">/ the first-principles library</div>
+      <h2 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px">One machine, two depths, three ways in</h2>
+      <p data-reveal style="font-size:16px;color:#5d6275;max-width:66ch;margin:0 0 36px">The same journey, from numbers to a machine that writes, told at two depths. Each track offers the ideas as a hands-on <b>explainer</b>, an interactive <b>story</b>, and a one-scroll <b>poster</b>, and finishes with <b>AI agents</b>: the model put to work with tools.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px">
+        <sc-for list="{{ libTracks }}" as="lt" hint-placeholder-count="2">
+          <div data-reveal style="display:flex">
+            <div style="position:relative;width:100%;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:24px;padding:26px 24px 24px;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease" style-hover="transform:translateY(-6px);box-shadow:0 30px 60px rgba(20,22,29,.14)">
+              <div style="position:absolute;top:0;left:0;right:0;height:6px;background:{{ lt.accent }}"></div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:16px">
+                <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-.02em;margin:0">{{ lt.tier }}</h3>
+                <span style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 11px;border-radius:999px;background:{{ lt.accentSoft }};color:{{ lt.accentDeep }};white-space:nowrap">{{ lt.grades }}</span>
+              </div>
+              <a href="{{ lt.featureHref }}" style="display:block;text-decoration:none;color:#14161d;background:{{ lt.accentSoft }};border:1px solid {{ lt.accent }};border-radius:16px;padding:16px 18px;margin-bottom:14px" style-hover="transform:translateY(-2px);box-shadow:0 12px 26px rgba(20,22,29,.1)">
+                <div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:{{ lt.accentDeep }};margin-bottom:5px">Explainer · start here</div>
+                <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:16.5px;line-height:1.2;margin-bottom:4px">{{ lt.featureT }} <span style="color:{{ lt.accentDeep }}">→</span></div>
+                <div style="font-size:13px;color:#5d6275;line-height:1.5">{{ lt.featureD }}</div>
+              </a>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ lt.ways }}" as="w" hint-placeholder-count="3">
+                  <a href="{{ w.href }}" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#14161d;border:1px solid rgba(20,22,29,.09);border-radius:13px;padding:11px 14px" style-hover="border-color:{{ lt.accent }};background:#fbfaf7">
+                    <span style="flex:none;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:{{ lt.accentSoft }};color:{{ lt.accentDeep }};min-width:56px;text-align:center">{{ w.k }}</span>
+                    <span style="font-size:14px;font-weight:600;line-height:1.35">{{ w.t }}</span>
+                    <span style="margin-left:auto;color:{{ lt.accentDeep }}">→</span>
+                  </a>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <a data-reveal href="genaispiral.html" style="display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;text-decoration:none;margin-top:22px;background:#14161d;color:#f6f4ee;border-radius:20px;padding:22px 28px" style-hover="transform:translateY(-3px);box-shadow:0 24px 48px rgba(20,22,29,.25)">
+        <span style="min-width:0">
+          <span style="display:block;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#8E6BFF;margin-bottom:6px">The spiral behind the syllabus</span>
+          <span style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.1rem,2vw,1.45rem);letter-spacing:-.01em">Ten generative-AI fundamentals, revisited at every age, shown side by side</span>
+        </span>
+        <span style="flex:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 18px;border-radius:999px;background:linear-gradient(90deg,#FF6A5A,#8E6BFF);color:#fff;white-space:nowrap">Explore the spiral →</span>
+      </a>
+    </section>
+
+    <!-- ============ CATEGORIES ============ -->
+    <section id="categories" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#FF6A5A;margin-bottom:14px">/ choose your category</div>
+      <h2 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 12px">Four bands, one journey</h2>
+      <p data-reveal style="font-size:16px;color:#5d6275;max-width:62ch;margin:0 0 36px">Each card links to the band's disposition-led syllabus, its first-principles explainer, hands-on learning activities, interactive stories and three practice problem sets.</p>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px" data-cards>
+        <sc-for list="{{ bands }}" as="b" hint-placeholder-count="4">
+          <div data-reveal style="display:flex">
+            <div style="position:relative;height:100%;width:100%;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:24px;padding:26px 24px 24px;overflow:hidden;transition:transform .22s ease,box-shadow .22s ease" style-hover="transform:translateY(-6px);box-shadow:0 30px 60px rgba(20,22,29,.14)">
+              <div style="position:absolute;top:0;left:0;right:0;height:6px;background:{{ b.accent }}"></div>
+              <div style="position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:{{ b.accent }};opacity:.12"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative">
+                <span style="font-family:'Space Mono',monospace;font-size:34px;font-weight:700;color:{{ b.accent }};line-height:1">{{ b.num }}</span>
+                <span style="width:46px;height:46px;border-radius:13px;background:{{ b.accent }};position:relative;box-shadow:0 8px 20px rgba(20,22,29,.12)">
+                  <span style="position:absolute;top:15px;left:11px;width:8px;height:11px;border-radius:5px;background:#fff"></span>
+                  <span style="position:absolute;top:15px;right:11px;width:8px;height:11px;border-radius:5px;background:#fff"></span>
+                  <span style="position:absolute;bottom:11px;left:50%;transform:translateX(-50%);width:16px;height:8px;border:2.5px solid #fff;border-top:none;border-radius:0 0 12px 12px"></span>
+                </span>
+              </div>
+              <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#9aa0ae;margin-bottom:4px">{{ b.grades }}</div>
+              <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.45rem;line-height:1.05;letter-spacing:-.02em;margin:0 0 12px">{{ b.name }}</h3>
+              <p style="font-size:13.5px;color:#5d6275;margin:0 0 16px;line-height:1.55">{{ b.tag }}</p>
+              <a href="{{ b.href }}" style="font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:{{ b.accentDeep }};display:flex;align-items:center;gap:8px;text-decoration:none">View syllabus <span>→</span></a>
+              <div style="border-top:1px dashed rgba(20,22,29,.16);margin:16px 0 14px"></div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+                <sc-for list="{{ b.links }}" as="x" hint-placeholder-count="3">
+                  <a href="{{ x.href }}" style="font-size:13.5px;font-weight:600;color:#3a3d49;text-decoration:none;display:flex;align-items:baseline;justify-content:space-between;gap:8px" style-hover="color:{{ b.accentDeep }}">{{ x.t }} <span style="color:{{ b.accentDeep }}">→</span></a>
+                </sc-for>
+              </div>
+              <div style="margin-top:auto">
+                <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#9aa0ae;margin-bottom:8px">Problem sets</div>
+                <div style="display:flex;gap:6px">
+                  <sc-for list="{{ b.sets }}" as="ps" hint-placeholder-count="3">
+                    <a href="{{ ps.href }}" style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:5px 13px;border-radius:999px;background:{{ b.accentSoft }};color:{{ b.accentDeep }};text-decoration:none" style-hover="background:{{ b.accent }};color:#fff">{{ ps.t }}</a>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- ============ FORMAT ============ -->
+    <section id="format" style="padding:clamp(56px,8vw,100px) 0 0">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8E6BFF;margin-bottom:14px">/ format at a glance</div>
+      <h2 data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.02em;margin:0 0 36px">Knowledge, Skills, Dispositions</h2>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ formatRows }}" as="f" hint-placeholder-count="4">
+          <div data-reveal style="display:grid;grid-template-columns:minmax(0,1.3fr) auto minmax(0,2fr);gap:20px;align-items:center;background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:18px;padding:20px 24px" style-hover="border-color:{{ f.accent }}">
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:8px;height:36px;border-radius:5px;background:{{ f.accent }}"></span><div><b style="font-size:15.5px;display:block">{{ f.band }}</b><span style="font-family:'Space Mono',monospace;font-size:11.5px;color:#9aa0ae">{{ f.grades }}</span></div></div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;color:{{ f.accent }};white-space:nowrap">{{ f.dur }}</div>
+            <div style="font-size:14px;color:#3a3d49">{{ f.paper }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- ============ HIGHER OLYMPIADS ============ -->
+    <section style="padding:clamp(56px,8vw,100px) 0 clamp(40px,6vw,60px)">
+      <div data-reveal style="background:linear-gradient(135deg,#14161d,#23192f);border-radius:30px;padding:clamp(34px,5vw,60px);color:#f6f4ee;position:relative;overflow:hidden">
+        <div data-anim style="position:absolute;bottom:-120px;right:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.4),transparent 68%);filter:blur(30px);animation:ovDrift2 18s ease-in-out infinite"></div>
+        <div style="position:relative;max-width:60ch">
+          <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8E6BFF;margin-bottom:16px">/ the road ahead</div>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:1.08;letter-spacing:-.02em;margin:0 0 16px">Pathway to higher olympiads</h2>
+          <p style="font-size:16.5px;color:#c7cad6;margin:0 0 26px">IJAIO is the foundational tier of the AI Olympiad ladder. Strong high school candidates progress to the <b style="color:#fff">National (NOAI)</b> and <b style="color:#fff">International (IOAI/IAIO)</b> Olympiads in Artificial Intelligence.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-weight:700;font-size:13px">
+            <span style="padding:9px 16px;border-radius:999px;background:linear-gradient(90deg,#FF6A5A,#FFB23E);color:#14161d">IJAIO</span>
+            <span style="color:#6f7488">→</span>
+            <span style="padding:9px 16px;border-radius:999px;background:#16C4C0;color:#14161d">NOAI</span>
+            <span style="color:#6f7488">→</span>
+            <span style="padding:9px 16px;border-radius:999px;background:#8E6BFF;color:#fff">IOAI/IAIO</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top:1px solid rgba(20,22,29,.1);padding:36px 28px;text-align:center">
+    <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px"><span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:11px">AI</span><span style="font-size:13px;color:#5d6275">International Junior Artificial Intelligence Olympiad (IJAIO) 2026</span></div>
+      <div style="font-family:'Space Mono',monospace;font-size:11.5px;color:#9aa0ae;letter-spacing:.04em">SIMCC · ComputingSG</div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;reduceMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;showMascot&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Content&quot;}}">
+class Component extends DCLogic {
+  setRoot = (el) => { this._root = el; };
+
+  componentDidMount() {
+    const root = this._root || document;
+    const reduce = !!this.props.reduceMotion;
+
+    if (reduce) {
+      root.querySelectorAll('[data-anim]').forEach(el => { el.style.animation = 'none'; });
+    }
+
+    // show desktop nav links on wide screens
+    const setNav = () => {
+      const nav = root.querySelector('[data-navlinks]');
+      if (nav) nav.style.display = window.innerWidth > 900 ? 'flex' : 'none';
+    };
+    setNav();
+    window.addEventListener('resize', setNav);
+    this._setNav = setNav;
+
+    // scroll reveal (rect-based - robust across preview harnesses)
+    const els = [...root.querySelectorAll('[data-reveal]')];
+    if (reduce) { return; }
+    els.forEach(el => { el.style.opacity = '0'; });
+    const reveal = () => {
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
+      els.forEach(el => {
+        if (el._shown) return;
+        const r = el.getBoundingClientRect();
+        if (r.top < vh * 0.94 && r.bottom > 0) {
+          el._shown = true;
+          el.style.opacity = '1';
+          el.style.animation = 'ovReveal .7s cubic-bezier(.2,.7,.2,1) both';
+        }
+      });
+    };
+    this._reveal = reveal;
+    window.addEventListener('scroll', reveal, { passive: true });
+    document.addEventListener('scroll', reveal, { passive: true, capture: true });
+    window.addEventListener('resize', reveal);
+    reveal();
+    requestAnimationFrame(() => { requestAnimationFrame(reveal); });
+    setTimeout(reveal, 300);
+  }
+
+  componentWillUnmount() {
+    if (this._reveal) {
+      window.removeEventListener('scroll', this._reveal);
+      document.removeEventListener('scroll', this._reveal, true);
+      window.removeEventListener('resize', this._reveal);
+    }
+    if (this._setNav) window.removeEventListener('resize', this._setNav);
+  }
+
+  renderVals() {
+    const bands = [
+      { num: '01', name: 'Lower Primary', grades: 'Grades 1–3', accent: '#FF6A5A', accentSoft: '#ffe7e3', accentDeep: '#c23f33', tag: 'A gentle, playful, mostly-unplugged start: recognise AI, follow rules and patterns by hand, and meet generative AI safely.', href: 'prilow-syllabus.html',
+        links: [
+          { t: 'First principles of AI', href: 'basicspri.html' },
+          { t: 'Learning activities lab', href: 'prilow-lab.html' },
+          { t: "Ada's adventure story", href:'prilow-story-ada-adventure.html' },
+          { t: 'Robo-pet trainer', href: 'prilow-play-robo-pet.html' },
+          { t: 'How scientists explore', href: 'prilow-play-explorables.html' },
+          { t: 'Build-a-Bot workshop', href: 'prilow-play-build-a-bot.html' },
+          { t: 'How sure are you?', href: 'prilow-play-how-sure.html' },
+        ],
+        sets: [{ t: 'A', href: 'prilow-problem-set-a.html' }, { t: 'B', href: 'prilow-problem-set-b.html' }, { t: 'C', href: 'prilow-problem-set-c.html' }] },
+      { num: '02', name: 'Upper Primary', grades: 'Grades 4–6', accent: '#E8920C', accentSoft: '#fdeccb', accentDeep: '#9a6402', tag: 'Rules vs learning from data, first generative-AI mechanics (next-word prediction, prompting, proto-embeddings) and fair evaluation.', href: 'priup-syllabus.html',
+        links: [
+          { t: 'First principles of AI', href: 'basicspri.html' },
+          { t: 'Learning activities lab', href: 'priup-lab.html' },
+          { t: "Ada's adventure story", href:'priup-story-ada-adventure.html' },
+          { t: 'Doodle classifier', href: 'priup-play-doodle-classifier.html' },
+          { t: 'You are the AI', href: 'priup-play-you-are-the-ai.html' },
+          { t: 'Fix the robot', href: 'priup-play-fix-the-robot.html' },
+          { t: 'Prompt duel (2 players)', href: 'priup-play-prompt-duel.html' },
+        ],
+        sets: [{ t: 'A', href: 'priup-problem-set-a.html' }, { t: 'B', href: 'priup-problem-set-b.html' }, { t: 'C', href: 'priup-problem-set-c.html' }] },
+      { num: '03', name: 'Lower Secondary', grades: 'Grades 7–8', accent: '#0FA8A4', accentSoft: '#d4f0ef', accentDeep: '#0a6f6c', tag: 'Hands-on mechanics by hand and in simple Python: n-gram models, tokenisation, a single neuron, the ML pipeline and AI agents.', href: 'seclow-syllabus.html',
+        links: [
+          { t: 'First principles of AI', href: 'basicssec.html' },
+          { t: 'Learning activities lab', href: 'seclow-lab.html' },
+          { t: 'Practical notebook', href: 'seclow-notebook.html' },
+          { t: "Ada's adventure story", href:'seclow-story-ada-adventure.html' },
+          { t: 'Novel · Family Ties', href: 'seclow-story-novel-family-ties.html' },
+          { t: 'Novel · Friendship', href: 'seclow-story-novel-friendship.html' },
+        ],
+        sets: [{ t: 'A', href: 'seclow-problem-set-a.html' }, { t: 'B', href: 'seclow-problem-set-b.html' }, { t: 'C', href: 'seclow-problem-set-c.html' }] },
+      { num: '04', name: 'Upper Secondary', grades: 'Grades 9–12', accent: '#8E6BFF', accentSoft: '#e9e2ff', accentDeep: '#5a3cc7', tag: 'Implementation and evaluation: the transformer pipeline, sampling, embeddings and bias, diffusion and grounded agentic / RAG design.', href: 'secup-syllabus.html',
+        links: [
+          { t: 'First principles of AI', href: 'basicssec.html' },
+          { t: 'Learning activities lab', href: 'secup-lab.html' },
+          { t: 'Practical notebook', href: 'secup-notebook.html' },
+          { t: "Ada's adventure story", href:'secup-story-ada-adventure.html' },
+          { t: 'Story · Deepfake Detectives', href: 'secup-story-deepfake-detectives.html' },
+          { t: 'Novel · Family Ties', href: 'secup-story-novel-family-ties.html' },
+          { t: 'Novel · Friendship', href: 'secup-story-novel-friendship.html' },
+        ],
+        sets: [{ t: 'A', href: 'secup-problem-set-a.html' }, { t: 'B', href: 'secup-problem-set-b.html' }, { t: 'C', href: 'secup-problem-set-c.html' }] },
+    ];
+    const suite = [
+      { kind: 'Comp. thinking', name: 'Bebras', desc: 'Computational thinking challenges.' },
+      { kind: 'Programming', name: 'Junior Informatics', desc: 'Algorithmic problem solving in code.' },
+      { kind: 'Security', name: 'Junior Cybersecurity', desc: 'Adversarial thinking & forensics.' },
+      { kind: 'Artificial intelligence', name: 'Junior AI', desc: 'First principles understanding and application.' },
+    ];
+    const ctIdeas = [
+      { t: 'Decomposition', d: 'Break a problem into manageable parts' },
+      { t: 'Abstraction', d: 'Filter out non-essential detail' },
+      { t: 'Pattern recognition', d: 'Find similarities to generalise' },
+      { t: 'Algorithm design', d: 'An ordered, automatable sequence' },
+    ];
+    const aiIdeas = [
+      { t: 'Data-informed', d: 'Behaviour is learned from data (and its bias)' },
+      { t: 'Non-deterministic', d: 'Outputs are probabilistic, with error' },
+      { t: 'Ethics & safety', d: 'Human judgement and fairness are part of the reasoning' },
+      { t: 'First principles', d: 'Reason from how the model actually works' },
+    ];
+    const ovPillars = [
+      { n: '1', t: 'Representation', c: '#FF6A5A', d: 'Turning the world - words and images - into numbers AI can work with.' },
+      { n: '2', t: 'Learning', c: '#E8920C', d: 'Finding patterns in data, from simple rules to neural networks.' },
+      { n: '3', t: 'Generation', c: '#16C4C0', d: 'Predicting and creating new things, the heart of generative AI.' },
+      { n: '4', t: 'Interaction & Agency', c: '#8E6BFF', d: 'Directing AI and how it acts: prompting, agents, tools, retrieval.' },
+      { n: '5', t: 'Responsibility', c: '#a01a5b', d: 'Truth, fairness, safety and human impact, woven through every band.' },
+    ];
+    const libTracks = [
+      { tier: 'Primary track', grades: 'Grades 1–6', accent: '#FF6A5A', accentSoft: '#ffe7e3', accentDeep: '#c23f33',
+        featureT: 'First Principles of AI · The Eight Little Ideas',
+        featureD: 'Patterns, numbers, mixing and clever guessing: the eight small ideas inside every big AI, each with a hands-on toy to play with.',
+        featureHref: 'basicspri.html',
+        ways: [
+          { k: 'Story', t: 'The Robot in the Storeroom: an interactive mystery', href: 'basicspristory.html' },
+          { k: 'Poster', t: 'How a Robot Learns to Write, in 8 little ideas', href: 'basicsprivisual.html' },
+          { k: 'Agents', t: 'Meet Robo: how AI agents work', href: 'agentpri.html' },
+        ] },
+      { tier: 'Secondary track', grades: 'Grades 7–12', accent: '#8E6BFF', accentSoft: '#e9e2ff', accentDeep: '#5a3cc7',
+        featureT: 'First Principles of AI · Nine Steps',
+        featureD: 'From a humble multiplication to a machine that writes: vectors, neurons, gradient descent, embeddings, attention and the transformer.',
+        featureHref: 'basicssec.html',
+        ways: [
+          { k: 'Story', t: 'The Overnight Build: nine repairs before nine a.m.', href: 'basicssecstory.html' },
+          { k: 'Poster', t: 'The machine that writes, in nine pictures', href: 'basicssecvisual.html' },
+          { k: 'Agents', t: 'Build an AI agent from scratch', href: 'agentsec.html' },
+        ] },
+    ];
+    const formatRows = [
+      { band: 'Lower Primary', grades: 'Grades 1–3', accent: '#FF6A5A', dur: '45 min', paper: '20 MCQ [60] + 2 structured tasks [40] · 100 marks' },
+      { band: 'Upper Primary', grades: 'Grades 4–6', accent: '#E8920C', dur: '60 min', paper: '30 MCQ [60] + 2 structured tasks [40] · 100 marks' },
+      { band: 'Lower Secondary', grades: 'Grades 7–8', accent: '#0FA8A4', dur: '90 min', paper: '20 MCQ [40] + 3 structured / practical tasks [60] · 100 marks' },
+      { band: 'Upper Secondary', grades: 'Grades 9–12', accent: '#8E6BFF', dur: '90 min', paper: '20 MCQ [40] + 3 structured / design / practical tasks [60] · 100 marks' },
+    ];
+    const kw = 'COMPUTATIONAL THINKING  ·  GENERATIVE AI  ·  FIRST PRINCIPLES  ·  ETHICS & SAFETY  ·  AI AGENTS  ·  PROMPTING  ·  NEURAL NETWORKS  ·  EMBEDDINGS  ·  ';
+    return {
+      bands, suite, ctIdeas, aiIdeas, ovPillars, formatRows, libTracks,
+      marqueeText: kw,
+      showMascot: this.props.showMascot ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ada's AI Adventure · Upper Primary · Overview Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#8ed0ff; --sun:#ffd23f; --coral:#ff6a5a; --teal:#16c4c0; --violet:#8e6bff; --grass:#5ac86a;
+    --ink:#2a2140; --cream:#fff8ec; --shadow:0 6px 0 rgba(0,0,0,.08), 0 12px 22px rgba(30,20,60,.16);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(1200px 500px at 50% -80px,#bfe9ff,transparent),
+      linear-gradient(180deg,#8ed0ff,#c9ecff 55%,#eafaf0);min-height:100vh}
+  .page{max-width:1040px;margin:0 auto;padding:26px 18px 44px}
+  header{text-align:center}
+  .pill{display:inline-block;background:#fff;border-radius:999px;padding:7px 18px;font-weight:600;color:var(--violet);box-shadow:0 4px 0 rgba(0,0,0,.08);margin-bottom:10px}
+  h1{font-size:clamp(30px,6vw,52px);margin:2px 0 4px;color:#173a5e;text-shadow:0 3px 0 #fff}
+  .heroes{font-size:64px;margin:2px 0}
+  .sub{font-size:18px;font-weight:500;color:#26527a;max-width:60ch;margin:2px auto 0}
+  .legend{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 6px}
+  .lg{display:flex;align-items:center;gap:7px;background:#fff;border-radius:999px;padding:6px 13px;font-weight:600;font-size:14px;box-shadow:0 3px 0 rgba(0,0,0,.07)}
+  .dot{width:13px;height:13px;border-radius:50%}
+  .know{background:var(--violet)} .can{background:var(--teal)} .care{background:var(--coral)}
+
+  .lands{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:14px}
+  .land{background:#fff;border-radius:24px;box-shadow:var(--shadow);padding:16px 16px 18px;position:relative;border:4px solid #fff}
+  .land .step{position:absolute;top:-16px;left:16px;width:38px;height:38px;border-radius:50%;
+    background:var(--sun);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;box-shadow:0 4px 0 rgba(0,0,0,.12);border:3px solid #fff}
+  .land .top{display:flex;align-items:center;gap:12px;margin:8px 0 6px}
+  .land .emo{font-size:44px;line-height:1} .land h3{margin:0;font-size:20px}
+  .land .theme{font-size:13px;color:#7b7590;font-weight:600}
+  .chips{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+  .chip{border-radius:14px;padding:9px 12px;font-size:14px;font-weight:500;line-height:1.45}
+  .chip.know{background:#f1ecff} .chip.can{background:#e6fbfa} .chip.care{background:#fff0ee}
+  .chip .k{font-weight:700;white-space:nowrap;margin-right:5px}
+  .chip.know .k{color:var(--violet)} .chip.can .k{color:#0aa39f} .chip.care .k{color:var(--coral)}
+
+  .finish{margin-top:22px;text-align:center;background:linear-gradient(90deg,#fff4c2,#ffe6f0);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+  .finish .big{font-size:24px;font-weight:700;color:#173a5e}
+  .arrow{display:inline-flex;align-items:center;gap:10px;background:#fff;border-radius:999px;padding:9px 18px;font-weight:700;color:var(--violet);box-shadow:0 4px 0 rgba(0,0,0,.08);margin-top:10px}
+  a.arrow{text-decoration:none;transition:transform .15s ease}
+  a.arrow:hover{transform:translateY(-2px)}
+  .navrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  footer{text-align:center;margin-top:18px;font-size:13px;color:#3a5b7a;font-weight:500}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="pill">Upper Primary · Grades 4–6 · Ages 9–12</div>
+    <div class="heroes">👧🐶</div>
+    <h1>Ada's AI Adventure</h1>
+    <p class="sub">Ada is older now: the same five lands, but the quests go deeper. She still collects what she <b>knows</b>, what she <b>can do</b>, and what she <b>cares</b> about, exploring how AI really works underneath.</p>
+    <div class="legend">
+      <span class="lg"><span class="dot know"></span>I know… <span style="opacity:.6">(knowledge)</span></span>
+      <span class="lg"><span class="dot can"></span>I can… <span style="opacity:.6">(skill)</span></span>
+      <span class="lg"><span class="dot care"></span>I care… <span style="opacity:.6">(disposition)</span></span>
+    </div>
+  </header>
+
+  <div class="lands">
+
+    <div class="land">
+      <div class="step">1</div>
+      <div class="top"><span class="emo">📍</span><div><h3>Codes &amp; Numbers</h3><div class="theme">Meaning as numbers</div></div></div>
+      <div class="chips">
+        <div class="chip know"><span class="k">I know</span> words become numbers, and words that mean similar things get <i>similar</i> numbers (proto-embeddings).</div>
+        <div class="chip can"><span class="k">I can</span> group things by their features, and check whether a set of examples is fair.</div>
+        <div class="chip care"><span class="k">I care</span>. I'm a data detective who checks the data behind AI.</div>
+      </div>
+    </div>
+
+    <div class="land">
+      <div class="step">2</div>
+      <div class="top"><span class="emo">🌱</span><div><h3>Learning Meadow</h3><div class="theme">Rules vs learning from data</div></div></div>
+      <div class="chips">
+        <div class="chip know"><span class="k">I know</span> some tasks follow fixed rules; others are learned from data, even from rewards, by trial and error.</div>
+        <div class="chip can"><span class="k">I can</span> train a sorter by refining a rule, testing it and trying again.</div>
+        <div class="chip care"><span class="k">I care</span>. I improve by trying, checking and adjusting.</div>
+      </div>
+    </div>
+
+    <div class="land">
+      <div class="step">3</div>
+      <div class="top"><span class="emo">🎨</span><div><h3>Making Workshop</h3><div class="theme">Predicting &amp; prompting</div></div></div>
+      <div class="chips">
+        <div class="chip know"><span class="k">I know</span> a chatbot writes by predicting a likely <b>next word</b>, and an image generator builds a picture from a description.</div>
+        <div class="chip can"><span class="k">I can</span> write a clear prompt (role + instruction + example) and improve it after seeing the result.</div>
+        <div class="chip care"><span class="k">I care</span>. I iterate: try, check, and make it better.</div>
+      </div>
+    </div>
+
+    <div class="land">
+      <div class="step">4</div>
+      <div class="top"><span class="emo">⚓</span><div><h3>Helper Harbor</h3><div class="theme">Perceive → Decide → Act</div></div></div>
+      <div class="chips">
+        <div class="chip know"><span class="k">I know</span> a helper works as a loop: it <b>perceives</b>, <b>decides</b>, then <b>acts</b>.</div>
+        <div class="chip can"><span class="k">I can</span> sketch a system (input → model → output → user) and name one likely failure and a fix.</div>
+        <div class="chip care"><span class="k">I care</span>. I design for real people and plan for problems.</div>
+      </div>
+    </div>
+
+    <div class="land">
+      <div class="step">5</div>
+      <div class="top"><span class="emo">🌳</span><div><h3>Guardian's Grove</h3><div class="theme">Truth, honesty &amp; impact</div></div></div>
+      <div class="chips">
+        <div class="chip know"><span class="k">I know</span> AI can <i>hallucinate</i> (sound sure but be wrong), and that running it uses real energy and water.</div>
+        <div class="chip can"><span class="k">I can</span> cross-check an AI claim against a trusted source, and honestly acknowledge AI help.</div>
+        <div class="chip care"><span class="k">I care</span>. I check, I'm honest, and I think about AI's impact on people and the planet.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="finish">
+    <div class="big">🏆 Finish all five lands to become an Advanced AI Explorer!</div>
+    <div class="navrow">
+      <a class="arrow" href="priup-story-ada-adventure.html">🔁 Revisit the adventure</a>
+      <a class="arrow" href="overview.html">🏠 IJAIO overview</a>
+    </div>
+  </div>
+
+  <footer>IJAIO 2026 · The journey continues: deeper quests into how AI works · every treasure maps to an Upper-Primary learning outcome</footer>
+</div>
+</body>
+</html>

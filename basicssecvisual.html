@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Secondary · The Machine That Writes, in Nine Pictures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--amberdeep:#b57508;--teal:#16C4C0;--tealdeep:#0a6f6c;--violet:#8E6BFF;--violetdeep:#5f3fd0;--ink:#14161d;--paper:#f6f4ee;--line:rgba(20,22,29,.1);--mut:#5d6275}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
+  ::selection{background:#8E6BFF;color:#fff}
+  .bar{height:6px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 26px;background:rgba(246,244,238,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--violet));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:999px;background:#fff;border:1px solid rgba(20,22,29,.14);color:var(--ink);white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:var(--violet);color:var(--violetdeep);transform:translateY(-1px)}
+  .pill.solid{background:var(--ink);border-color:var(--ink);color:#fff}
+  .pill.solid:hover{background:var(--violet);border-color:var(--violet);color:#fff}
+  header.hero{position:relative;background:var(--ink);color:var(--paper);padding:clamp(50px,8vw,92px) 26px clamp(56px,7vw,84px);overflow:hidden}
+  header.hero .glow1{position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.45),transparent 68%);filter:blur(42px);top:-160px;right:-80px;pointer-events:none}
+  header.hero .glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,106,90,.4),transparent 68%);filter:blur(42px);bottom:-190px;left:-90px;pointer-events:none}
+  header.hero .inner{position:relative;z-index:2;max-width:900px;margin:0 auto;text-align:center}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#c3b2ff;border:1px solid rgba(142,107,255,.45);padding:6px 14px;border-radius:999px;margin-bottom:20px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+  header.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5.6vw,3.7rem);line-height:1.03;letter-spacing:-.03em;margin:0 auto 16px;max-width:20ch}
+  header.hero h1 .gr{background:linear-gradient(100deg,var(--coral),var(--amber) 38%,var(--teal) 66%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  header.hero p.lede{font-size:clamp(.98rem,1.35vw,1.13rem);color:#c7cad6;max-width:58ch;margin:0 auto 14px}
+  header.hero p.mono{font-family:'Space Mono',monospace;font-size:12.5px;color:#8a8fa3;margin:0}
+  main{max-width:860px;margin:0 auto;padding:46px 22px 10px}
+  /* ===== the spine ===== */
+  .journey{position:relative;padding-left:56px}
+  .journey::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:5px;border-radius:999px;background:linear-gradient(180deg,var(--coral),var(--amber) 30%,var(--teal) 62%,var(--violet))}
+  .panel{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(20px,3vw,30px);margin:0 0 34px;border-top:6px solid var(--c,var(--violet));box-shadow:0 14px 34px rgba(20,22,29,.05)}
+  .panel .node{position:absolute;left:-56px;top:22px;width:47px;height:47px;border-radius:50%;background:var(--c,var(--violet));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;border:5px solid var(--paper);box-shadow:0 6px 16px rgba(20,22,29,.18)}
+  .panel .tag{display:inline-block;font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--c,var(--violet));border-radius:999px;padding:4px 12px;margin-bottom:10px}
+  .panel h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.25rem,2.5vw,1.7rem);letter-spacing:-.02em;margin:0 0 8px}
+  .panel p.one{margin:0 0 14px;font-size:15px;color:#3a3d49;max-width:70ch}
+  .panel p.one b{color:var(--ink)}
+  .fig{background:#fafaf7;border:1px solid var(--line);border-radius:16px;padding:12px 10px 8px;margin:0 0 14px}
+  .fig svg{display:block;width:100%;height:auto}
+  svg text{font-family:'Space Mono',monospace}
+  svg .h{font-family:'Bricolage Grotesque',sans-serif}
+  .fchip{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;background:#efece4;border:1px dashed #cfc8b4;border-radius:10px;padding:8px 14px;color:#3d3a2f}
+  .fchip b{color:var(--c,var(--violetdeep))}
+  /* ===== dark callouts ===== */
+  .dark{background:var(--ink);color:var(--paper);border-radius:22px;padding:clamp(24px,3vw,36px);text-align:center;margin:0 0 34px;position:relative;overflow:hidden}
+  .dark .glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.4),transparent 68%);filter:blur(40px);top:-120px;right:-60px;pointer-events:none}
+  .dark>*{position:relative;z-index:2}
+  .dark h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.35rem,3vw,1.9rem);margin:0 0 10px;letter-spacing:-.02em}
+  .dark p{color:#c7cad6;font-size:15px;max-width:62ch;margin:0 auto 14px}
+  .dark p:last-child{margin-bottom:0}
+  .dark .chain{font-family:'Space Mono',monospace;font-size:12.5px;color:#c3b2ff;line-height:2}
+  .two{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:16px 0 4px}
+  .two .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:14px 20px;min-width:210px}
+  .two .card b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:17px;margin-bottom:4px}
+  .two .card:first-child b{color:#5fe0db}
+  .two .card:last-child b{color:#ffc76e}
+  .two .card span{font-size:13px;color:#aab0c2}
+  .cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  footer{border-top:1px solid var(--line);padding:26px;text-align:center;font-size:13px;color:var(--mut)}
+  footer a{color:var(--violetdeep)}
+  /* ===== scroll reveal ===== */
+  .pre{opacity:0;transform:translateY(20px)}
+  .pre.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+  @media(prefers-reduced-motion:reduce){.pre{opacity:1;transform:none}}
+  @media(max-width:560px){
+    main{padding:34px 12px 10px}
+    .journey{padding-left:42px}
+    .journey::before{left:14px}
+    .panel .node{left:-42px;width:36px;height:36px;font-size:16px;border-width:4px}
+  }
+  @media print{
+    nav.top,.bar{display:none}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .pre{opacity:1 !important;transform:none !important}
+    .panel,.dark{break-inside:avoid;box-shadow:none}
+    header.hero{padding:30px 20px}
+  }
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:var(--violet)">.</span>26</b></a>
+  <a class="pill solid" href="basicssec.html">Interactive series</a>
+  <a class="pill" href="basicssecstory.html">Story version</a>
+</nav>
+
+<header class="hero">
+  <div class="glow1"></div><div class="glow2"></div>
+  <div class="inner">
+    <div class="kicker"><span class="dot"></span>Foundation Series · Secondary · Infographic</div>
+    <h1>One machine, <span class="gr">nine pictures</span>, zero hand-waving</h1>
+    <p class="lede">Everything a chatbot does is built from maths you already own: multiply, add, squash, repeat. Scroll the spine from raw numbers at the top to generated text at the bottom. About four minutes.</p>
+    <p class="mono">vectors → matrices → neurons → layers → learning → meaning → attention → transformer → generation</p>
+  </div>
+</header>
+
+<main>
+<div class="journey">
+
+<!-- ========== 1 · VECTORS ========== -->
+<section class="panel pre" style="--c:var(--coral)">
+  <div class="node">1</div>
+  <span class="tag">Vectors · the data</span>
+  <h2>Everything the machine knows is a list of numbers</h2>
+  <p class="one">A <b>vector</b> can describe anything, a word, a pixel, a song, and one tiny operation compares two of them: multiply matching entries, add the results, and a big total means the vectors point the same way.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 240" role="img" aria-label="Two vector arrows from a shared origin with their dot product worked out">
+    <defs>
+      <marker id="ac" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9z" fill="#FF6A5A"/></marker>
+      <marker id="at" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0L9,4.5L0,9z" fill="#16C4C0"/></marker>
+    </defs>
+    <g stroke="#e6e2d6"><line x1="60" y1="210" x2="60" y2="20"/><line x1="60" y1="210" x2="340" y2="210"/>
+      <line x1="130" y1="210" x2="130" y2="25" stroke-dasharray="3 5"/><line x1="200" y1="210" x2="200" y2="25" stroke-dasharray="3 5"/><line x1="270" y1="210" x2="270" y2="25" stroke-dasharray="3 5"/>
+      <line x1="60" y1="140" x2="330" y2="140" stroke-dasharray="3 5"/><line x1="60" y1="70" x2="330" y2="70" stroke-dasharray="3 5"/></g>
+    <line x1="60" y1="210" x2="264" y2="72" stroke="#FF6A5A" stroke-width="4.5" marker-end="url(#ac)"/>
+    <line x1="60" y1="210" x2="196" y2="142" stroke="#16C4C0" stroke-width="4.5" marker-end="url(#at)"/>
+    <text x="272" y="62" font-size="15" font-weight="700" fill="#C23F33">a = [3, 2]</text>
+    <text x="204" y="136" font-size="15" font-weight="700" fill="#0a6f6c">b = [2, 1]</text>
+    <path d="M110,187 A55,55 0 0 0 105,178" fill="none" stroke="#5d6275" stroke-width="1.6"/>
+    <text x="118" y="188" font-size="11" fill="#5d6275">small angle</text>
+    <g font-size="14.5">
+      <text x="392" y="66" font-weight="700" fill="#14161d">a · b  =  3×2 + 2×1</text>
+      <text x="392" y="96" font-weight="700" fill="#14161d">      =  6 + 2  =  <tspan fill="#C23F33" font-size="19">8</tspan></text>
+      <text x="392" y="140" font-size="12.5" fill="#5d6275">big score ⇒ same direction</text>
+      <text x="392" y="162" font-size="12.5" fill="#5d6275">⇒ similar things.</text>
+      <text x="392" y="196" font-size="12.5" fill="#5d6275">This one move powers</text>
+      <text x="392" y="216" font-size="12.5" fill="#5d6275">every stage below.</text>
+    </g>
+  </svg>
+  </div>
+  <span class="fchip"><b>a·b = Σ aᵢbᵢ</b> · multiply matching entries, add them up</span>
+</section>
+
+<!-- ========== 2 · MATRICES ========== -->
+<section class="panel pre" style="--c:var(--amber)">
+  <div class="node">2</div>
+  <span class="tag">Matrix × · the engine</span>
+  <h2>Matrix multiplication is many dot products at once</h2>
+  <p class="one">A matrix is a stack of vectors, and every cell of the answer is <b>one dot product</b>, a row of the first with a column of the second: the "trillions of operations per second" on an AI chip are exactly this.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 220" role="img" aria-label="Row one of matrix A times column two of matrix B highlighted to produce one answer cell">
+    <g font-size="17" font-weight="700" text-anchor="middle">
+      <rect x="40" y="46" width="46" height="42" rx="9" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="63" y="73">1</text>
+      <rect x="92" y="46" width="46" height="42" rx="9" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="115" y="73">2</text>
+      <rect x="40" y="94" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="63" y="121">3</text>
+      <rect x="92" y="94" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="115" y="121">4</text>
+      <text x="170" y="99" font-size="24" class="h">×</text>
+      <rect x="200" y="46" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="223" y="73">2</text>
+      <rect x="252" y="46" width="46" height="42" rx="9" fill="#fff3e0" stroke="#FFB23E" stroke-width="2"/><text x="275" y="73">0</text>
+      <rect x="200" y="94" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="223" y="121">1</text>
+      <rect x="252" y="94" width="46" height="42" rx="9" fill="#fff3e0" stroke="#FFB23E" stroke-width="2"/><text x="275" y="121">2</text>
+      <text x="330" y="99" font-size="24" class="h">=</text>
+      <rect x="360" y="46" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="383" y="73">4</text>
+      <rect x="412" y="46" width="46" height="42" rx="9" fill="#8E6BFF" stroke="#5f3fd0"/><text x="435" y="73" fill="#fff">4</text>
+      <rect x="360" y="94" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="383" y="121">10</text>
+      <rect x="412" y="94" width="46" height="42" rx="9" fill="#fff" stroke="#d8d3c4"/><text x="435" y="121">8</text>
+    </g>
+    <text x="89" y="36" font-size="11" fill="#0a6f6c" text-anchor="middle">row 1 of A</text>
+    <text x="275" y="36" font-size="11" fill="#b57508" text-anchor="middle">column 2 of B</text>
+    <path d="M435,42 C435,14 300,10 160,26" fill="none" stroke="#8E6BFF" stroke-width="1.6" stroke-dasharray="4 4"/>
+    <g font-size="13.5">
+      <text x="490" y="66" font-weight="700" fill="#5f3fd0">this cell =</text>
+      <text x="490" y="90" font-weight="700" fill="#14161d">1×0 + 2×2 = 4</text>
+      <text x="490" y="118" font-size="12" fill="#5d6275">row · column:</text>
+      <text x="490" y="137" font-size="12" fill="#5d6275">Stage 1, four times over</text>
+    </g>
+    <text x="320" y="192" font-size="12.5" fill="#5d6275" text-anchor="middle">four answer cells, four dot products: nothing new, just Stage 1 in bulk</text>
+  </svg>
+  </div>
+  <span class="fchip"><b>C₍ᵢⱼ₎ = rowᵢ(A) · colⱼ(B)</b> · one dot product per cell</span>
+</section>
+
+<!-- ========== 3 · NEURON ========== -->
+<section class="panel pre" style="--c:var(--teal)">
+  <div class="node">3</div>
+  <span class="tag">Neuron · the unit</span>
+  <h2>The neuron: weight, add, squash</h2>
+  <p class="one">AI's only "brain cell" is a dot product plus a nudge called the <b>bias</b>, pushed through <b>ReLU</b>, a squashing rule so simple it hurts: negative in, zero out; positive in, unchanged out.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 210" role="img" aria-label="Three inputs weighted and summed, passed through a ReLU kink, producing one output">
+    <defs><marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#9aa0b2"/></marker></defs>
+    <g font-size="14" font-weight="700" text-anchor="middle">
+      <circle cx="52" cy="50" r="21" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="52" y="55">2</text>
+      <circle cx="52" cy="105" r="21" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="52" y="110">1</text>
+      <circle cx="52" cy="160" r="21" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="52" y="165">3</text>
+    </g>
+    <g stroke="#9aa0b2" stroke-width="1.6">
+      <line x1="75" y1="52" x2="208" y2="94" marker-end="url(#ag)"/>
+      <line x1="75" y1="105" x2="208" y2="105" marker-end="url(#ag)"/>
+      <line x1="75" y1="158" x2="208" y2="116" marker-end="url(#ag)"/>
+    </g>
+    <g font-size="11.5" fill="#0a6f6c" font-weight="700">
+      <text x="128" y="62">× 1.5</text><text x="128" y="98">× −1</text><text x="128" y="150">× 0.5</text>
+    </g>
+    <rect x="212" y="72" width="118" height="66" rx="14" fill="#fff" stroke="#16C4C0" stroke-width="2"/>
+    <text x="271" y="99" font-size="13" text-anchor="middle" font-weight="700">Σ  + bias</text>
+    <text x="271" y="122" font-size="12" text-anchor="middle" fill="#5d6275">3.5 − 1 = 2.5</text>
+    <line x1="330" y1="105" x2="378" y2="105" stroke="#9aa0b2" stroke-width="1.6" marker-end="url(#ag)"/>
+    <rect x="382" y="52" width="122" height="106" rx="14" fill="#fff" stroke="#16C4C0" stroke-width="2"/>
+    <g stroke="#e6e2d6"><line x1="394" y1="122" x2="494" y2="122"/><line x1="443" y1="64" x2="443" y2="146"/></g>
+    <polyline points="394,122 443,122 494,74" fill="none" stroke="#0a6f6c" stroke-width="3.5" stroke-linejoin="round"/>
+    <circle cx="443" cy="122" r="4" fill="#FF6A5A"/>
+    <text x="443" y="150" font-size="10.5" text-anchor="middle" fill="#5d6275">the kink</text>
+    <text x="443" y="44" font-size="11.5" text-anchor="middle" font-weight="700" fill="#0a6f6c">ReLU</text>
+    <line x1="504" y1="105" x2="552" y2="105" stroke="#9aa0b2" stroke-width="1.6" marker-end="url(#ag)"/>
+    <circle cx="586" cy="105" r="26" fill="#16C4C0"/>
+    <text x="586" y="111" font-size="14" text-anchor="middle" font-weight="700" fill="#fff">2.5</text>
+    <text x="586" y="152" font-size="10.5" text-anchor="middle" fill="#5d6275">output</text>
+    <text x="52" y="196" font-size="10.5" text-anchor="middle" fill="#5d6275">inputs</text>
+    <text x="271" y="60" font-size="10.5" text-anchor="middle" fill="#5d6275">weight &amp; add · stage 1</text>
+  </svg>
+  </div>
+  <span class="fchip"><b>y = ReLU(w·x + b)</b> · that tiny kink lets stacks of neurons bend straight lines into any shape</span>
+</section>
+
+<!-- ========== 4 · LAYERS ========== -->
+<section class="panel pre" style="--c:var(--violet)">
+  <div class="node">4</div>
+  <span class="tag">Layers · depth</span>
+  <h2>Stack neurons into layers, and layers into a network</h2>
+  <p class="one">One neuron draws one straight boundary; feed each layer's outputs into the next and the <b>forward pass</b> bends those boundaries into any pattern, with each layer being just Stage 2 plus Stage 3.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 230" role="img" aria-label="A two three two network with every connection drawn, data flowing left to right">
+    <defs><marker id="af" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#8E6BFF"/></marker></defs>
+    <text x="320" y="28" font-size="12.5" font-weight="700" fill="#5f3fd0" text-anchor="middle">forward pass →</text>
+    <g stroke="#cfc8e8" stroke-width="1.4">
+      <line x1="122" y1="80" x2="298" y2="60"/><line x1="122" y1="80" x2="298" y2="120"/><line x1="122" y1="80" x2="298" y2="180"/>
+      <line x1="122" y1="160" x2="298" y2="60"/><line x1="122" y1="160" x2="298" y2="120"/><line x1="122" y1="160" x2="298" y2="180"/>
+      <line x1="322" y1="60" x2="498" y2="85"/><line x1="322" y1="60" x2="498" y2="155"/>
+      <line x1="322" y1="120" x2="498" y2="85"/><line x1="322" y1="120" x2="498" y2="155"/>
+      <line x1="322" y1="180" x2="498" y2="85"/><line x1="322" y1="180" x2="498" y2="155"/>
+    </g>
+    <g font-size="12.5" font-weight="700" text-anchor="middle">
+      <circle cx="110" cy="80" r="19" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="110" y="85">2</text>
+      <circle cx="110" cy="160" r="19" fill="#e6faf9" stroke="#16C4C0" stroke-width="2"/><text x="110" y="165">1</text>
+      <circle cx="310" cy="60" r="19" fill="#efe9ff" stroke="#8E6BFF" stroke-width="2"/><text x="310" y="65">3</text>
+      <circle cx="310" cy="120" r="19" fill="#efe9ff" stroke="#8E6BFF" stroke-width="2"/><text x="310" y="125">2</text>
+      <circle cx="310" cy="180" r="19" fill="#efe9ff" stroke="#8E6BFF" stroke-width="2"/><text x="310" y="185">0</text>
+      <circle cx="510" cy="85" r="19" fill="#FF6A5A" stroke="#C23F33" stroke-width="2"/><text x="510" y="90" fill="#fff">5</text>
+      <circle cx="510" cy="155" r="19" fill="#FF6A5A" stroke="#C23F33" stroke-width="2"/><text x="510" y="160" fill="#fff">4</text>
+    </g>
+    <g font-size="10.5" fill="#5d6275" text-anchor="middle">
+      <text x="110" y="212">input · 2 numbers</text>
+      <text x="310" y="222">hidden layer · 3 neurons</text>
+      <text x="510" y="212">output · 2 numbers</text>
+    </g>
+    <text x="210" y="205" font-size="10.5" fill="#8a7fc0" text-anchor="middle">every line = one weight</text>
+    <line x1="545" y1="120" x2="600" y2="120" stroke="#8E6BFF" stroke-width="2" marker-end="url(#af)"/>
+  </svg>
+  </div>
+  <span class="fchip"><b>layer: h = ReLU(W·x + b)</b> · a matrix multiply (stage 2) then a squash (stage 3)</span>
+</section>
+
+<!-- ========== 5 · LEARNING ========== -->
+<section class="panel pre" style="--c:var(--coral)">
+  <div class="node">5</div>
+  <span class="tag">Learning · training</span>
+  <h2>Nobody writes the weights: the network rolls downhill</h2>
+  <p class="one">The network starts random, measures its wrongness with one number called the <b>loss</b>, then nudges every weight downhill along the slope, and the only knob is the step size: too small crawls, too big explodes.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 250" role="img" aria-label="A loss valley with a ball descending in shrinking steps, plus two failure insets for steps too small and too big">
+    <path d="M28,45 Q180,285 332,45" fill="none" stroke="#FF6A5A" stroke-width="4" stroke-linecap="round"/>
+    <g stroke="#9aa0b2" stroke-width="1.4" stroke-dasharray="4 4">
+      <line x1="66" y1="98" x2="101" y2="130"/><line x1="109" y1="136" x2="139" y2="151"/><line x1="148" y1="156" x2="170" y2="163"/>
+    </g>
+    <circle cx="58" cy="91" r="11" fill="#14161d"/>
+    <circle cx="105" cy="133" r="9" fill="#3c3f4d"/>
+    <circle cx="144" cy="154" r="7.5" fill="#5d6275"/>
+    <circle cx="180" cy="165" r="6" fill="#8a8fa3"/>
+    <text x="47" y="70" font-size="11" font-weight="700" fill="#14161d">start: random</text>
+    <line x1="180" y1="178" x2="180" y2="200" stroke="#1f8a4c" stroke-width="1.6"/>
+    <text x="180" y="216" font-size="11" font-weight="700" fill="#1f8a4c" text-anchor="middle">lowest loss ✓</text>
+    <text x="255" y="120" font-size="11" fill="#5d6275">each step follows</text>
+    <text x="255" y="136" font-size="11" fill="#5d6275">the slope down</text>
+    <text x="180" y="30" font-size="12" font-weight="700" fill="#C23F33" text-anchor="middle">loss vs weight</text>
+    <g>
+      <rect x="376" y="22" width="240" height="100" rx="12" fill="#fff" stroke="#e6e2d6"/>
+      <path d="M392,38 Q496,150 600,38" fill="none" stroke="#d8d3c4" stroke-width="2.5"/>
+      <circle cx="404" cy="52" r="5" fill="#14161d"/><circle cx="410" cy="59" r="5" fill="#3c3f4d"/><circle cx="415" cy="64" r="5" fill="#5d6275"/><circle cx="419" cy="68" r="5" fill="#8a8fa3"/>
+      <text x="496" y="106" font-size="11" font-weight="700" fill="#d6336c" text-anchor="middle">steps too small: crawls for weeks</text>
+    </g>
+    <g>
+      <rect x="376" y="132" width="240" height="100" rx="12" fill="#fff" stroke="#e6e2d6"/>
+      <path d="M392,148 Q496,260 600,148" fill="none" stroke="#d8d3c4" stroke-width="2.5"/>
+      <polyline points="412,166 574,170 420,178 586,190 400,150" fill="none" stroke="#d6336c" stroke-width="1.8"/>
+      <circle cx="400" cy="150" r="5" fill="#d6336c"/>
+      <text x="496" y="216" font-size="11" font-weight="700" fill="#d6336c" text-anchor="middle">steps too big: bounces out</text>
+    </g>
+  </svg>
+  </div>
+  <span class="fchip"><b>w ← w − lr × gradient</b> · repeat a few billion times and the machine has "learned"</span>
+</section>
+
+<!-- ========== 6 · MEANING ========== -->
+<section class="panel pre" style="--c:var(--amber)">
+  <div class="node">6</div>
+  <span class="tag">Embeddings · meaning</span>
+  <h2>Words get vectors, so meaning becomes geometry</h2>
+  <p class="one">Each word is assigned a learned vector called an <b>embedding</b>, training pulls words used in similar places close together, and <b>cosine similarity</b>, Stage 1's dot product scaled to ignore length, measures how close.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 250" role="img" aria-label="A two dimensional map of words with pets, fruit and royalty clustered, and a cosine angle inset">
+    <rect x="20" y="18" width="430" height="214" rx="14" fill="#fff" stroke="#e6e2d6"/>
+    <ellipse cx="120" cy="82" rx="82" ry="48" fill="none" stroke="#16C4C0" stroke-dasharray="5 5"/>
+    <ellipse cx="330" cy="180" rx="74" ry="40" fill="none" stroke="#FFB23E" stroke-dasharray="5 5"/>
+    <ellipse cx="360" cy="62" rx="62" ry="34" fill="none" stroke="#8E6BFF" stroke-dasharray="5 5"/>
+    <g font-size="12.5" font-weight="700">
+      <circle cx="92" cy="70" r="5" fill="#16C4C0"/><text x="102" y="66" fill="#0a6f6c">cat</text>
+      <circle cx="140" cy="92" r="5" fill="#16C4C0"/><text x="150" y="88" fill="#0a6f6c">dog</text>
+      <circle cx="78" cy="105" r="5" fill="#16C4C0"/><text x="88" y="118" fill="#0a6f6c">puppy</text>
+      <circle cx="300" cy="170" r="5" fill="#FFB23E"/><text x="310" y="166" fill="#b57508">banana</text>
+      <circle cx="352" cy="192" r="5" fill="#FFB23E"/><text x="362" y="188" fill="#b57508">apple</text>
+      <circle cx="336" cy="60" r="5" fill="#8E6BFF"/><text x="346" y="56" fill="#5f3fd0">king</text>
+      <circle cx="378" cy="76" r="5" fill="#8E6BFF"/><text x="388" y="72" fill="#5f3fd0">queen</text>
+      <circle cx="66" cy="205" r="5" fill="#FF6A5A"/><text x="76" y="201" fill="#C23F33">Tuesday</text>
+    </g>
+    <text x="235" y="222" font-size="11" fill="#5d6275" text-anchor="middle">near = related · this map is learnt, never written</text>
+    <g>
+      <rect x="468" y="18" width="152" height="214" rx="14" fill="#fff" stroke="#e6e2d6"/>
+      <line x1="490" y1="200" x2="590" y2="70" stroke="#16C4C0" stroke-width="3"/>
+      <line x1="490" y1="200" x2="602" y2="100" stroke="#0a6f6c" stroke-width="3"/>
+      <path d="M513,170 A38,38 0 0 1 522,172" fill="none" stroke="#C23F33" stroke-width="1.8"/>
+      <text x="544" y="188" font-size="11.5" font-weight="700" fill="#C23F33" text-anchor="middle">small angle</text>
+      <text x="544" y="205" font-size="11.5" font-weight="700" fill="#C23F33" text-anchor="middle">cos ≈ 1</text>
+      <text x="544" y="42" font-size="11" fill="#5d6275" text-anchor="middle">cat vs dog</text>
+    </g>
+  </svg>
+  </div>
+  <span class="fchip"><b>cos θ = a·b ÷ (|a||b|)</b> · +1 same direction, 0 unrelated, −1 opposite</span>
+</section>
+
+<!-- ========== 7 · ATTENTION ========== -->
+<section class="panel pre" style="--c:var(--teal)">
+  <div class="node">7</div>
+  <span class="tag">Attention · context</span>
+  <h2>Every word looks at every other word</h2>
+  <p class="one">Each word scores its relevance to every other word with dot products, <b>softmax</b> squashes the scores into percentages, and the word rebuilds itself as a weighted mix, which is how "it" figures out what it refers to.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 240" role="img" aria-label="Attention arcs over the sentence: the robot beeped because it was happy, with the strongest arc from it to robot">
+    <path d="M424,178 Q262,30 141,178" fill="none" stroke="#8E6BFF" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+    <path d="M424,178 Q327,92 236,178" fill="none" stroke="#8E6BFF" stroke-width="2.6" opacity=".5"/>
+    <path d="M424,178 Q502,116 576,178" fill="none" stroke="#8E6BFF" stroke-width="2.2" opacity=".45"/>
+    <path d="M424,178 Q248,66 63,178" fill="none" stroke="#8E6BFF" stroke-width="1.2" opacity=".25"/>
+    <text x="282" y="86" font-size="14" font-weight="700" fill="#5f3fd0" text-anchor="middle">72%</text>
+    <text x="330" y="122" font-size="11.5" font-weight="700" fill="#8E6BFF" text-anchor="middle">11%</text>
+    <text x="502" y="136" font-size="11.5" font-weight="700" fill="#8E6BFF" text-anchor="middle">9%</text>
+    <g font-size="14.5" font-weight="700" text-anchor="middle">
+      <rect x="36" y="178" width="54" height="34" rx="9" fill="#fff" stroke="#d8d3c4" stroke-width="1.5"/><text x="63" y="200">the</text>
+      <rect x="100" y="178" width="82" height="34" rx="9" fill="#e6faf9" stroke="#16C4C0" stroke-width="2.5"/><text x="141" y="200" fill="#0a6f6c">robot</text>
+      <rect x="192" y="178" width="88" height="34" rx="9" fill="#fff" stroke="#d8d3c4" stroke-width="1.5"/><text x="236" y="200">beeped</text>
+      <rect x="290" y="178" width="100" height="34" rx="9" fill="#fff" stroke="#d8d3c4" stroke-width="1.5"/><text x="340" y="200">because</text>
+      <rect x="400" y="178" width="48" height="34" rx="9" fill="#8E6BFF" stroke="#5f3fd0"/><text x="424" y="200" fill="#fff">it</text>
+      <rect x="458" y="178" width="60" height="34" rx="9" fill="#fff" stroke="#d8d3c4" stroke-width="1.5"/><text x="488" y="200">was</text>
+      <rect x="528" y="178" width="84" height="34" rx="9" fill="#fff" stroke="#d8d3c4" stroke-width="1.5"/><text x="570" y="200">happy</text>
+    </g>
+    <text x="320" y="232" font-size="11" fill="#5d6275" text-anchor="middle">"it" spends 72% of its attention on "robot": context solved with dot products</text>
+  </svg>
+  </div>
+  <span class="fchip"><b>softmax(s) = eˢ ÷ Σeˢ</b> · scores in, percentages out, always summing to 1</span>
+</section>
+
+<!-- ========== 8 · TRANSFORMER ========== -->
+<section class="panel pre" style="--c:var(--violet)">
+  <div class="node">8</div>
+  <span class="tag">Transformer · assembly</span>
+  <h2>No new maths in this stage: that is the punchline</h2>
+  <p class="one">A <b>transformer block</b> is attention (stage 7) followed by a small network (stage 4) with the input added back on, and a large language model is that same block repeated dozens of times, trained end to end by stage 5.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 340" role="img" aria-label="A tower of identical transformer blocks from embeddings at the bottom to word scores at the top, repeated 96 times">
+    <defs><marker id="au" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#8E6BFF"/></marker></defs>
+    <rect x="170" y="288" width="300" height="38" rx="10" fill="#fff3e0" stroke="#FFB23E" stroke-width="2"/>
+    <text x="320" y="312" font-size="12.5" font-weight="700" fill="#b57508" text-anchor="middle">words in → embeddings · stage 6</text>
+    <line x1="320" y1="288" x2="320" y2="270" stroke="#8E6BFF" stroke-width="2" marker-end="url(#au)"/>
+    <g>
+      <rect x="170" y="196" width="300" height="70" rx="12" fill="#efe9ff" stroke="#8E6BFF" stroke-width="2"/>
+      <rect x="184" y="206" width="272" height="22" rx="7" fill="#fff" stroke="#c9b8ff"/>
+      <text x="320" y="221" font-size="11.5" font-weight="700" fill="#5f3fd0" text-anchor="middle">attention · stage 7</text>
+      <rect x="184" y="234" width="272" height="22" rx="7" fill="#fff" stroke="#c9b8ff"/>
+      <text x="320" y="249" font-size="11.5" font-weight="700" fill="#5f3fd0" text-anchor="middle">small network · stages 3 + 4</text>
+    </g>
+    <line x1="320" y1="196" x2="320" y2="178" stroke="#8E6BFF" stroke-width="2" marker-end="url(#au)"/>
+    <g>
+      <rect x="170" y="104" width="300" height="70" rx="12" fill="#efe9ff" stroke="#8E6BFF" stroke-width="2"/>
+      <rect x="184" y="114" width="272" height="22" rx="7" fill="#fff" stroke="#c9b8ff"/>
+      <text x="320" y="129" font-size="11.5" font-weight="700" fill="#5f3fd0" text-anchor="middle">attention · stage 7</text>
+      <rect x="184" y="142" width="272" height="22" rx="7" fill="#fff" stroke="#c9b8ff"/>
+      <text x="320" y="157" font-size="11.5" font-weight="700" fill="#5f3fd0" text-anchor="middle">small network · stages 3 + 4</text>
+    </g>
+    <text x="320" y="94" font-size="16" fill="#8E6BFF" text-anchor="middle" font-weight="700">⋮</text>
+    <rect x="170" y="26" width="300" height="38" rx="10" fill="#8E6BFF" stroke="#5f3fd0"/>
+    <text x="320" y="50" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">a score for every word out · stage 2</text>
+    <path d="M156,266 C118,240 118,222 156,200" fill="none" stroke="#16C4C0" stroke-width="2.4" marker-end="url(#au)"/>
+    <text x="96" y="240" font-size="10.5" font-weight="700" fill="#0a6f6c" text-anchor="middle">add the</text>
+    <text x="96" y="255" font-size="10.5" font-weight="700" fill="#0a6f6c" text-anchor="middle">input back</text>
+    <path d="M486,266 L502,266 L502,104 L486,104" fill="none" stroke="#C23F33" stroke-width="2.2"/>
+    <text x="540" y="176" font-size="15" font-weight="700" fill="#C23F33" text-anchor="middle">× 96</text>
+    <text x="541" y="196" font-size="10.5" fill="#5d6275" text-anchor="middle">the same block,</text>
+    <text x="541" y="211" font-size="10.5" fill="#5d6275" text-anchor="middle">repeated</text>
+    <text x="96" y="140" font-size="10.5" fill="#5d6275" text-anchor="middle">all weights set</text>
+    <text x="96" y="155" font-size="10.5" fill="#5d6275" text-anchor="middle">by stage 5</text>
+  </svg>
+  </div>
+  <span class="fchip"><b>block = attention + small network + skip</b> · stages 1 to 7, bolted together</span>
+</section>
+
+<!-- ========== 9 · GENERATION ========== -->
+<section class="panel pre" style="--c:var(--coral)">
+  <div class="node">9</div>
+  <span class="tag">Generation · creation</span>
+  <h2>Pick a word, append it, go again</h2>
+  <p class="one">Softmax turns the final scores into probabilities and the model <b>samples</b> one word per lap, while a single dial called <b>temperature</b> reshapes the odds: cold plays it safe, hot takes risks.</p>
+  <div class="fig">
+  <svg viewBox="0 0 640 250" role="img" aria-label="A temperature dial and three probability bar charts over the same five words at cold, balanced and hot settings">
+    <path d="M40,140 A75,75 0 0 1 190,140" fill="none" stroke="#e6e2d6" stroke-width="13" stroke-linecap="round"/>
+    <path d="M40,140 A75,75 0 0 1 78,75" fill="none" stroke="#16C4C0" stroke-width="13" stroke-linecap="round"/>
+    <path d="M152,75 A75,75 0 0 1 190,140" fill="none" stroke="#FF6A5A" stroke-width="13" stroke-linecap="round"/>
+    <line x1="115" y1="140" x2="115" y2="80" stroke="#14161d" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="115" cy="140" r="7" fill="#14161d"/>
+    <text x="34" y="168" font-size="11" font-weight="700" fill="#0a6f6c">cold 0.2</text>
+    <text x="115" y="52" font-size="11" font-weight="700" fill="#14161d" text-anchor="middle">1.0</text>
+    <text x="164" y="168" font-size="11" font-weight="700" fill="#C23F33">hot 3.0</text>
+    <text x="115" y="196" font-size="11.5" font-weight="700" text-anchor="middle" fill="#5d6275">temperature</text>
+    <text x="115" y="214" font-size="10.5" text-anchor="middle" fill="#8a8fa3">divides scores before softmax</text>
+    <g fill="#16C4C0">
+      <rect x="248" y="62" width="17" height="118" rx="3"/><rect x="269" y="176" width="17" height="4" rx="2"/><rect x="290" y="177" width="17" height="3" rx="1.5"/><rect x="311" y="178" width="17" height="2" rx="1"/><rect x="332" y="178" width="17" height="2" rx="1"/>
+    </g>
+    <text x="298" y="200" font-size="11" font-weight="700" fill="#0a6f6c" text-anchor="middle">T = 0.2 · safe</text>
+    <text x="298" y="217" font-size="10" fill="#8a8fa3" text-anchor="middle">favourite always wins</text>
+    <g fill="#FFB23E">
+      <rect x="384" y="119" width="17" height="61" rx="3"/><rect x="405" y="152" width="17" height="28" rx="3"/><rect x="426" y="161" width="17" height="19" rx="3"/><rect x="447" y="171" width="17" height="9" rx="3"/><rect x="468" y="176" width="17" height="4" rx="2"/>
+    </g>
+    <text x="434" y="200" font-size="11" font-weight="700" fill="#b57508" text-anchor="middle">T = 1 · balanced</text>
+    <text x="434" y="217" font-size="10" fill="#8a8fa3" text-anchor="middle">favourite usually wins</text>
+    <g fill="#FF6A5A">
+      <rect x="520" y="144" width="17" height="36" rx="3"/><rect x="541" y="152" width="17" height="28" rx="3"/><rect x="562" y="156" width="17" height="24" rx="3"/><rect x="583" y="162" width="17" height="18" rx="3"/><rect x="604" y="166" width="17" height="14" rx="3"/>
+    </g>
+    <text x="570" y="200" font-size="11" font-weight="700" fill="#C23F33" text-anchor="middle">T = 3 · wild</text>
+    <text x="570" y="217" font-size="10" fill="#8a8fa3" text-anchor="middle">even "sneezed" gets a go</text>
+    <text x="434" y="242" font-size="10.5" fill="#5d6275" text-anchor="middle">same five words, same model, three personalities</text>
+  </svg>
+  </div>
+  <span class="fchip"><b>pᵢ = e^(sᵢ/T) ÷ Σ e^(sⱼ/T)</b> · the actual dial behind every chatbot's "creativity" setting</span>
+</section>
+
+</div><!-- /journey -->
+
+<!-- ========== FULL CHAIN ========== -->
+<section class="dark pre">
+  <div class="glow"></div>
+  <h2>That's the whole machine.</h2>
+  <p>Read it left to right, then notice the loop: the word that comes out goes straight back in, one lap per word, until the reply is done.</p>
+  <div class="fig" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14)">
+  <svg viewBox="0 0 760 170" role="img" aria-label="The full chain from prompt to sampled word, with a loop arrow feeding the word back to the start">
+    <defs><marker id="aw" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#8a8fa3"/></marker>
+    <marker id="al" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#5fe0db"/></marker></defs>
+    <g font-size="12" font-weight="700" text-anchor="middle">
+      <rect x="14" y="40" width="96" height="46" rx="11" fill="none" stroke="#FF6A5A" stroke-width="2"/>
+      <text x="62" y="60" fill="#ffb3aa">prompt</text><text x="62" y="76" font-size="9.5" fill="#8a8fa3">"the cat sat"</text>
+      <rect x="140" y="40" width="106" height="46" rx="11" fill="none" stroke="#FFB23E" stroke-width="2"/>
+      <text x="193" y="60" fill="#ffd28a">vectors</text><text x="193" y="76" font-size="9.5" fill="#8a8fa3">stages 1 · 6</text>
+      <rect x="276" y="40" width="130" height="46" rx="11" fill="none" stroke="#8E6BFF" stroke-width="2"/>
+      <text x="341" y="60" fill="#c3b2ff">block × 96</text><text x="341" y="76" font-size="9.5" fill="#8a8fa3">stages 2 3 4 7 · 8</text>
+      <rect x="436" y="40" width="100" height="46" rx="11" fill="none" stroke="#16C4C0" stroke-width="2"/>
+      <text x="486" y="60" fill="#5fe0db">scores</text><text x="486" y="76" font-size="9.5" fill="#8a8fa3">every word</text>
+      <rect x="566" y="40" width="126" height="46" rx="11" fill="none" stroke="#FF6A5A" stroke-width="2"/>
+      <text x="629" y="60" fill="#ffb3aa">sample: "mat"</text><text x="629" y="76" font-size="9.5" fill="#8a8fa3">stage 9</text>
+    </g>
+    <g stroke="#8a8fa3" stroke-width="1.8">
+      <line x1="110" y1="63" x2="132" y2="63" marker-end="url(#aw)"/>
+      <line x1="246" y1="63" x2="268" y2="63" marker-end="url(#aw)"/>
+      <line x1="406" y1="63" x2="428" y2="63" marker-end="url(#aw)"/>
+      <line x1="536" y1="63" x2="558" y2="63" marker-end="url(#aw)"/>
+    </g>
+    <path d="M629,86 L629,128 L62,128 L62,94" fill="none" stroke="#5fe0db" stroke-width="2.2" marker-end="url(#al)"/>
+    <text x="345" y="120" font-size="11.5" font-weight="700" fill="#5fe0db" text-anchor="middle">append the word · run the whole chain again · one word per lap</text>
+    <text x="345" y="156" font-size="10.5" fill="#8a8fa3" text-anchor="middle">trained once by stage 5: loss, gradient, step, repeat</text>
+  </svg>
+  </div>
+  <div class="chain">vectors → dot products → matrices → neurons → layers →<br>loss ↘ gradients ↘ learning → embeddings → attention → transformer → sample → repeat</div>
+</section>
+
+<!-- ========== TWO BORING DIFFERENCES ========== -->
+<section class="dark pre">
+  <div class="glow" style="background:radial-gradient(circle,rgba(255,106,90,.4),transparent 68%);left:-60px;right:auto"></div>
+  <h2>Only two boring differences from GPT</h2>
+  <p>The nine-stage machine on this page and a frontier chatbot run on the same mathematics. What separates them is not a secret; it is scale.</p>
+  <div class="two">
+    <div class="card"><b>More numbers</b><span>your 2-3-2 network has 13 weights; GPT-class models carry hundreds of billions, set the same way: stage 5.</span></div>
+    <div class="card"><b>More repeats</b><span>you stacked a block three times on this page; big models stack nearly a hundred, and train for weeks, not seconds.</span></div>
+  </div>
+  <p style="margin-top:14px">Everything else you now already understand.</p>
+  <div class="cta">
+    <a class="pill" style="background:#fff" href="basicssec.html">Drive every stage yourself → the interactive series</a>
+    <a class="pill" style="background:#fff" href="basicssecstory.html">Prefer a plot? The story version</a>
+  </div>
+</section>
+
+</main>
+
+<footer>IJAIO 2026 · First-Principles Foundation Series · Secondary · Infographic edition<br>
+<a href="overview.html">Back to overview</a> · <a href="basicssec.html">Hands-on interactive series</a></footer>
+
+<script>
+(function(){
+  if(!('IntersectionObserver' in window)){
+    document.querySelectorAll('.pre').forEach(function(el){el.classList.add('in');});
+    return;
+  }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+    });
+  },{threshold:0.12});
+  document.querySelectorAll('.pre').forEach(function(el){io.observe(el);});
+})();
+</script>
+</body>
+</html>

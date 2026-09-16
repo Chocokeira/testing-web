@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Ada's AI Adventure · Lower Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#8ed0ff; --sky2:#c9ecff; --sun:#ffd23f; --coral:#ff6a5a; --teal:#16c4c0;
+    --violet:#8e6bff; --grass:#5ac86a; --ink:#2a2140; --cream:#fff8ec; --card:#fff;
+    --shadow:0 8px 0 rgba(0,0,0,.10), 0 14px 26px rgba(30,20,60,.18);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);
+    background:linear-gradient(180deg,var(--sky),var(--sky2) 60%,#eafaf0);overflow-x:hidden}
+  #app{max-width:760px;margin:0 auto;min-height:100vh;position:relative;padding:0 14px 30px}
+  .screen{display:none;animation:pop .35s ease}
+  .screen.on{display:block}
+  @keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  @keyframes pip{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+
+  .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;
+    padding:12px 4px;background:linear-gradient(180deg,rgba(142,208,255,.96),rgba(142,208,255,0))}
+  .brand{font-weight:700;font-size:18px;color:#1c3a5e;display:flex;align-items:center;gap:8px;margin-right:auto}
+  .iconbtn{border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:16px;
+    background:#fff;border-radius:16px;padding:9px 14px;box-shadow:0 4px 0 rgba(0,0,0,.12);color:var(--ink)}
+  .iconbtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.12)}
+  .badgecount{background:var(--coral);color:#fff;border-radius:999px;font-size:12px;padding:1px 7px;margin-left:5px}
+
+  .big{font-size:clamp(30px,7vw,46px);font-weight:700;line-height:1.05;margin:0}
+  .lead{font-size:18px;line-height:1.5;font-weight:500}
+  .btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:20px;color:#fff;
+    background:var(--coral);border-radius:20px;padding:15px 24px;box-shadow:var(--shadow);
+    display:inline-flex;align-items:center;gap:10px;margin:4px}
+  .btn:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.10),0 8px 14px rgba(30,20,60,.18)}
+  .btn.green{background:var(--grass)} .btn.teal{background:var(--teal)} .btn.violet{background:var(--violet)} .btn.ghost{background:#fff;color:var(--ink)}
+  .opt{background:#fff;color:var(--ink);font-size:18px;font-weight:600;border:3px solid #e7e2ff;border-radius:18px;padding:14px 18px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.08);width:100%;max-width:440px;margin:5px auto;display:block;text-align:left}
+  .opt:active{transform:translateY(3px)}
+  .opt.wrong,.stepchip.wrong{animation:shake .35s;border-color:#ffb0a6}
+  .opt.right{background:#eafaf0;border-color:var(--grass)}
+
+  /* COVER */
+  .cover{text-align:center;padding:26px 10px 10px}
+  .heroes{font-size:96px;line-height:1;margin:6px 0 2px;animation:bob 3s ease-in-out infinite}
+  .cover .big{color:#1c3a5e;text-shadow:0 3px 0 #fff}
+  .pill{display:inline-block;background:#fff;border-radius:999px;padding:7px 16px;font-weight:600;color:var(--violet);box-shadow:0 4px 0 rgba(0,0,0,.08);margin-bottom:14px}
+
+  /* MAP */
+  .maphead{text-align:center;margin:6px 0 2px}
+  .mapwrap{position:relative;margin:6px auto 0;max-width:520px}
+  .node{position:absolute;width:112px;transform:translate(-50%,-50%);text-align:center;cursor:pointer}
+  .node .disc{width:76px;height:76px;margin:0 auto;border-radius:50%;background:var(--card);
+    box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:36px;border:5px solid #fff;position:relative}
+  .node.locked .disc{filter:grayscale(.7) brightness(.96);opacity:.75}
+  .node.open .disc{border-color:var(--sun);animation:bob 2.6s ease-in-out infinite}
+  .node.done .disc{border-color:var(--grass)}
+  .node .lbl{font-weight:600;font-size:12.5px;margin-top:4px;color:#1c3a5e;background:rgba(255,255,255,.82);border-radius:10px;padding:2px 6px;display:inline-block}
+  .node .lock{position:absolute;right:-4px;top:-4px;font-size:19px}
+  .node .stamp{position:absolute;left:-8px;top:-8px;font-size:26px;animation:pip .4s ease}
+  .adaMark{position:absolute;font-size:34px;transform:translate(-50%,-125%);transition:all .7s cubic-bezier(.5,1.5,.5,1);z-index:5;pointer-events:none;filter:drop-shadow(0 4px 3px rgba(0,0,0,.25))}
+
+  /* SCENE */
+  .scene{background:var(--card);border-radius:26px;box-shadow:var(--shadow);padding:22px 18px 24px;margin-top:6px;position:relative;overflow:hidden;text-align:center}
+  .scene h2{font-size:23px;margin:2px 0 8px}
+  .sprite{font-size:70px;line-height:1;margin:4px 0 6px}
+  .say{background:var(--cream);border:3px solid #ffe6b8;border-radius:18px;padding:14px 16px;font-size:18px;font-weight:500;line-height:1.45;cursor:pointer;position:relative;text-align:left}
+  .say:after{content:'🔊';position:absolute;right:10px;bottom:7px;font-size:14px;opacity:.5}
+  .say b{color:var(--coral)} .say i{color:var(--violet);font-style:normal;font-weight:700}
+  .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .visual{font-size:46px;letter-spacing:6px;margin:10px 0 4px}
+
+  /* decode */
+  .numtile{width:64px;height:76px;border-radius:16px;background:#eef4ff;border:3px solid #cfe0ff;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-weight:700;margin:4px}
+  .numtile .n{font-size:24px;color:var(--violet)} .numtile .l{font-size:28px;color:var(--coral);min-height:32px}
+  .numtile.done{background:#eafaf0;border-color:#bfe9c9}
+  .strip{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:12px}
+  .cell{width:32px;height:38px;border-radius:9px;background:#f3f0ff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:600;font-size:12px;color:#6a5cc0}
+  .cell .cl{font-size:14px;color:var(--ink)} .cell.hi{background:var(--sun);transform:scale(1.12)}
+
+  /* sort / order chips */
+  .critters{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+  .critter{cursor:pointer;transition:transform .15s;border-radius:14px;padding:6px 8px;background:#f7f5ff;border:3px solid #eee;min-width:74px}
+  .critter .ce{font-size:38px;line-height:1} .critter .cl{font-size:12px;font-weight:600;color:#6a6580;display:block}
+  .critter.sel{transform:scale(1.12) rotate(-4deg);background:#fff4c2;border-color:var(--sun)}
+  .critter.gone{display:none}
+  .baskets{display:flex;gap:12px;justify-content:center;margin-top:8px}
+  .basket{flex:1;max-width:200px;min-height:104px;border-radius:20px;border:4px dashed #cbb7ff;background:#faf7ff;padding:8px;cursor:pointer}
+  .basket b{font-size:15px;color:var(--violet)} .basket .hold{font-size:26px;line-height:1.25;margin-top:4px;word-break:break-word}
+  .basket.pulse{border-color:var(--grass);background:#f0fff4}
+  .steps{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+  .stepchip{cursor:pointer;background:#fff;border:3px solid #e7e2ff;border-radius:16px;padding:10px 12px;font-weight:600;box-shadow:0 4px 0 rgba(0,0,0,.07);min-width:120px}
+  .stepchip .se{font-size:30px;display:block} .stepchip.picked{background:#eafaf0;border-color:var(--grass);opacity:.6}
+  .slots{display:flex;gap:8px;justify-content:center;margin:6px 0}
+  .slot{width:44px;height:44px;border-radius:12px;background:#f0edfb;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--violet)}
+
+  .progresswrap{height:14px;background:#fff;border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.1);margin:14px 0 2px}
+  .progress{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--grass));transition:width .5s}
+  .done-note{margin-top:12px}
+  .done-note .say{border-color:#bfe9c9;background:#f0fff4}
+
+  /* backpack */
+  .overlay{position:fixed;inset:0;background:rgba(30,20,50,.5);display:none;align-items:flex-end;justify-content:center;z-index:40}
+  .overlay.on{display:flex}
+  .sheet{background:#fff;width:100%;max-width:760px;border-radius:26px 26px 0 0;padding:18px 16px 26px;max-height:86vh;overflow:auto;animation:pop .3s ease}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .lootcard{border-radius:16px;padding:12px;color:#fff;font-weight:600;font-size:14px;line-height:1.35;box-shadow:var(--shadow);min-height:92px;display:flex;flex-direction:column;gap:5px;animation:pip .35s ease}
+  .lootcard .ico{font-size:28px} .lootcard .kind{font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.9;font-weight:700}
+  .lootcard.know{background:var(--violet)} .lootcard.can{background:var(--teal)} .lootcard.care{background:var(--coral)}
+  .empty{grid-column:1/-1;text-align:center;color:#8a86a0;padding:20px;font-weight:500}
+
+  .confetti{position:fixed;top:-10px;font-size:22px;z-index:60;pointer-events:none;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+  .medal{font-size:84px;line-height:1;animation:pip .5s ease}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="topbar" id="topbar" style="display:none">
+    <div class="brand">🧭 Ada's AI Adventure</div>
+    <button class="iconbtn" id="soundBtn" onclick="toggleSound()">🔊</button>
+    <button class="iconbtn" id="bagBtn" onclick="openBag()">🎒<span class="badgecount" id="bagCount">0</span></button>
+  </div>
+
+  <!-- COVER -->
+  <section class="screen on cover" id="s-cover">
+    <div class="pill">Lower Primary · Ages 6–9</div>
+    <div class="heroes">👧🐶</div>
+    <h1 class="big">Ada's AI Adventure</h1>
+    <p class="lead" style="max-width:30ch;margin:10px auto 4px">Join Ada and her puppy <b style="color:var(--coral)">Ida</b> to explore how clever machines really work!</p>
+    <div class="row"><button class="btn" onclick="startMap()">▶ Start the adventure</button></div>
+    <p style="font-size:14px;color:#3a5b7a;margin-top:16px">🔊 Tip: tap any yellow speech box to hear it read aloud.</p>
+  </section>
+
+  <!-- MAP -->
+  <section class="screen" id="s-map">
+    <div class="maphead"><h2 class="big" style="font-size:26px;color:#1c3a5e">🗺️ The Map of Five Lands</h2>
+    <p class="lead" id="mapMsg" style="margin:2px 0 0">Tap the glowing land to begin!</p></div>
+    <div class="mapwrap">
+      <svg viewBox="0 0 520 560" width="100%" style="display:block">
+        <path d="M90,60 C 300,90 250,190 130,220 C 20,250 40,360 210,350 C 400,340 380,470 210,500"
+          fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" stroke-dasharray="2 26" opacity=".9"/>
+      </svg>
+      <div id="adaMark" class="adaMark">👧</div>
+      <div id="nodes"></div>
+    </div>
+    <div class="center" style="text-align:center;margin-top:6px"><span class="pill" style="color:#1c3a5e">Next book → <b>Upper Primary</b> 🚀</span></div>
+  </section>
+
+  <!-- LAND -->
+  <section class="screen" id="s-land">
+    <div class="progresswrap"><div class="progress" id="prog"></div></div>
+    <div id="sceneHost"></div>
+  </section>
+</div>
+
+<div class="overlay" id="bag" onclick="if(event.target===this)closeBag()">
+  <div class="sheet">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h2 style="margin:0;font-size:22px">🎒 Ada's Backpack</h2>
+      <button class="iconbtn" onclick="closeBag()">✖ Close</button>
+    </div>
+    <p style="margin:6px 0 0;font-weight:500;color:#5a5670">Everything you collect on the adventure!</p>
+    <div class="cards" id="bagCards"></div>
+  </div>
+</div>
+
+<script>
+/* ================= LOOT (every card maps to a Lower-Primary outcome) ================= */
+const LOOT = {
+  know_numbers:{kind:'I know',cls:'know',ico:'🔢',text:'Computers turn letters and pictures into NUMBERS.'},
+  know_program:{kind:'I know',cls:'know',ico:'🤖',text:'AI is a program people build. It is not alive.'},
+  can_code:{kind:'I can',cls:'can',ico:'🔑',text:'I can crack a secret number code!'},
+  can_sort:{kind:'I can',cls:'can',ico:'🧺',text:'I can sort things by what they share.'},
+  care_pattern:{kind:'I care',cls:'care',ico:'✨',text:'I look for the pattern, not magic!'},
+
+  know_examples:{kind:'I know',cls:'know',ico:'🐱',text:"AI learns from lots of examples: many cats teach it 'cat'."},
+  can_pattern:{kind:'I can',cls:'can',ico:'🔁',text:'I can spot a pattern and say what comes next.'},
+  can_solve:{kind:'I can',cls:'can',ico:'🤖',text:'I can follow steps like a robot to reach the goal.'},
+  care_try:{kind:'I care',cls:'care',ico:'💪',text:'I keep trying and checking.'},
+
+  know_makefind:{kind:'I know',cls:'know',ico:'🎨',text:"Making something NEW is different from finding what's already there."},
+  can_generate:{kind:'I can',cls:'can',ico:'📖',text:"I can build something brand new, one piece at a time: that's generating!"},
+  care_curious:{kind:'I care',cls:'care',ico:'🔎',text:'I stay curious about how new things are made.'},
+
+  know_loop:{kind:'I know',cls:'know',ico:'🔄',text:'A helper works in a loop: Sense → Think → Act.'},
+  can_helper:{kind:'I can',cls:'can',ico:'🛠️',text:'I can design a helper and say what it senses and does.'},
+  can_ask:{kind:'I can',cls:'can',ico:'💬',text:'I can ask a clear, kind question.'},
+  care_safe:{kind:'I care',cls:'care',ico:'💛',text:'I design with kindness and safety.'},
+
+  know_private:{kind:'I know',cls:'know',ico:'🔒',text:'Some things are private and should stay private.'},
+  can_check:{kind:'I can',cls:'can',ico:'✅',text:'I check important answers with a trusted grown-up.'},
+  can_kind:{kind:'I can',cls:'can',ico:'🛡️',text:'I choose the safer, kinder thing to do.'},
+  care_honest:{kind:'I care',cls:'care',ico:'🤝',text:'I am honest and I check before I trust.'},
+};
+
+/* ================= LANDS ================= */
+const LANDS = [
+  { name:'Codes & Numbers', icon:'🔢', badge:'🏅 Code Cracker', pos:[17,11], scenes:[
+    {type:'say', sprite:'🤖🚪', title:'Land 1 · Codes & Numbers',
+      text:'Ada and Ida reach a big gate. A friendly robot says: <b>“I am a machine. I only understand NUMBERS, not letters!”</b>',
+      say:'Ada and Ida reach a big gate. A friendly robot says: I am a machine. I only understand numbers, not letters!', btn:"Let's help! ➜"},
+    {type:'decode', title:'🔑 Secret Number Code', word:'CAT', collect:['can_code','know_numbers'],
+      say:'To open the gate, crack the secret number code. Tap each number to find its letter!'},
+    {type:'sort', title:'🧺 Sort the Food', prompt:'Tap a food, then tap a basket. Round in one, long in the other!',
+      items:[{e:'🍎',l:'apple',g:'round'},{e:'🍌',l:'banana',g:'long'},{e:'🍊',l:'orange',g:'round'},{e:'🥕',l:'carrot',g:'long'},{e:'🫐',l:'berry',g:'round'},{e:'🌽',l:'corn',g:'long'}],
+      bins:[{g:'round',label:'⚪ Round'},{g:'long',label:'➖ Long'}], collect:['can_sort'],
+      say:'Now help Ada sort the food. Round food in one basket, long food in the other.'},
+    {type:'say', sprite:'🤖💡', title:'A little secret',
+      text:'The robot smiles: <b>“People built me. I am not alive and have no feelings, but I love to help!”</b> That is what <b>AI</b> is: a clever program made by people.',
+      say:'The robot smiles: People built me. I am not alive and have no feelings, but I love to help! That is what A.I. is: a clever program made by people.',
+      collect:['know_program'], btn:'I get it! ➜'},
+    {type:'say', sprite:'✨👧✨', title:'You found the pattern!',
+      text:"You didn't call it magic. You looked for the <b>rule</b> behind it. That is how a scientist thinks!",
+      say:"You didn't call it magic. You looked for the rule behind it. That is how a scientist thinks!",
+      collect:['care_pattern'], finish:true},
+  ]},
+
+  { name:'Learning Meadow', icon:'🌱', badge:'🌟 Pattern Finder', pos:[25,39], scenes:[
+    {type:'say', sprite:'🌱🐶', title:'Land 2 · Learning Meadow',
+      text:'Ada meets a robot puppy called <b>Bolt</b>. Bolt wants to learn what a <b>cat</b> is, by seeing lots of examples!',
+      say:'Ada meets a robot puppy called Bolt. Bolt wants to learn what a cat is, by seeing lots of examples!', btn:'Teach Bolt ➜'},
+    {type:'choose', title:'🐱 Learn from Examples', prompt:'We showed Bolt LOTS of cats. Now, which new picture is a cat?',
+      visual:'🐱🐱🐱 … ❓', options:[{t:'🐱 This one!',correct:true},{t:'🐶 A dog',correct:false},{t:'🚗 A car',correct:false}],
+      collect:['know_examples'], say:'We showed Bolt lots of cats. Which new picture is a cat?'},
+    {type:'choose', title:'🔁 Finish the Pattern', prompt:'What comes next in the pattern?',
+      visual:'🔺 🟡 🔺 🟡 🔺 ❓', options:[{t:'🟡 Yellow circle',correct:true},{t:'🔺 Red triangle',correct:false},{t:'🔵 Blue circle',correct:false}],
+      collect:['can_pattern'], say:'What comes next in the pattern? Red triangle, yellow circle, red triangle, yellow circle, red triangle, then?'},
+    {type:'order', title:'🤖 Walk the Robot', prompt:'Tap the moves IN ORDER to walk the robot to the flag 🚩',
+      steps:[{e:'➡️',label:'right'},{e:'➡️',label:'right'},{e:'⬆️',label:'up'}], collect:['can_solve'],
+      say:'Tap the moves in order to walk the robot to the flag: right, right, then up.'},
+    {type:'say', sprite:'🌟🐶🌟', title:'Bolt learned it!',
+      text:'You <b>kept trying and checking</b> until Bolt understood. That is how machines learn, one example at a time!',
+      say:'You kept trying and checking until Bolt understood. That is how machines learn, one example at a time!',
+      collect:['care_try'], finish:true},
+  ]},
+
+  { name:'Making Workshop', icon:'🎨', badge:'🎨 Little Maker', pos:[41,63], scenes:[
+    {type:'say', sprite:'🎨🤖', title:'Land 3 · Making Workshop',
+      text:'In this workshop, some things are <b>made brand new</b> and some are just <b>found</b>. Special AI that makes new things is called <b>generative</b> AI.',
+      say:'In this workshop, some things are made brand new and some are just found. Special AI that makes new things is called generative AI.', btn:'Explore ➜'},
+    {type:'choose', title:'✨ Made or Found?', prompt:'A robot draws a brand-new dragon that never existed before. Did it MAKE it or FIND it?',
+      visual:'🐉', options:[{t:'✨ It MADE something new',correct:true},{t:'🔍 It FOUND something real',correct:false}],
+      collect:['know_makefind'], say:'A robot draws a brand-new dragon that never existed before. Did it make it, or find it?'},
+    {type:'build', title:'✨ The Story Machine',
+      prompt:'This machine <b>generates</b> brand-new stories, one piece at a time. YOU choose each next piece. There is no wrong pick: every choice makes a <b>different story</b>!',
+      start:'Once upon a time,',
+      slots:[
+        {q:'Who is the story about?', opts:[{e:'🐱',t:'a little cat'},{e:'🐲',t:'a baby dragon'},{e:'🤖',t:'a tiny robot'}]},
+        {q:'What happens next? Pick a piece that fits!', opts:[{e:'🎂',t:'baked a giant cake'},{e:'🎈',t:'floated away on a balloon'},{e:'🎶',t:'sang a very silly song'}]},
+        {q:'Where does the story end?', opts:[{e:'🌙',t:'on the smiling moon'},{e:'🌈',t:'at the end of a rainbow'},{e:'🏰',t:'in a castle made of clouds'}]}],
+      collect:['can_generate'],
+      say:'This machine generates brand-new stories, one piece at a time. You choose each next piece. There is no wrong pick: every choice makes a different story!'},
+    {type:'say', sprite:'🔎🎨', title:'Curious maker!',
+      text:'Making a brand-new picture or story is <b>generating</b>. You stayed <b>curious</b> about how new things are made. That is what makers do!',
+      say:'Making a brand-new picture or story is generating. You stayed curious about how new things are made, that is what makers do!',
+      collect:['care_curious'], finish:true},
+  ]},
+
+  { name:'Helper Harbor', icon:'⚓', badge:'🛠️ Helper Builder', pos:[72,61], scenes:[
+    {type:'say', sprite:'⚓🤖', title:'Land 4 · Helper Harbor',
+      text:'Helper robots live here! Every helper works in a <b>loop</b>: it <b>senses</b>, then <b>thinks</b>, then <b>acts</b>.',
+      say:'Helper robots live here! Every helper works in a loop: it senses, then thinks, then acts.', btn:'Meet them ➜'},
+    {type:'order', title:'🔄 The Helper Loop', prompt:'A plant-watering robot. Put its loop in order:',
+      steps:[{e:'👀',label:'Sense: soil is dry'},{e:'🧠',label:'Think: it needs water'},{e:'💧',label:'Act: water it'}], collect:['know_loop'],
+      say:'A plant-watering robot. Put its loop in order: sense the dry soil, think it needs water, then act and water it.'},
+    {type:'choose', title:'🛠️ Build a Helper', prompt:'You build a helper for a dark room. What should it SENSE?',
+      options:[{t:'🌙 When the room gets dark',correct:true},{t:'👟 The colour of your shoes',correct:false}],
+      collect:[], say:'You build a helper for a dark room. What should it sense?'},
+    {type:'choose', title:'🛠️ Build a Helper', prompt:'Good! So when it senses the dark, it should…',
+      options:[{t:'💡 Turn on a light',correct:true},{t:'🔊 Play loud music',correct:false}],
+      collect:['can_helper'], say:'So when it senses the dark, what should your helper do?'},
+    {type:'choose', title:'💬 Ask Nicely', prompt:'Which is a clear, kind question to ask a helper?',
+      options:[{t:'“Please help me find a book about frogs.”',correct:true},{t:'“NOW! FROG!”',correct:false}],
+      collect:['can_ask'], say:'Which is a clear, kind question to ask a helper?'},
+    {type:'say', sprite:'💛🛠️', title:'Kind designer!',
+      text:'You designed a helper that senses, thinks and acts, and you were <b>kind and safe</b>. Great engineering!',
+      say:'You designed a helper that senses, thinks and acts, and you were kind and safe. Great engineering!',
+      collect:['care_safe'], finish:true},
+  ]},
+
+  { name:"Guardian's Grove", icon:'🌳', badge:'🛡️ Kind Guardian', pos:[40,89], scenes:[
+    {type:'say', sprite:'🌳🦉', title:"Land 5 · Guardian's Grove",
+      text:'A wise owl guards this grove. She helps Ada stay <b>safe</b>, <b>honest</b> and <b>kind</b> when using AI.',
+      say:'A wise owl guards this grove. She helps Ada stay safe, honest and kind when using AI.', btn:'Listen to the owl ➜'},
+    {type:'sort', title:'🔒 Keep it Private', prompt:'Tap a card, then choose: Keep Private, or OK to Share.',
+      items:[{e:'🏠',l:'home address',g:'private'},{e:'🔑',l:'password',g:'private'},{e:'🎨',l:'fave colour',g:'share'},{e:'🐘',l:'fave animal',g:'share'}],
+      bins:[{g:'private',label:'🔒 Keep Private'},{g:'share',label:'😀 OK to Share'}], collect:['know_private'],
+      say:'Tap a card, then choose: keep it private, or okay to share.'},
+    {type:'choose', title:'✅ Check or Trust?', prompt:"A chatbot says: “Eat these red berries, they're safe!” What should Ada do?",
+      visual:'🫐❓', options:[{t:'🧑 Ask a trusted grown-up first',correct:true},{t:'😮 Just believe it',correct:false}],
+      collect:['can_check'], say:'A chatbot says: eat these red berries, they are safe! What should Ada do?'},
+    {type:'choose', title:'🛡️ The Kind Choice', prompt:'A friend feels sad about a picture an app made for them. What is the kind thing to do?',
+      options:[{t:'💛 Say something kind and helpful',correct:true},{t:'😆 Laugh at it',correct:false}],
+      collect:['can_kind'], say:'A friend feels sad about a picture an app made. What is the kind thing to do?'},
+    {type:'say', sprite:'🤝🦉', title:'True Guardian!',
+      text:'You kept secrets safe, <b>checked before trusting</b>, and chose kindness. The owl is proud of you!',
+      say:'You kept secrets safe, checked before trusting, and chose kindness. The owl is proud of you!',
+      collect:['care_honest'], finish:true},
+  ]},
+];
+
+/* ================= state ================= */
+const state = { sound:true, collected:[], landsDone:[], land:0, scene:0 };
+const cur = ()=>LANDS[state.land].scenes[state.scene];
+
+/* ================= helpers ================= */
+const $ = s => document.querySelector(s);
+function show(id){ document.querySelectorAll('.screen').forEach(e=>e.classList.remove('on')); $('#'+id).classList.add('on'); window.scrollTo(0,0); }
+function speak(t){ if(!state.sound||!window.speechSynthesis) return; const c=String(t).replace(/[*_]/g,'').replace(/\s+/g,' ').trim();
+  speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(c); u.rate=.95; u.pitch=1.15; speechSynthesis.speak(u); }
+function toggleSound(){ state.sound=!state.sound; $('#soundBtn').textContent=state.sound?'🔊':'🔈'; if(!state.sound&&window.speechSynthesis)speechSynthesis.cancel(); }
+function collectAll(keys){ (keys||[]).forEach(k=>{ if(!state.collected.includes(k)){ state.collected.push(k); } }); $('#bagCount').textContent=state.collected.length; bump(); }
+function bump(){ const b=$('#bagBtn'); b.style.transform='scale(1.25)'; setTimeout(()=>b.style.transform='',220); }
+function reSpeak(el){ speak(el.textContent); }
+
+/* ================= map ================= */
+function startMap(){ $('#topbar').style.display='flex'; buildNodes(); show('s-map'); refreshMap(); speak('Welcome to the Map of Five Lands! Tap the glowing land to begin.'); }
+function buildNodes(){
+  $('#nodes').innerHTML = LANDS.map((L,i)=>`<div class="node" id="nd${i}" style="left:${L.pos[0]}%;top:${L.pos[1]}%" onclick="clickNode(${i})">
+    <div class="disc">${L.icon}<span class="lock" style="display:none">🔒</span></div>
+    <div class="lbl">${i+1} · ${L.name}</div></div>`).join('');
+}
+function unlocked(i){ return i===0 || state.landsDone.includes(i-1); }
+function refreshMap(){
+  LANDS.forEach((L,i)=>{ const n=$('#nd'+i); n.classList.remove('locked','open','done');
+    const lock=n.querySelector('.lock');
+    if(state.landsDone.includes(i)){ n.classList.add('done'); lock.style.display='none';
+      if(!n.querySelector('.stamp')){ const s=document.createElement('span'); s.className='stamp'; s.textContent='⭐'; n.querySelector('.disc').appendChild(s);} }
+    else if(unlocked(i)){ n.classList.add('open'); lock.style.display='none'; }
+    else { n.classList.add('locked'); lock.style.display='block'; }
+  });
+  let target = LANDS.findIndex((L,i)=>unlocked(i)&&!state.landsDone.includes(i));
+  if(target<0) target = LANDS.length-1;
+  const t=LANDS[target]; const m=$('#adaMark'); m.style.left=t.pos[0]+'%'; m.style.top=t.pos[1]+'%';
+}
+function clickNode(i){
+  if(!unlocked(i)){ $('#mapMsg').textContent='🔒 Finish the land before it to unlock this one!'; speak('That land is locked. Finish the land before it first!'); return; }
+  startLand(i);
+}
+
+/* ================= land / scene engine ================= */
+function startLand(i){ state.land=i; state.scene=0; show('s-land'); renderScene(); }
+function renderScene(){
+  const sc=cur(); const total=LANDS[state.land].scenes.length;
+  $('#prog').style.width=Math.round((state.scene/total)*100)+'%';
+  const R={say:renderSay, choose:renderChoose, sort:renderSort, order:renderOrder, decode:renderDecode, build:renderBuild};
+  $('#sceneHost').innerHTML = R[sc.type](sc);
+  if(sc.type==='sort') initSort();
+  if(sc.type==='order') initOrder();
+  if(sc.type==='decode') initDecode();
+  if(sc.type==='build') initBuild();
+  setTimeout(()=>speak(sc.say),250);
+}
+function advance(){ state.scene++; if(state.scene<LANDS[state.land].scenes.length) renderScene(); }
+function sceneWin(){
+  const host=document.createElement('div'); host.className='done-note';
+  host.innerHTML=`<div class="say">🎉 Nice work!</div><div class="row"><button class="btn green" onclick="collectAndNext()">Keep going ➜</button></div>`;
+  $('#sceneHost').appendChild(host); host.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function collectAndNext(){ collectAll(cur().collect); if(cur().finish){ finishLand(); } else advance(); }
+
+function renderSay(sc){
+  return `<div class="scene"><div class="sprite">${sc.sprite||''}</div><h2>${sc.title||''}</h2>
+    <div class="say" onclick="reSpeak(this)">${sc.text||''}</div>
+    <div class="row"><button class="btn violet" onclick="collectAndNext()">${sc.btn||'Next ➜'}</button></div></div>`;
+}
+function renderChoose(sc){
+  const vis = sc.visual?`<div class="visual">${sc.visual}</div>`:'';
+  const opts = sc.options.map((o,i)=>`<button class="opt" id="opt${i}" onclick="chooseOpt(${i})">${o.t}</button>`).join('');
+  return `<div class="scene"><h2>${sc.title||''}</h2><div class="say" onclick="reSpeak(this)">${sc.prompt||''}</div>${vis}
+    <div style="margin-top:12px">${opts}</div></div>`;
+}
+function chooseOpt(i){
+  const sc=cur(); const o=sc.options[i]; const el=$('#opt'+i);
+  if(o.correct){ el.classList.add('right'); document.querySelectorAll('.opt').forEach(b=>b.disabled=true); speak('Yes! Well done!'); sceneWin(); }
+  else { el.classList.add('wrong'); speak('Not quite. Try again!'); setTimeout(()=>el.classList.remove('wrong'),400); }
+}
+let buildStep=0, buildParts=[];
+function renderBuild(sc){
+  return `<div class="scene"><h2>${sc.title||''}</h2><div class="say" onclick="reSpeak(this)">${sc.prompt||''}</div>
+    <div class="visual" id="storyBox" style="font-size:21px;line-height:1.6">${sc.start} …</div>
+    <div class="say" id="buildQ" style="border-color:#d8ccff"></div>
+    <div id="buildOpts" style="margin-top:12px"></div></div>`;
+}
+function initBuild(){ buildStep=0; buildParts=[]; showBuildStep(); }
+function showBuildStep(){
+  const s=cur().slots[buildStep];
+  $('#buildQ').textContent=s.q;
+  $('#buildOpts').innerHTML=s.opts.map((o,i)=>`<button class="opt" onclick="pickPiece(${i})">${o.e} ${o.t}</button>`).join('');
+}
+function pickPiece(i){
+  const sc=cur(); const o=sc.slots[buildStep].opts[i];
+  buildParts.push(o.e+' '+o.t); buildStep++;
+  const last = buildStep>=sc.slots.length;
+  $('#storyBox').innerHTML = sc.start+' '+buildParts.join(' ')+(last?' <b>The end!</b>':' …');
+  if(!last){ speak(o.t+'! '+sc.slots[buildStep].q); showBuildStep(); }
+  else {
+    $('#buildQ').innerHTML='✨ <b>You GENERATED a brand-new story!</b> Nobody ever made this exact story before. You built it one piece at a time, picking a piece that fits what came before. That is just how generative AI makes new things!';
+    $('#buildOpts').innerHTML='';
+    speak('Listen to your brand-new story. '+sc.start+' '+buildParts.map(p=>p.replace(/^\S+ /,'')).join(', ')+'. The end! You generated it, one piece at a time, just like generative A.I.!');
+    sceneWin();
+  }
+}
+let sel=null, sorted=0;
+function renderSort(sc){
+  const items=sc.items.map((it,i)=>`<div class="critter" id="cr${i}" data-g="${it.g}" onclick="pick(${i})"><span class="ce">${it.e}</span><span class="cl">${it.l||''}</span></div>`).join('');
+  const bins=sc.bins.map(b=>`<div class="basket" id="bk-${b.g}" onclick="drop('${b.g}')"><b>${b.label}</b><div class="hold"></div></div>`).join('');
+  return `<div class="scene"><h2>${sc.title||''}</h2><div class="say" onclick="reSpeak(this)">${sc.prompt||''}</div>
+    <div class="critters">${items}</div><div class="baskets">${bins}</div></div>`;
+}
+function initSort(){ sel=null; sorted=0; }
+function pick(i){ const el=$('#cr'+i); if(el.classList.contains('gone'))return;
+  document.querySelectorAll('.critter').forEach(c=>c.classList.remove('sel')); el.classList.add('sel'); sel=i; }
+function drop(g){ const sc=cur(); if(sel===null){ speak('First tap a card!'); return; }
+  const el=$('#cr'+sel); const ok=el.dataset.g===g; const bk=$('#bk-'+g);
+  if(ok){ bk.querySelector('.hold').textContent+=el.querySelector('.ce').textContent; el.classList.add('gone'); sel=null; sorted++;
+    bk.classList.add('pulse'); setTimeout(()=>bk.classList.remove('pulse'),400);
+    if(sorted>=sc.items.length){ speak('All sorted!'); sceneWin(); } }
+  else { el.classList.remove('sel'); speak('Hmm, look again!'); }
+}
+let orderNext=0, orderShuf=[];
+function renderOrder(sc){
+  orderShuf = sc.steps.map((s,i)=>({e:s.e,label:s.label,i})); shuffle(orderShuf);
+  const chips=orderShuf.map(s=>`<div class="stepchip" id="st${s.i}" onclick="tapStep(${s.i})"><span class="se">${s.e}</span>${s.label}</div>`).join('');
+  const slots=sc.steps.map((_,i)=>`<div class="slot" id="sl${i}"></div>`).join('');
+  return `<div class="scene"><h2>${sc.title||''}</h2><div class="say" onclick="reSpeak(this)">${sc.prompt||''}</div>
+    <div class="slots">${slots}</div><div class="steps">${chips}</div></div>`;
+}
+function initOrder(){ orderNext=0; }
+function tapStep(i){ const sc=cur();
+  if(i===orderNext){ const chip=$('#st'+i); chip.classList.add('picked'); chip.onclick=null;
+    $('#sl'+orderNext).textContent=sc.steps[i].e; orderNext++; speak(sc.steps[i].label);
+    if(orderNext>=sc.steps.length){ speak('Perfect order!'); sceneWin(); } }
+  else { const chip=$('#st'+i); chip.classList.add('wrong'); setTimeout(()=>chip.classList.remove('wrong'),400); speak('Which one comes first? Try again!'); }
+}
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=a[i]; a[i]=a[j]; a[j]=tmp; } }
+let revealed=0;
+function renderDecode(sc){
+  const nums=sc.word.split('').map(c=>c.charCodeAt(0)-64);
+  const tiles=nums.map((n,i)=>`<div class="numtile" id="nt${i}" onclick="revealTile(${i},${n},'${sc.word[i]}')"><div class="n">${n}</div><div class="l"></div></div>`).join('');
+  let strip=''; for(let i=1;i<=26;i++) strip+=`<div class="cell" id="c${i}"><span>${i}</span><span class="cl">${String.fromCharCode(64+i)}</span></div>`;
+  return `<div class="scene"><h2>${sc.title||''}</h2><div class="say" onclick="reSpeak(this)">Tap each number to find its letter and spell the secret word.</div>
+    <div class="row">${tiles}</div><div class="strip">${strip}</div></div>`;
+}
+function initDecode(){ revealed=0; }
+function revealTile(i,n,letter){ const t=$('#nt'+i); if(t.classList.contains('done'))return;
+  t.classList.add('done'); t.querySelector('.l').textContent=letter;
+  const c=$('#c'+n); if(c){ c.classList.add('hi'); setTimeout(()=>c.classList.remove('hi'),900); }
+  speak(n+' is '+letter); revealed++;
+  if(revealed>=cur().word.length) setTimeout(()=>{ speak('You spelled '+cur().word.split('').join(' ')+'! The gate opens!'); sceneWin(); },500);
+}
+
+/* ================= finish ================= */
+function finishLand(){
+  if(!state.landsDone.includes(state.land)) state.landsDone.push(state.land);
+  $('#prog').style.width='100%'; confettiBurst();
+  const L=LANDS[state.land]; const allDone = state.landsDone.length===LANDS.length;
+  if(allDone){
+    $('#sceneHost').innerHTML=`<div class="scene"><div class="medal">🏆</div><h2>You did it, Junior AI Explorer!</h2>
+      <div class="say" style="border-color:#ffe6b8">Ada and Ida finished all five lands, and your backpack is full of treasures! You now know how clever machines work.</div>
+      <div class="row"><button class="btn teal" onclick="openBag()">🎒 See all my treasures</button><button class="btn violet" onclick="location.href='prilow-story-ada-map.html'">📜 See your journey map</button><button class="btn ghost" onclick="backToMap()">🗺️ Map</button></div>
+      <p style="font-weight:500;color:#5a5670;margin-top:14px">Ready for a bigger adventure? Next stop: <b>Upper Primary</b> 🚀</p></div>`;
+    speak('You did it, Junior AI Explorer! Ada and Ida finished all five lands and your backpack is full of treasures!');
+  } else {
+    $('#sceneHost').innerHTML=`<div class="scene"><div class="medal">${L.badge.split(' ')[0]}</div><h2>${L.name} Complete!</h2>
+      <div class="say" style="border-color:#ffe6b8">You earned the <b>${L.badge}</b> badge!</div>
+      <div class="row"><button class="btn teal" onclick="openBag()">🎒 Treasures</button><button class="btn" onclick="backToMap()">🗺️ Next land ➜</button></div></div>`;
+    speak(L.name+' complete! You earned the '+L.badge.replace(/[^\w\s]/g,'')+' badge!');
+  }
+}
+function backToMap(){ show('s-map'); refreshMap();
+  const next=LANDS.findIndex((L,i)=>unlocked(i)&&!state.landsDone.includes(i));
+  $('#mapMsg').textContent = next<0 ? '🏆 All five lands complete. You are a Junior AI Explorer!' : '⭐ Great job! Tap the next glowing land.';
+}
+
+/* ================= backpack ================= */
+function openBag(){ const host=$('#bagCards');
+  if(state.collected.length===0) host.innerHTML='<div class="empty">Your backpack is empty. Go collect some treasures! 🌟</div>';
+  else host.innerHTML=state.collected.map(k=>{const L=LOOT[k];return `<div class="lootcard ${L.cls}"><div class="ico">${L.ico}</div><div class="kind">${L.kind}…</div><div>${L.text}</div></div>`;}).join('');
+  $('#bag').classList.add('on');
+}
+function closeBag(){ $('#bag').classList.remove('on'); }
+
+/* ================= confetti ================= */
+function confettiBurst(){ const bits=['🎉','⭐','✨','🏅','🌟','💛'];
+  for(let i=0;i<28;i++){ const s=document.createElement('div'); s.className='confetti'; s.textContent=bits[i%bits.length];
+    s.style.left=Math.random()*100+'vw'; s.style.animationDuration=(1.6+Math.random()*1.4)+'s'; s.style.fontSize=(16+Math.random()*18)+'px';
+    document.body.appendChild(s); setTimeout(()=>s.remove(),3200); } }
+</script>
+</body>
+</html>

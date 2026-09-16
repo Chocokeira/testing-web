@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · The Generative-AI Spiral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:#f6f4ee;color:#14161d;line-height:1.6;overflow-x:hidden}
+  ::selection{background:#8E6BFF;color:#fff}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+  .card{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+  a{transition:transform .2s ease,background .2s ease,color .2s ease}
+</style>
+</head>
+<body>
+
+<div style="height:6px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF)"></div>
+
+<nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:13px 26px;background:rgba(246,244,238,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(20,22,29,.08)">
+  <a href="overview.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#14161d">
+    <span style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px">AI</span>
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em">IJAIO<span style="color:#8E6BFF">.</span>26</span>
+  </a>
+  <a href="overview.html" style="margin-left:auto;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:8px;background:#14161d;color:#fff">← Overview</a>
+</nav>
+
+<!-- ============ HERO · WHY A SPIRAL ============ -->
+<header style="padding:clamp(52px,7vw,90px) 0 clamp(44px,6vw,70px)">
+  <div class="wrap">
+    <div style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:#8E6BFF;margin-bottom:16px">/ the spiral curriculum</div>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.2rem,5.4vw,4rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px;max-width:22ch">Ten ideas, learned four times over</h1>
+    <p style="font-size:clamp(1.02rem,1.5vw,1.2rem);color:#3a3d49;max-width:64ch;margin:0 0 14px">The IJAIO syllabus teaches generative AI the way children actually learn: in a spiral. The same ten fundamentals run through every band, from Grade 1 to Grade 12. What changes is never the ideas, only the depth at which a learner holds them.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:30px 0 26px">
+      <div style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:18px;padding:24px 26px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#0a6f6c;margin-bottom:10px">Age-appropriate by design</div>
+        <p style="margin:0;font-size:14.5px;color:#3a3d49">Every idea arrives in a shape the learner can hold. At six, next-token prediction is a "what comes next?" guessing game; at sixteen it is a probability distribution over a vocabulary, shaped by sampling and temperature. No band demands maturity that hasn't arrived, and none talks down to maturity that has.</p>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(20,22,29,.09);border-radius:18px;padding:24px 26px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#a01a5b;margin-bottom:10px">Consolidation, not repetition</div>
+        <p style="margin:0;font-size:14.5px;color:#3a3d49">Each return to an idea reactivates what was learned before, then stretches it. Guessing games become n-gram models; n-gram models become transformers. Nothing is learned once and forgotten: every year reinforces the last, and by Upper Secondary a learner isn't meeting these ideas for the first time, but mastering them for the fourth.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+      <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#5d6275;margin-right:4px">The ten fundamentals</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#ffe7e3;color:#c23f33">Text as numbers</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#fdeccb;color:#9a6402">Next-token prediction</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#d4f0ef;color:#0a6f6c">Embeddings</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#e9e2ff;color:#5a3cc7">Neural networks</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#ffe7e3;color:#c23f33">Generation</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#fdeccb;color:#9a6402">Prompting</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#d4f0ef;color:#0a6f6c">Hallucination &amp; truth</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#e9e2ff;color:#5a3cc7">AI agents</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#ffe7e3;color:#c23f33">Data &amp; learning</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:#fce8f1;color:#a01a5b">Ethics &amp; safety</span>
+    </div>
+    <p style="font-size:13.5px;color:#5d6275;margin:18px 0 0;max-width:64ch">Read down the page to follow one learner's pathway: the same ten cards, four times, each band in its own voice. Every card below is anchored in that band's Pillar learning outcomes.</p>
+  </div>
+</header>
+
+<!-- ============ BAND 1 · LOWER PRIMARY ============ -->
+<section style="background:#FFF6F2;color:#2A1714;line-height:1.62;padding:clamp(44px,6vw,72px) 0;border-top:1px solid #ffe1da">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:999px;background:#FF6A5A;color:#fff">Lower Primary · Grades 1–3</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#FF6A5A;margin-bottom:8px">/ generative-ai first principles</div>
+    <h2 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);margin:0 0 22px;letter-spacing:-.01em">How big ideas look at this age</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Text as numbers</div><div style="font-size:13.5px;color:#5a443d">Computers see numbers, not letters; encode a word with a code sheet.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Next-token prediction</div><div style="font-size:13.5px;color:#5a443d">“What comes next?” pattern games.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Meaning as vectors</div><div style="font-size:13.5px;color:#5a443d">Group things by shared features.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Neural networks</div><div style="font-size:13.5px;color:#5a443d">Follow simple rules by hand.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Generation vs retrieval</div><div style="font-size:13.5px;color:#5a443d">AI can make NEW things vs find existing ones.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Prompting</div><div style="font-size:13.5px;color:#5a443d">Ask clearly and kindly.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Hallucination &amp; truth</div><div style="font-size:13.5px;color:#5a443d">AI can be wrong, check with an adult.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">AI agents</div><div style="font-size:13.5px;color:#5a443d">Sense → Think → Act helper robot.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Data &amp; learning</div><div style="font-size:13.5px;color:#5a443d">AI learns from many examples we give it.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#C23F33;margin-bottom:5px">Ethics &amp; safety</div><div style="font-size:13.5px;color:#5a443d">Privacy, honesty, kindness.</div></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;grid-column:-2/-1"><a href="prilow-syllabus.html" style="display:inline-block;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 17px;border-radius:999px;background:#fff;border:2px solid #ffd9d1;color:#C23F33">Lower Primary syllabus →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BAND 2 · UPPER PRIMARY ============ -->
+<section style="background:#FFFAF2;color:#2A2012;line-height:1.62;padding:clamp(44px,6vw,72px) 0;border-top:1px solid #f3e4cb">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:999px;background:#E8920C;color:#fff">Upper Primary · Grades 4–6</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E8920C;margin-bottom:8px">/ generative-ai first principles</div>
+    <h2 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);margin:0 0 22px;letter-spacing:-.01em">How big ideas grow at this age</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Text as numbers</div><div style="font-size:13.5px;color:#5a4a30">Hand-tokenise sentences; one word is not always one token.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Next-token prediction</div><div style="font-size:13.5px;color:#5a4a30">“Guess the next word”; AI picks a likely next word.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Meaning as vectors</div><div style="font-size:13.5px;color:#5a4a30">Feature grids show how similar words sit near each other.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Neural networks</div><div style="font-size:13.5px;color:#5a4a30">A neuron: inputs → weighted sum → fires.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Generation vs retrieval</div><div style="font-size:13.5px;color:#5a4a30">Generative vs search; image generators.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Prompting</div><div style="font-size:13.5px;color:#5a4a30">Prompt = role + instruction + example; then iterate.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Hallucination &amp; truth</div><div style="font-size:13.5px;color:#5a4a30">AI hallucinates; cross-check before trusting.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">AI agents</div><div style="font-size:13.5px;color:#5a4a30">An agent pursues a goal through the loop.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Data &amp; learning</div><div style="font-size:13.5px;color:#5a4a30">Data in → pattern out; learning from data, not fixed rules.</div></div>
+      <div class="card" style="background:#fff;border:2px solid #f3e4cb;border-radius:18px;padding:18px 20px"><div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;color:#9a6402;margin-bottom:5px">Ethics &amp; safety</div><div style="font-size:13.5px;color:#5a4a30">Bias from data; fairness; citing AI help.</div></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;grid-column:-2/-1"><a href="priup-syllabus.html" style="display:inline-block;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 17px;border-radius:999px;background:#fff;border:2px solid #f0d9a6;color:#9a6402">Upper Primary syllabus →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BAND 3 · LOWER SECONDARY ============ -->
+<section style="background:#F1F5F6;color:#15201F;line-height:1.6;padding:clamp(44px,6vw,72px) 0;border-top:1px solid #dde8e7">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:999px;background:#0FA8A4;color:#fff">Lower Secondary · Grades 7–8</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#0a6f6c;margin-bottom:8px">// generative-ai first principles</div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.6rem,3.2vw,2.4rem);margin:0 0 20px;letter-spacing:-.02em">Each fundamental, made concrete</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px">
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Tokenisation</div><div style="font-size:13.5px;color:#46615e">Use a tokeniser; explain letter-miscounts; tokens → IDs.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Next-token prediction</div><div style="font-size:13.5px;color:#46615e">Bigram/trigram Markov be-the-LLM by hand.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Embeddings</div><div style="font-size:13.5px;color:#46615e">Inspect an embedding space; analogy arrows.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Neural networks</div><div style="font-size:13.5px;color:#46615e">Human neural-network role-play; perceptron by hand.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Diffusion</div><div style="font-size:13.5px;color:#46615e">Diffusion as denoising static into a picture.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Prompting</div><div style="font-size:13.5px;color:#46615e">Prompt frameworks with few-shot examples.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Hallucination &amp; truth</div><div style="font-size:13.5px;color:#46615e">Why it sounds confident; verify sources.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">AI agents</div><div style="font-size:13.5px;color:#46615e">Sense → Think → Act with tool use.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Data &amp; learning</div><div style="font-size:13.5px;color:#46615e">Split data to train and test; quality and balance matter.</div></div>
+      <div class="card" style="background:#fff;border:1px solid #dde8e7;border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#0a6f6c;margin-bottom:5px">Ethics &amp; safety</div><div style="font-size:13.5px;color:#46615e">Dataset bias; deepfakes; human oversight.</div></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;grid-column:-2/-1"><a href="seclow-syllabus.html" style="display:inline-block;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 17px;border-radius:10px;background:#fff;border:1px solid #dde8e7;color:#0a6f6c">Lower Secondary syllabus →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BAND 4 · UPPER SECONDARY ============ -->
+<section style="background:#0f1016;color:#e9e7f2;line-height:1.6;padding:clamp(44px,6vw,72px) 0">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+      <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;padding:6px 14px;border-radius:999px;background:#8E6BFF;color:#fff">Upper Secondary · Grades 9–12</span>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b9a6ff;margin-bottom:8px">// generative-ai first principles</div>
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.6rem,3.2vw,2.4rem);margin:0 0 20px;letter-spacing:-.02em">Each fundamental, at full depth</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:12px">
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Tokenisation</div><div style="font-size:13.5px;color:#a8a3c4">Sub-word tokenisation; token IDs feed the embedding layer.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Next-token prediction</div><div style="font-size:13.5px;color:#a8a3c4">Probability over a vocabulary; sampling and temperature.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Embeddings</div><div style="font-size:13.5px;color:#a8a3c4">Vector space, cosine similarity, and bias baked into embeddings.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Neural networks</div><div style="font-size:13.5px;color:#a8a3c4">Forward pass, activation, loss, gradient descent, backprop intuition.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Diffusion &amp; GANs</div><div style="font-size:13.5px;color:#a8a3c4">Forward/reverse diffusion, GANs, and prompt conditioning.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Prompting</div><div style="font-size:13.5px;color:#a8a3c4">Constructed few-shot prompting and system-prompt design.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Hallucination &amp; truth</div><div style="font-size:13.5px;color:#a8a3c4">Hallucination as a next-token consequence; RAG and RLHF limits.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">AI agents</div><div style="font-size:13.5px;color:#a8a3c4">Tool-calling loops, planning, observe-and-re-plan.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Data &amp; learning</div><div style="font-size:13.5px;color:#a8a3c4">Overfitting, precision/recall, and curating a dataset.</div></div>
+      <div class="card" style="background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 18px"><div style="font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:#b9a6ff;margin-bottom:5px">Ethics &amp; safety</div><div style="font-size:13.5px;color:#a8a3c4">Fairness metrics, governance, accountability, and transparency.</div></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;grid-column:-2/-1"><a href="secup-syllabus.html" style="display:inline-block;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 17px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid rgba(142,107,255,.4);color:#b9a6ff">Upper Secondary syllabus →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSE ============ -->
+<section style="padding:clamp(44px,6vw,72px) 0;border-top:1px solid rgba(20,22,29,.08)">
+  <div class="wrap">
+    <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(1.2rem,2.2vw,1.7rem);line-height:1.25;letter-spacing:-.01em;margin:0 0 18px;max-width:38ch">Same ten ideas. Four depths.</p>
+    <a href="overview.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#14161d;color:#fff">← Back to the IJAIO overview</a>
+  </div>
+</section>
+
+<footer style="border-top:1px solid rgba(20,22,29,.1);padding:30px 26px;text-align:center;font-size:13px;color:#5d6275">International Junior Artificial Intelligence Olympiad (IJAIO) 2026</footer>
+
+</body>
+</html>

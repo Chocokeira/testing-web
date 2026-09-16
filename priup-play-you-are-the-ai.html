@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · You Are the AI · Upper Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--amber:#E8920C;--deep:#9a6402;--coral:#FF6A5A;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1F0E;--cream:#FFFAF0;--line:#fdeccb}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:820px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7c6134;margin-top:4px;max-width:60ch;margin-left:auto;margin-right:auto}
+  main{max-width:820px;margin:12px auto 60px;padding:0 18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:16px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0 0 8px}
+  .phase{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--deep);text-transform:uppercase}
+  .feats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+  .feat{background:#FFF4DE;border:2px solid var(--line);border-radius:16px;padding:12px 16px;text-align:center;min-width:96px}
+  .feat .k{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#a98436}
+  .feat .v{font-family:'Fredoka',sans-serif;font-weight:700;font-size:26px;color:var(--deep)}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .opt{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 22px;cursor:pointer}
+  .opt:hover{border-color:var(--violet)}
+  .opt.right{background:#e9f7ee;border-color:#1f8a4c;color:#1f8a4c}
+  .opt.wrong{background:#fdeaef;border-color:#d6336c;color:#d6336c}
+  .opt:disabled{cursor:default;opacity:.85}
+  .reveal{margin-top:14px;text-align:center;font-size:15px;font-weight:500;min-height:26px}
+  .reveal .big{font-size:44px;display:block;margin-bottom:4px}
+  .note{margin-top:14px;font-size:13.5px;background:#FFF4DE;border:1px dashed #f0cf92;border-radius:12px;padding:10px 14px;color:#7c5a12;font-weight:500}
+  .score{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:var(--deep);text-align:center;margin-top:6px}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:11px 22px;cursor:pointer;color:#fff;background:var(--amber)}
+  .btn.violet{background:var(--violet)}
+  .btn:hover{filter:brightness(.95)}
+  footer{max-width:820px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🔢 You Are the AI</h1>
+  <div class="sub">An AI never sees a picture, hears a sound or reads a word the way you do. It only receives <b>numbers</b>. For the next few rounds… <b>you</b> are the AI.</div>
+</header>
+<main>
+  <div class="card" style="border-top:6px solid var(--violet)">
+    <div class="phase" id="phase"></div>
+    <h2 id="qtitle"></h2>
+    <div class="feats" id="feats"></div>
+    <div class="row" id="opts"></div>
+    <div class="reveal" id="reveal"></div>
+    <div class="row" id="nextrow" style="display:none"><button class="btn violet" onclick="next()">Next ➜</button></div>
+    <div class="score" id="score"></div>
+  </div>
+  <div class="card" style="border-top:6px solid var(--amber)">
+    <h2>🧠 The big idea</h2>
+    <p class="note" style="margin-top:0" id="bignote">In <b>Part 1</b> you get pure numbers, exactly what a model gets. In <b>Part 2</b> the same numbers come with <b>feature names</b> chosen by human designers. Feel how much easier it gets: choosing good features is half the work of machine learning!</p>
+  </div>
+</main>
+<footer>
+  <a class="link" href="priup-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="priup-play-fix-the-robot.html">🔧 Fix the Robot</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+/* Each round: features (values), options, answer index, reveal emoji + why */
+const ITEMS=[
+  {names:['legs','can fly (0/1)','lives in water (0/1)','size (1-10)'], vals:[4,0,0,3],
+   opts:['Cat','Duck','Goldfish'], ans:0, e:'🐱',
+   why:'4 legs, no flying, no water, small: the numbers point to a cat.'},
+  {names:['legs','can fly (0/1)','lives in water (0/1)','size (1-10)'], vals:[2,1,1,4],
+   opts:['Rabbit','Duck','Horse'], ans:1, e:'🦆',
+   why:'2 legs, flies AND swims: only the duck matches all the numbers.'},
+  {names:['wheels','carries people (0/1)','flies (0/1)','speed (1-10)'], vals:[0,1,0,2],
+   opts:['Boat','Bicycle','Plane'], ans:0, e:'⛵',
+   why:'Zero wheels but carries people, slow: a boat. Tricky without names, right?'},
+  {names:['round (0/1)','edible (0/1)','grows on trees (0/1)','size (1-10)'], vals:[1,1,1,2],
+   opts:['Apple','Football','Pumpkin'], ans:0, e:'🍎',
+   why:'Round, edible, from a tree, small → apple. A football is round but you can’t eat it!'},
+];
+/* Part 1: rounds 0-1 numbers only. Part 2: rounds 2-3 with names */
+let round=0, score=0, done=false;
+function labelled(){ return round>=2; }
+function render(){
+  const it=ITEMS[round];
+  document.getElementById('phase').textContent = labelled()? 'Part 2 · numbers WITH feature names' : 'Part 1 · numbers only, just like a real model';
+  document.getElementById('qtitle').textContent='Round '+(round+1)+' of '+ITEMS.length+': what is this?';
+  document.getElementById('feats').innerHTML = it.vals.map((v,i)=>
+    '<div class="feat"><div class="k">'+(labelled()? it.names[i] : 'FEATURE '+String.fromCharCode(65+i))+'</div><div class="v">'+v+'</div></div>').join('');
+  document.getElementById('opts').innerHTML = it.opts.map((o,i)=>
+    '<button class="opt" id="o'+i+'" onclick="pick('+i+')">'+o+'</button>').join('');
+  document.getElementById('reveal').innerHTML='';
+  document.getElementById('nextrow').style.display='none';
+  updScore();
+}
+function pick(i){
+  const it=ITEMS[round];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  document.getElementById('o'+it.ans).classList.add('right');
+  if(i===it.ans){ score++; } else { document.getElementById('o'+i).classList.add('wrong'); }
+  document.getElementById('reveal').innerHTML='<span class="big">'+it.e+'</span>'+(i===it.ans?'✔ Correct! ':'✘ It was '+it.opts[it.ans]+'. ')+it.why;
+  document.getElementById('nextrow').style.display='flex';
+  updScore();
+}
+function next(){
+  round++;
+  if(round>=ITEMS.length){ finish(); return; }
+  render();
+}
+function finish(){
+  done=true;
+  document.getElementById('phase').textContent='finished';
+  document.getElementById('qtitle').textContent='You scored '+score+' / '+ITEMS.length+'!';
+  document.getElementById('feats').innerHTML='<div class="feat" style="min-width:220px"><div class="k">WHAT YOU JUST FELT</div><div class="v" style="font-size:18px">Being a model 🤖</div></div>';
+  document.getElementById('opts').innerHTML='';
+  document.getElementById('reveal').innerHTML='A model never “sees” a duck; it sees <b>[2, 1, 1, 4]</b>. It can still guess well, but only because humans picked useful features and gave it good examples. No pictures. No understanding. <b>Just numbers.</b>';
+  document.getElementById('nextrow').innerHTML='<button class="btn" onclick="restart()">🔁 Play again</button>';
+  document.getElementById('nextrow').style.display='flex';
+  updScore();
+}
+function restart(){ round=0; score=0; done=false;
+  document.getElementById('nextrow').innerHTML='<button class="btn violet" onclick="next()">Next ➜</button>';
+  render(); }
+function updScore(){ document.getElementById('score').textContent= done? '' : 'score: '+score; }
+render();
+</script>
+</body>
+</html>

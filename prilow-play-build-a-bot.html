@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · Build-a-Bot Workshop · Lower Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1714;--cream:#FFF6F2;--line:#ffe1da}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:920px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7a5a52;margin-top:4px;max-width:60ch;margin-left:auto;margin-right:auto}
+  .missions{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .mtab{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;border:2px solid var(--line);background:#fff;color:var(--deep);border-radius:999px;padding:9px 16px;cursor:pointer}
+  .mtab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .mtab.locked{opacity:.45;cursor:default}
+  .mtab.done::after{content:' ⭐'}
+  main{max-width:920px;margin:12px auto 60px;padding:0 18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:16px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;margin:0 0 4px}
+  .hint{font-size:14px;color:#7a5a52;margin:0 0 14px}
+  .slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .slot{border:2px dashed var(--line);border-radius:18px;padding:14px}
+  .slot .sname{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:#a3766b;margin-bottom:8px}
+  .part{display:block;width:100%;text-align:left;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:10px 13px;margin:6px 0;cursor:pointer}
+  .part:hover{border-color:var(--violet)}
+  .part.sel{border-color:var(--violet);background:#efe9ff}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;border:none;border-radius:999px;padding:12px 26px;cursor:pointer;color:#fff;background:var(--teal)}
+  .btn:hover{filter:brightness(.95)} .btn:disabled{opacity:.4;cursor:default}
+  .sim{margin-top:16px;display:none}
+  .simline{display:flex;align-items:center;gap:10px;background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:10px 14px;margin:7px 0;font-weight:500;font-size:15px;opacity:0;transform:translateY(8px);transition:all .4s ease}
+  .simline.show{opacity:1;transform:none}
+  .simline .em{font-size:26px}
+  .verdict{margin-top:12px;border-radius:16px;padding:13px 16px;font-weight:600;text-align:center;display:none;font-size:15.5px}
+  .verdict.pass{display:block;background:#e9f7ee;border:2px solid #9bd9b1;color:#1f8a4c}
+  .verdict.fail{display:block;background:#fdeaef;border:2px solid #f2b8cb;color:#a23258}
+  footer{max-width:920px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🔩 Build-a-Bot Workshop</h1>
+  <div class="sub">Real robots aren't magic. They are <b>built from parts</b>: something to SENSE, a rule to THINK with, and something to ACT. Pick the parts, press RUN, and watch your bot succeed… or fail hilariously. Then fix it!</div>
+  <div class="missions" id="mtabs"></div>
+</header>
+<main>
+  <div class="card" style="border-top:6px solid var(--teal)">
+    <h2 id="mtitle"></h2>
+    <p class="hint" id="mstory"></p>
+    <div class="slots" id="slots"></div>
+    <div class="row"><button class="btn" id="runBtn" onclick="run()" disabled>▶️ RUN my bot!</button></div>
+    <div class="sim" id="sim"></div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+</main>
+<footer>
+  <a class="link" href="prilow-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="prilow-play-how-sure.html">⭐ How Sure Are You?</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+const MISSIONS=[
+  {
+    title:'Mission 1 · 🌱 Water Rosie the plant',
+    story:'Rosie droops when her soil gets dry. Build a bot that keeps her happy. Pick ONE part for each slot.',
+    slots:[
+      {name:'👀 SENSE: what should the bot watch?', opts:['Soil: is it dry?','The colour of the wall','Loud sounds in the room']},
+      {name:'🦾 ACT: what should the bot do?', opts:['Pour a little water','Sing a loud song','Paint the flower pot']},
+    ],
+    check(s){
+      const L=[['🌞','Day 1: soil is wet. Bot checks… and waits. Good bots don\'t act for no reason!']];
+      if(s[0]!==0){
+        L.push(['🤖', s[0]===1?'Day 2: bot stares at the wall. "Lovely colour!" Meanwhile…':'Day 2: bot listens for sounds. All quiet. Meanwhile…']);
+        L.push(['🥀','Day 3: the soil dried out and nobody noticed. Rosie droops!']);
+        return {pass:false, lines:L, msg:'❌ Your bot sensed the WRONG thing, so it never knew Rosie was thirsty. Choose a sensor that watches what MATTERS for the job.'};
+      }
+      L.push(['📟','Day 2: soil turns dry. The sensor beeps!']);
+      if(s[1]!==0){
+        L.push(['🤖', s[1]===1?'Bot ACTS: sings its loudest robot song! 🎵':'Bot ACTS: paints the pot a lovely blue! 🖌️']);
+        L.push(['🥀','The soil is still dry… Rosie droops!']);
+        return {pass:false, lines:L, msg:'❌ Your bot noticed the dry soil but did an action that doesn\'t HELP. Sense and act must fit together!'};
+      }
+      L.push(['💧','Bot ACTS: pours just a little water.']);
+      L.push(['🌸','Day 3: Rosie blooms! Mission complete!']);
+      return {pass:true, lines:L, msg:'✅ Sense the right thing → act the right way. That\'s the helper loop working!'};
+    }
+  },
+  {
+    title:'Mission 2 · 🐱 Feed Momo the cat',
+    story:'Harder now: three slots! Momo needs food, but not TOO much. The THINK rule decides WHEN to act.',
+    slots:[
+      {name:'👀 SENSE: what should the bot watch?', opts:['The food bowl','The TV','The front door']},
+      {name:'🧠 THINK: when should it act?', opts:['Only when the bowl is empty','ALL the time, just in case','Never: cats can wait']},
+      {name:'🦾 ACT: what should the bot do?', opts:['Drop one scoop of food','Open the front door']},
+    ],
+    check(s){
+      if(s[0]!==0) return {pass:false, lines:[
+        ['🤖', s[0]===1?'Bot watches the TV. Ooh, a cooking show!':'Bot watches the front door. Nobody comes…'],
+        ['😾','Momo\'s bowl sits empty all day. Angry meowing!']],
+        msg:'❌ Wrong sensor! The bot must watch the BOWL to know when Momo needs food.'};
+      if(s[2]!==0) return {pass:false, lines:[
+        ['📟','The bowl is empty. Sensor beeps!'],
+        ['🚪','Bot ACTS: opens the front door?!'],
+        ['🙀','Momo runs outside. That is NOT dinner!']],
+        msg:'❌ The action must match the goal. Momo needs FOOD, not an open door!'};
+      if(s[1]===1) return {pass:false, lines:[
+        ['🍖','Bot drops food… and more… and MORE…'],
+        ['⛰️','A food mountain! Momo hides behind the sofa.'],
+        ['🤢','Too much of a good thing is a BAD thing.']],
+        msg:'❌ A bot that acts ALL the time is as unhelpful as one that never acts. The THINK rule must pick the right moment!'};
+      if(s[1]===2) return {pass:false, lines:[
+        ['📟','The bowl is empty. Sensor beeps!'],
+        ['🤖','Bot THINKS: "Never act." Bot does nothing.'],
+        ['😿','Poor hungry Momo…']],
+        msg:'❌ A rule that never acts means the bot may as well be a brick. Try again!'};
+      return {pass:true, lines:[
+        ['📟','Bowl empty. Sensor beeps!'],
+        ['🧠','THINK: bowl is empty → time to act. ✔'],
+        ['🍖','One scoop drops. Nom nom nom.'],
+        ['😻','Momo purrs. Perfect portion, perfect timing!']],
+        msg:'✅ You built a bot with a smart RULE: right moment, right amount. Rules are how simple bots "think"!'};
+    }
+  },
+  {
+    title:'Mission 3 · 💡 The clever night light',
+    story:'Hardest one! A good night light turns on ONLY when it is dark AND someone is in the room. Pick the THINK rule, then watch your bot face THREE tests.',
+    slots:[
+      {name:'🧠 THINK: when should the light turn on?', opts:['When it is dark AND someone is there','Whenever it is dark','Whenever someone is there']},
+    ],
+    check(s){
+      const T=[
+        {d:'🌙 Test 1 · Dark room, NOBODY inside', dark:true, person:false, want:false},
+        {d:'🌙 Test 2 · Dark room, Mia walks in', dark:true, person:true, want:true},
+        {d:'☀️ Test 3 · Sunny room, Mia inside', dark:false, person:true, want:false},
+      ];
+      const rule=[
+        (t)=>t.dark&&t.person, (t)=>t.dark, (t)=>t.person ][s[0]];
+      const L=[]; let allOk=true;
+      T.forEach(t=>{
+        const on=rule(t), ok=on===t.want;
+        if(!ok) allOk=false;
+        L.push([ok?'✅':'❌', t.d+' → light '+(on?'ON':'OFF')+' '+(ok?'(right!)':(t.want?'(should be ON!)':'(should be OFF: '+(t.person?'it\'s daytime!':'nobody is there, wasted power!')+')'))]);
+      });
+      return {pass:allOk, lines:L, msg: allOk?
+        '✅ Brilliant! Your rule combined TWO senses with AND. Combining conditions is how bots get properly clever. You\'re thinking like an engineer!':
+        '❌ Almost! One sense alone is not enough here. Which rule uses BOTH the darkness AND the person?'};
+    }
+  },
+];
+let mi=0, sel=[], done=[false,false,false];
+function renderTabs(){
+  document.getElementById('mtabs').innerHTML=MISSIONS.map((m,i)=>{
+    const locked=i>0&&!done[i-1];
+    return '<button class="mtab'+(i===mi?' on':'')+(locked?' locked':'')+(done[i]?' done':'')+'" onclick="setMission('+i+')">Mission '+(i+1)+'</button>';
+  }).join('');
+}
+function setMission(i){
+  if(i>0&&!done[i-1]) return;
+  mi=i; sel=new Array(MISSIONS[i].slots.length).fill(null);
+  const m=MISSIONS[i];
+  document.getElementById('mtitle').textContent=m.title;
+  document.getElementById('mstory').textContent=m.story;
+  document.getElementById('slots').innerHTML=m.slots.map((sl,si)=>
+    '<div class="slot"><div class="sname">'+sl.name+'</div>'+
+    sl.opts.map((o,oi)=>'<button class="part" id="p'+si+'_'+oi+'" onclick="choose('+si+','+oi+')">'+o+'</button>').join('')+'</div>').join('');
+  document.getElementById('sim').style.display='none'; document.getElementById('sim').innerHTML='';
+  document.getElementById('verdict').className='verdict';
+  document.getElementById('runBtn').disabled=true;
+  renderTabs();
+}
+function choose(si,oi){
+  sel[si]=oi;
+  MISSIONS[mi].slots[si].opts.forEach((_,k)=>document.getElementById('p'+si+'_'+k).classList.toggle('sel',k===oi));
+  document.getElementById('runBtn').disabled=sel.some(v=>v===null);
+}
+function run(){
+  const r=MISSIONS[mi].check(sel);
+  const sim=document.getElementById('sim');
+  sim.style.display='block';
+  sim.innerHTML=r.lines.map(l=>'<div class="simline"><span class="em">'+l[0]+'</span><span>'+l[1]+'</span></div>').join('');
+  const v=document.getElementById('verdict'); v.className='verdict';
+  [...sim.children].forEach((el,i)=>setTimeout(()=>el.classList.add('show'), 300+i*800));
+  setTimeout(()=>{
+    v.className='verdict '+(r.pass?'pass':'fail'); v.textContent=r.msg;
+    if(r.pass){ done[mi]=true; renderTabs();
+      if(mi<MISSIONS.length-1) v.textContent+=' Mission '+(mi+2)+' unlocked!';
+      else v.textContent+=' 🏆 You finished the whole workshop!';
+    }
+  }, 300+r.lines.length*800);
+}
+setMission(0);
+</script>
+</body>
+</html>

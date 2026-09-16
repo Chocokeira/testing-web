@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ada's AI Adventure · Lower Secondary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#0FA8A4; --tealDeep:#0a6f6c; --tealSoft:#d4f0ef; --paper:#fffdf7; --panel:#fff;
+    --ink:#22303a; --muted:#5c6f72; --coral:#ff6a5a; --violet:#7b5cff; --amber:#E8920C;
+    --code:#0f1e24; --line:#e7e0d3; --shadow:0 10px 24px rgba(20,50,50,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Lora',Georgia,serif;color:var(--ink);line-height:1.72;
+    background:
+      radial-gradient(900px 380px at 100% -60px,#e0f5f4,transparent),
+      radial-gradient(700px 340px at 0% 20%,#eef7e6,transparent),
+      var(--paper)}
+  .rpbar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--violet));z-index:60}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 16px;
+    background:rgba(255,253,247,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .bt{font-family:'Fredoka';font-weight:700;color:var(--tealDeep);font-size:16px;margin-right:auto;display:flex;gap:8px;align-items:center}
+  .menu{border:none;background:var(--teal);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;border-radius:12px;padding:8px 13px;cursor:pointer}
+  .wrap{max-width:730px;margin:0 auto;padding:0 18px 80px}
+
+  h1{font-family:'Fredoka';font-weight:700;font-size:clamp(30px,6vw,46px);line-height:1.05;margin:0 0 6px;color:#123}
+  h2{font-family:'Fredoka';font-weight:700;font-size:26px;margin:34px 0 6px;color:var(--tealDeep)}
+  h3{font-family:'Fredoka';font-weight:600;font-size:19px;margin:22px 0 4px;color:#1c3b3a}
+  p{margin:12px 0}
+  .lead{font-size:19px;color:#31474b}
+  a.jumplink{color:var(--tealDeep);text-decoration:none;border-bottom:2px solid var(--tealSoft)}
+
+  /* cover */
+  .cover{text-align:center;padding:40px 10px 8px}
+  .cover .heroes{font-size:82px;line-height:1;animation:bob 3.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .pill{display:inline-block;font-family:'Fredoka';font-weight:600;background:#fff;color:var(--tealDeep);
+    border:2px solid var(--tealSoft);border-radius:999px;padding:6px 16px;margin-bottom:12px}
+  .startbtn{font-family:'Fredoka';font-weight:700;font-size:19px;color:#fff;background:var(--teal);border:none;
+    border-radius:16px;padding:14px 26px;box-shadow:var(--shadow);cursor:pointer;margin-top:12px;text-decoration:none;display:inline-block}
+
+  /* contents */
+  .toc{display:grid;gap:12px;margin:18px 0}
+  .tocitem{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;text-decoration:none;color:inherit}
+  .tocitem:hover{border-color:var(--teal)}
+  .tocitem .cn{flex:none;width:42px;height:42px;border-radius:12px;background:var(--tealSoft);color:var(--tealDeep);
+    font-family:'Fredoka';font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+  .tocitem .ci{font-size:30px;flex:none} .tocitem h4{font-family:'Fredoka';margin:0;font-size:18px} .tocitem .th{color:var(--muted);font-size:14px}
+
+  /* chapter */
+  .chapter{border-top:2px dashed var(--tealSoft);margin-top:40px;padding-top:10px}
+  .chero{display:flex;gap:16px;align-items:center;margin:8px 0 6px}
+  .chero .big-emo{font-size:56px;line-height:1}
+  .chero .ch-no{font-family:'JetBrains Mono';font-size:13px;color:var(--teal);font-weight:600;letter-spacing:.08em}
+  .chero .th{color:var(--muted);font-size:15px}
+
+  /* callouts */
+  .box{border-radius:16px;padding:14px 18px;margin:18px 0;font-size:16.5px;line-height:1.6}
+  .box .bt{font-family:'Fredoka';font-weight:700;display:block;margin-bottom:4px;font-size:15px;letter-spacing:.02em}
+  .glass{background:#eafaf8;border:1px solid #b9e7e3} .glass .bt{color:var(--tealDeep)}
+  .watch{background:#fff5e9;border:1px solid #f6ddb4} .watch .bt{color:#9a6402}
+  .try{background:#f3efff;border:1px solid #ddd3ff} .try .bt{color:var(--violet)}
+
+  /* code */
+  .codewrap{margin:18px 0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #0b1418}
+  .codebar{display:flex;align-items:center;justify-content:space-between;background:#0b1a20;color:#8fd9d3;
+    font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:8px 14px;letter-spacing:.04em}
+  .codebar .copy{background:#12303a;color:#bfeae6;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono';font-size:11px}
+  pre{margin:0;background:var(--code);color:#e6f2f1;padding:14px 16px;overflow:auto;font-family:'JetBrains Mono';font-size:13.5px;line-height:1.6}
+  pre .c{color:#6d8c8a} pre .k{color:#ff9d7a} pre .s{color:#9ce6b0} pre .n{color:#8fb8ff}
+  code.inline{font-family:'JetBrains Mono';background:#eef4f3;color:#0a5b57;padding:1px 6px;border-radius:6px;font-size:.92em}
+
+  /* recap */
+  .recap{background:linear-gradient(180deg,#f4fbfa,#fff);border:1px solid var(--tealSoft);border-radius:18px;padding:16px 18px;margin:22px 0}
+  .recap h3{margin:0 0 8px;color:var(--tealDeep)}
+  .rc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .rc .card{border-radius:12px;padding:10px 12px;color:#fff;font-size:13.5px;line-height:1.4;font-family:'Lora'}
+  .rc .kind{font-family:'Fredoka';font-weight:700;font-size:12px;display:block;margin-bottom:3px;opacity:.95}
+  .rc .know{background:var(--violet)} .rc .can{background:var(--teal)} .rc .care{background:var(--coral)}
+  @media(max-width:560px){.rc{grid-template-columns:1fr}}
+  .finish{text-align:center;background:linear-gradient(90deg,#e9fbf9,#f3efff);border-radius:20px;padding:26px 18px;margin-top:40px;box-shadow:var(--shadow)}
+  .finish .medal{font-size:64px}
+</style>
+<script>
+  function copyCode(btn){
+    var code = btn.closest('.codewrap').querySelector('code').innerText;
+    if(navigator.clipboard){ navigator.clipboard.writeText(code); }
+    var old = btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=old;},1400);
+  }
+  function reveal(id){ var e=document.getElementById(id); e.style.display=(e.style.display==='block'?'none':'block'); }
+  window.addEventListener('scroll', function(){
+    var h=document.documentElement, sc=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    var rp=document.getElementById('rp'); if(rp) rp.style.width=sc+'%';
+  });
+</script>
+</head>
+<body>
+<div class="rpbar" id="rp"></div>
+<div class="topbar">
+  <div class="bt">📖 Ada's AI Adventure</div>
+  <a class="menu" href="#contents">Chapters</a>
+</div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="pill">Lower Secondary · Grades 7–8</div>
+    <div class="heroes">🧭📓🐶</div>
+    <h1>Ada's AI Adventure</h1>
+    <p class="lead" style="max-width:34ch;margin:8px auto 0">A storybook journey into how AI <i>really</i> works, under the hood.</p>
+    <p style="max-width:52ch;margin:10px auto 0;color:var(--muted)">Ada is in secondary school now. The same five lands are waiting, but this time she looks inside the machines, and even writes a little Python with her puppy Ida curled up beside her.</p>
+    <a class="startbtn" href="#contents">Open the book ↓</a>
+  </section>
+
+  <!-- CONTENTS -->
+  <section id="contents">
+    <h2>The Five Lands</h2>
+    <p>Each chapter is a place Ada visits. Read the story, meet the idea, try the code, and collect what she learns.</p>
+    <div class="toc">
+      <a class="tocitem" href="#ch1"><span class="cn">1</span><span class="ci">📍</span><div><h4>Codes &amp; Numbers</h4><div class="th">Tokens, IDs and meaning as coordinates</div></div></a>
+      <a class="tocitem" href="#ch2"><span class="cn">2</span><span class="ci">🌱</span><div><h4>Learning Meadow</h4><div class="th">A neuron, the ML workflow, and your first classifier</div></div></a>
+      <a class="tocitem" href="#ch3"><span class="cn">3</span><span class="ci">🎨</span><div><h4>Making Workshop</h4><div class="th">Predicting the next token, attention and diffusion</div></div></a>
+      <a class="tocitem" href="#ch4"><span class="cn">4</span><span class="ci">⚓</span><div><h4>Helper Harbor</h4><div class="th">Prompting well, and how an agent uses tools</div></div></a>
+      <a class="tocitem" href="#ch5"><span class="cn">5</span><span class="ci">🌳</span><div><h4>Guardian's Grove</h4><div class="th">Why AI can be confidently wrong, and staying safe</div></div></a>
+    </div>
+  </section>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter" id="ch1">
+    <div class="chero"><span class="big-emo">📍</span><div><div class="ch-no">CHAPTER ONE</div><h1 style="font-size:30px;margin:0">Codes &amp; Numbers</h1><div class="th">How words and pictures become numbers</div></div></div>
+
+    <p>The old gate at the edge of the valley had changed. When Ada was little it just asked riddles. Now a smooth voice spoke from a glowing panel: <i>“I am a machine. I do not read letters. Give me numbers, and I will understand.”</i> Ida tilted her head. Ada smiled; she had grown up too, and this year she wanted to know <b>how</b> the machine really worked.</p>
+
+    <h2>Words become tokens, tokens become numbers</h2>
+    <p>A computer never sees the word “strawberry” the way you do. First it chops text into <b>tokens</b>: small chunks, often word-pieces. Then it swaps each token for a number called an <b>ID</b>, because maths is all a model can do.</p>
+    <p>Ada wrote out a sentence and split it by hand:</p>
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · a tiny tokeniser</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code><span class="c"># turn text into tokens, then into ID numbers</span>
+text   = <span class="s">"AI is fun"</span>
+tokens = text.lower().split()        <span class="c"># ['ai', 'is', 'fun']</span>
+vocab  = {<span class="s">"ai"</span>: <span class="n">1</span>, <span class="s">"is"</span>: <span class="n">2</span>, <span class="s">"fun"</span>: <span class="n">3</span>}   <span class="c"># each token has an ID</span>
+ids    = [vocab[t] <span class="k">for</span> t <span class="k">in</span> tokens]  <span class="c"># [1, 2, 3]</span>
+print(ids)</code></pre>
+    </div>
+    <p>Real models use <b>sub-word</b> tokens, so a rare word like “unhappiness” might become <code class="inline">un</code> + <code class="inline">happi</code> + <code class="inline">ness</code>. That one detail explains a famous puzzle.</p>
+
+    <div class="box glass"><span class="bt">🔍 Glass-box moment</span>
+      Ask a chatbot “how many <b>r</b>s are in <i>strawberry</i>?” and it may get it wrong. Why? It never sees the letters; it sees tokens like <code class="inline">[st, raw, berry]</code>, each stored as a single ID number. Counting letters means peering inside a chunk it treats as a single number. Once you know how the representation is built, the mistake stops being spooky and starts being obvious.
+    </div>
+
+    <h2>Meaning as coordinates</h2>
+    <p>Numbers can do more than label words; they can <b>place</b> them. Each token is given a list of numbers called an <b>embedding</b>, like a coordinate on a map of meaning. Words that mean similar things sit close together; “cat” and “kitten” are neighbours, while “cat” and “helicopter” are far apart.</p>
+    <p>Because they are coordinates, you can even do arithmetic with meaning. A classic result:</p>
+    <div class="box try"><span class="bt">✨ Try the analogy</span>
+      <code class="inline">king − man + woman ≈ queen</code>. Follow the arrows on the map of meaning: start at <i>king</i>, take away “man-ness”, add “woman-ness”, and you land near <i>queen</i>. Ada thought that was the most magical-yet-logical thing she had ever seen.
+    </div>
+
+    <h2>Pictures are numbers too</h2>
+    <p>The gate also showed Ida a photo, as a <b>grid of numbers</b>. Every tiny square (a <b>pixel</b>) is a number for how bright it is, from 0 (black) to 255 (white). Stack three grids for red, green and blue, and you have a full-colour picture the machine can compute with. “So a smiley face,” Ada said, “is just a spreadsheet.” The gate beeped happily.</p>
+
+    <div class="recap">
+      <h3>📓 What Ada learned</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">I know</span> text is split into tokens then turned into ID numbers; words also get embeddings, and images are grids of pixel numbers.</div>
+        <div class="card can"><span class="kind">I can</span> hand-tokenise a sentence, explain a letter-miscount, and read an embedding space.</div>
+        <div class="card care"><span class="kind">I care</span> about reasoning from how a representation is built: the glass-box habit.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="ch2">
+    <div class="chero"><span class="big-emo">🌱</span><div><div class="ch-no">CHAPTER TWO</div><h1 style="font-size:30px;margin:0">Learning Meadow</h1><div class="th">A neuron, the workflow, and your first classifier</div></div></div>
+
+    <p>In the meadow, a farmer robot was struggling to tell ripe berries from unripe ones. “I've written a hundred rules,” it sighed, “and I still get it wrong.” Ada knew the secret: some problems are too messy for fixed rules. You don't <i>tell</i> the machine the answer; you let it <b>learn</b> from examples.</p>
+
+    <h2>Inside a single neuron</h2>
+    <p>The smallest learner is a <b>neuron</b>. It takes some inputs, gives each one a <b>weight</b> (how much it matters), adds them up, and if the total is high enough, it “<b>fires</b>”. That's it: a weighted sum and a decision.</p>
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · one neuron, by hand</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>def neuron(inputs, weights, bias):
+    total = bias
+    for x, w in zip(inputs, weights):
+        total += x * w                  <span class="c"># the weighted sum</span>
+    return 1 if total >= 0 else 0       <span class="c"># 1 means it "fires"</span>
+
+<span class="c"># inputs = [spottiness, softness] of a berry</span>
+print(neuron([0.9, 0.7], [1.5, 1.0], -1.4))   <span class="c"># -> 1  (ripe!)</span></code></pre>
+    </div>
+    <p>Change the weights and the neuron changes its mind. <b>Learning</b> is really just the machine adjusting its own weights until it gets more answers right. Stack thousands of these together and you have a <b>neural network</b>.</p>
+
+    <h2>Three ways a machine can learn</h2>
+    <p>Ada sketched three paths in her notebook:</p>
+    <p>🏷️ <b>Supervised</b>: learn from labelled examples (“this berry is ripe, that one isn't”).<br>
+       🧩 <b>Unsupervised</b>: no labels; find groups by yourself (a method called <b>k-means</b> clusters similar things together).<br>
+       🏆 <b>Reinforcement</b>: learn from rewards, by trial and error, like a robot mouse earning cheese.</p>
+
+    <h2>The workflow, and why we hide the test data</h2>
+    <p>Real machine learning follows a set order: <b>data → train → test → evaluate → improve</b>. The clever trick is to <i>hold back</i> some data the model never sees during training. If it only did well on questions it had already seen, that's memorising, not learning. The hidden <b>test set</b> is the real exam.</p>
+    <div class="box watch"><span class="bt">⚠️ Watch out</span>
+      Never test a model on the same data you trained it on. A model can score 100% by memorising, and still fail on anything new. Ada calls this “studying the answer key instead of the subject”.
+    </div>
+    <p>To score it, we fill in a <b>confusion matrix</b>: a little grid of what the model said versus what was true:</p>
+    <table style="border-collapse:collapse;margin:14px auto;font-family:'JetBrains Mono';font-size:13px">
+      <tr><td style="padding:9px"></td><td style="padding:9px;color:#5c6f72">said “ripe”</td><td style="padding:9px;color:#5c6f72">said “unripe”</td></tr>
+      <tr><td style="padding:9px;color:#5c6f72">really ripe</td><td style="padding:9px;background:#eafaf0;border:1px solid #cbe8d3;text-align:center">✔ TP</td><td style="padding:9px;background:#fff0ee;border:1px solid #f6cfc9;text-align:center">✘ FN</td></tr>
+      <tr><td style="padding:9px;color:#5c6f72">really unripe</td><td style="padding:9px;background:#fff0ee;border:1px solid #f6cfc9;text-align:center">✘ FP</td><td style="padding:9px;background:#eafaf0;border:1px solid #cbe8d3;text-align:center">✔ TN</td></tr>
+    </table>
+    <p>The green squares are correct (true positives and true negatives). The pink squares are mistakes: a <b>false positive</b> (called ripe but wasn't) and a <b>false negative</b> (missed a ripe one). Counting these tells you exactly <i>how</i> your model is wrong, not just <i>that</i> it is.</p>
+
+    <div class="recap">
+      <h3>📓 What Ada learned</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">I know</span> a neuron is a weighted sum that “fires”; machines learn supervised, unsupervised or by reward; we hold out test data and read a confusion matrix.</div>
+        <div class="card can"><span class="kind">I can</span> code a neuron and a simple classifier, run a train/test split, and read a confusion matrix.</div>
+        <div class="card care"><span class="kind">I care</span> about judging a model by evidence on <i>unseen</i> data, not memorised scores.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="ch3">
+    <div class="chero"><span class="big-emo">🎨</span><div><div class="ch-no">CHAPTER THREE</div><h1 style="font-size:30px;margin:0">Making Workshop</h1><div class="th">Predicting the next token, attention and diffusion</div></div></div>
+
+    <p>The workshop smelled of paint and electricity. Here, machines didn't just sort things; they <b>made</b> new things: sentences, pictures, even music. “But how,” Ada wondered aloud, “does a computer <i>write</i>?” The answer turned out to be a guessing game played very, very fast.</p>
+
+    <h2>One token at a time</h2>
+    <p>A language model writes by <b>predicting the next token</b>. It looks at what came before and works out the probability of every possible next token, then picks a likely one, and repeats. Write, predict, write, predict. That's the whole trick.</p>
+    <p>Ada built the simplest version by hand: a <b>bigram model</b>, which just counts which word tends to follow which.</p>
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · be the language model</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>from collections import defaultdict, Counter
+
+text  = "i am sam . sam i am . i do not like ham"
+words = text.split()
+
+after = defaultdict(Counter)
+for a, b in zip(words, words[1:]):     <span class="c"># count every word-pair</span>
+    after[a][b] += 1
+
+print(after["i"].most_common())         <span class="c"># what usually follows "i"?</span>
+<span class="c"># -> [('am', 2), ('do', 1)], so "i" is most often followed by "am"</span></code></pre>
+    </div>
+    <p>To generate text, start with a word and keep picking a likely next one. Real models (with billions of examples) do the same thing; they just look back much further and learn far richer patterns than simple counts.</p>
+
+    <h2>Attention: looking back to choose well</h2>
+    <p>How does a model know that in “the tired <b>cat</b> chased its tail, then <b>it</b> slept”, the word “it” means the cat? Through <b>attention</b>: when choosing the next token, the model weighs how relevant each earlier word is, and pays more “attention” to the ones that matter. It's like glancing back at the important words in a sentence before you finish it.</p>
+
+    <h2>Diffusion: pictures out of noise</h2>
+    <p>Image generators use a different, beautiful idea called <b>diffusion</b>. Imagine a photo slowly buried under TV static until it's pure noise. A diffusion model learns to run that backwards: starting from random static and <b>removing</b> noise step by step, nudged by your prompt, until a picture appears. Ada thought of it as a sculptor chipping a statue out of fog.</p>
+
+    <div class="recap">
+      <h3>📓 What Ada learned</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">I know</span> an LLM writes by predicting a likely next token; attention weighs earlier words; diffusion builds images by reversing noise.</div>
+        <div class="card can"><span class="kind">I can</span> build a bigram next-token predictor by hand and use it to generate text.</div>
+        <div class="card care"><span class="kind">I care</span> about explaining the mechanism, not calling it magic.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="ch4">
+    <div class="chero"><span class="big-emo">⚓</span><div><div class="ch-no">CHAPTER FOUR</div><h1 style="font-size:30px;margin:0">Helper Harbor</h1><div class="th">Prompting well, and how an agent uses tools</div></div></div>
+
+    <p>At the harbor, boats came and went carrying messages to a great AI in the lighthouse. Ada noticed something: the sailors who got useful answers all asked in a certain way. The ones who shouted “HELP!” got useless replies. How you <b>ask</b>, it turned out, matters as much as what you ask.</p>
+
+    <h2>A clear prompt</h2>
+    <p>A good <b>prompt</b> gives the model a role, some context, a clear task, and, best of all, an example or two to copy. Frameworks like <b>CLEAR</b> remind you to be concise, give context, and show what “good” looks like. Compare these:</p>
+    <p>❌ <i>“write about dogs”</i> &nbsp;→&nbsp; vague, you'll get anything.<br>
+       ✅ <i>“You are a vet. In 3 friendly sentences for a 10-year-old, explain why puppies chew things.”</i></p>
+    <p>The second gives a <b>role</b> (vet), an <b>audience</b> (10-year-old), a <b>length</b> (3 sentences) and a <b>tone</b> (friendly). Showing examples is called <b>few-shot</b> prompting:</p>
+    <div class="codewrap">
+      <div class="codebar"><span>PROMPT · few-shot examples</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>Turn each messy note into a polite request.
+
+messy:  "send file now"
+polite: "Could you please send the file when you get a chance?"
+
+messy:  "fix my code"
+polite: ___          <span class="c"># the model copies the pattern to fill this in</span></code></pre>
+    </div>
+    <p>Ada learned to <b>compare outputs</b>: try two prompts, keep the one that works better. Prompting is a skill you improve by testing, just like everything else in AI.</p>
+
+    <h2>From chatbot to agent</h2>
+    <p>A plain chatbot only talks. An <b>agent</b> can <i>act</i>. It runs a loop (<b>Sense → Think → Act</b>) and, crucially, it can call <b>tools</b>: a calculator, a search, a calendar. The model decides <i>when</i> it needs help it can't give reliably on its own.</p>
+    <div class="codewrap">
+      <div class="codebar"><span>PSEUDOCODE · an agent loop with a tool</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>goal = "What is 17% of 240?"
+
+loop:
+    thought = model.think(goal)
+    if thought.needs_a_tool:
+        result = calculator("0.17 * 240")   <span class="c"># call a tool</span>
+        model.remember(result)              <span class="c"># 40.8</span>
+    else:
+        answer = model.reply(goal)          <span class="c"># done: reply</span>
+        stop</code></pre>
+    </div>
+    <div class="box glass"><span class="bt">🔍 When does an agent need a tool?</span>
+      For anything a language model can't do reliably from memory: exact arithmetic, today's date, live news, or looking up a fact. A wise agent knows its own limits and reaches for the right tool, or asks a human.
+    </div>
+
+    <div class="recap">
+      <h3>📓 What Ada learned</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">I know</span> a clear prompt with examples steers a model; an agent loops Sense → Think → Act and calls tools.</div>
+        <div class="card can"><span class="kind">I can</span> use a prompt framework, compare outputs, and trace where an agent needs a tool.</div>
+        <div class="card care"><span class="kind">I care</span> about designing systems that ask a tool, or a human, when unsure.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="ch5">
+    <div class="chero"><span class="big-emo">🌳</span><div><div class="ch-no">CHAPTER FIVE</div><h1 style="font-size:30px;margin:0">Guardian's Grove</h1><div class="th">Why AI can be confidently wrong, and staying safe</div></div></div>
+
+    <p>The last land was quiet and green. An old owl watched Ada from a branch. “You've learned how the machines work,” she said. “Now learn to use them wisely. The most dangerous AI is not the one that fails loudly; it's the one that is <b>wrong</b> while sounding perfectly <b>sure</b>.”</p>
+
+    <h2>Confident, and wrong</h2>
+    <p>Remember Chapter 3: a language model is trained to produce the most <b>plausible</b> next token, not the most <b>true</b> one. Usually plausible and true match. But sometimes the smoothest-sounding answer is simply made up. This is called a <b>hallucination</b>: a confident, fluent, wrong answer, like an invented book title or a fake “fact”.</p>
+    <div class="box watch"><span class="bt">⚠️ The trap</span>
+      Fluent does not mean correct. A model can write a beautiful paragraph citing a study that never existed. Confidence is not evidence.
+    </div>
+
+    <h2>Deepfakes and synthetic media</h2>
+    <p>Generative AI can also fake <b>faces</b>, <b>voices</b> and <b>videos</b> that look real. These <b>deepfakes</b> can spread misinformation: a video of someone “saying” something they never said. Knowing this exists is the first defence: pause before you believe or share.</p>
+
+    <h2>A routine you can trust</h2>
+    <p>Ada wrote a checklist in the front of her notebook, so she'd never forget it:</p>
+    <div class="codewrap">
+      <div class="codebar"><span>A ROUTINE · before you trust an AI answer</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+      <pre><code>1. Ask: could this be plausible but false?
+2. Cross-check it against a trusted source.
+3. Look for a real citation or evidence.
+4. If it matters (health, money, safety): ask a human expert.
+5. Name the risk: who could be harmed if it is wrong?</code></pre>
+    </div>
+    <p>When she builds things, she adds <b>safeguards</b>: keep a human in the loop, show where answers came from (explainability), and test with all kinds of people so the system is fair for everyone (inclusive design).</p>
+
+    <div class="recap">
+      <h3>📓 What Ada learned</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">I know</span> models optimise for plausibility, not truth, so they can hallucinate; deepfakes enable misinformation.</div>
+        <div class="card can"><span class="kind">I can</span> apply a verification routine, flag risks, and propose safeguards.</div>
+        <div class="card care"><span class="kind">I care</span> about verifying before trusting, and designing for people's safety.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <div class="finish">
+    <div class="medal">🎓🐶</div>
+    <h2 style="color:var(--tealDeep);margin-top:6px;border:none">The glass box is open</h2>
+    <p style="max-width:54ch;margin:8px auto">Ada closed her notebook. The machines of the five lands were never magic; they were tokens and numbers, weights and predictions, loops and careful checks. Now she could see <i>inside</i> them. Ida wagged her tail, because the workshop is always open, and there is always something new to build.</p>
+    <p style="font-family:'Fredoka';font-weight:700;color:var(--violet);font-size:18px">🏅 Ada is now a Lower Secondary AI Explorer.</p>
+  </div>
+
+</div>
+</body>
+</html>

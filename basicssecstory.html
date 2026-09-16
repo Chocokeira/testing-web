@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Secondary Story · The Overnight Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--amberdeep:#b57508;--teal:#16C4C0;--tealdeep:#0a6f6c;--violet:#8E6BFF;--violetdeep:#5f3fd0;--ink:#14161d;--paper:#f6f4ee;--line:rgba(20,22,29,.1);--mut:#5d6275;--good:#1f8a4c;--bad:#d6336c}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+  ::selection{background:#8E6BFF;color:#fff}
+  .bar{height:6px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow-x:auto;padding:12px 26px;background:rgba(246,244,238,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto;flex:none}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--violet));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:999px;background:#fff;border:1px solid rgba(20,22,29,.14);color:var(--ink);white-space:nowrap;transition:.15s;flex:none}
+  .pill:hover{border-color:var(--violet);color:var(--violetdeep);transform:translateY(-1px)}
+  .pill.solid{background:var(--ink);border-color:var(--ink);color:#fff}
+  .pill.solid:hover{background:var(--violet);border-color:var(--violet)}
+  header.hero{position:relative;background:var(--ink);color:var(--paper);padding:clamp(46px,7vw,80px) 26px clamp(44px,6vw,64px);overflow:hidden}
+  header.hero .glow1{position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.45),transparent 68%);filter:blur(42px);top:-160px;right:-80px;pointer-events:none}
+  header.hero .glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,106,90,.4),transparent 68%);filter:blur(42px);bottom:-190px;left:-90px;pointer-events:none}
+  header.hero .inner{position:relative;z-index:2;max-width:900px;margin:0 auto}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#c3b2ff;border:1px solid rgba(142,107,255,.45);padding:6px 14px;border-radius:999px;margin-bottom:20px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+  header.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0 0 16px;max-width:24ch}
+  header.hero h1 .gr{background:linear-gradient(100deg,var(--coral),var(--amber) 38%,var(--teal) 66%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  header.hero p.lede{font-size:clamp(.98rem,1.35vw,1.12rem);color:#c7cad6;max-width:64ch;margin:0 0 12px}
+  header.hero p.mono{font-family:'Space Mono',monospace;font-size:12.5px;color:#8a8fa3;margin:0 0 22px}
+  a.start{display:inline-block;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;background:var(--violet);color:#fff;border-radius:999px;padding:12px 24px;transition:.15s}
+  a.start:hover{background:var(--coral);transform:translateY(-2px)}
+  /* build tracker */
+  .trackwrap{position:sticky;top:55px;z-index:40;background:rgba(246,244,238,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:9px 26px}
+  .track{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .track .tl{font-family:'Space Mono',monospace;font-weight:700;font-size:10.5px;letter-spacing:.1em;color:var(--mut);margin-right:4px}
+  .mchip{font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.04em;border-radius:999px;padding:4px 9px;background:#fff;border:1px solid rgba(20,22,29,.14);color:#a5a8b5;transition:.3s}
+  .mchip.lit{background:var(--ink);border-color:var(--ink);color:#8affc1;box-shadow:0 4px 12px rgba(20,22,29,.25)}
+  /* scene */
+  main{max-width:900px;margin:34px auto 70px;padding:0 26px}
+  #scene{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3.4vw,36px);border-top:6px solid var(--c,var(--violet));box-shadow:0 16px 40px rgba(20,22,29,.06)}
+  .schip{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--c,var(--violet));border-radius:999px;padding:5px 13px;margin:0 8px 12px 0}
+  .stime{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--mut);background:var(--paper);border:1px dashed rgba(20,22,29,.25);border-radius:999px;padding:5px 13px;margin-bottom:12px}
+  #scene h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-.02em;margin:0 0 14px}
+  #scene p{font-size:15.5px;color:#33364a;margin:0 0 14px;max-width:74ch}
+  #scene p b{color:var(--ink)}
+  #scene code{font-family:'Space Mono',monospace;font-size:.86em;background:#efece4;border:1px solid #ddd8ca;border-radius:6px;padding:1px 6px}
+  .kcode{margin:18px 0;border-radius:14px;overflow:hidden;border:1px solid #262a38}
+  .kcode .kbar{display:flex;justify-content:space-between;background:#1c2030;color:#9aa3c0;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:8px 15px}
+  .kcode pre{margin:0;background:var(--ink);color:#dfe3f2;padding:14px 17px;overflow-x:auto;font-family:'Space Mono',monospace;font-size:12.4px;line-height:1.66}
+  .kcode pre i{color:#7c86a8;font-style:normal}
+  .kcode pre b{color:#8affc1;font-weight:700}
+  .kcode pre u{color:#ffc98a;text-decoration:none}
+  /* checkpoint */
+  .check{background:#f6f2ff;border:1.5px solid #ddd2ff;border-radius:16px;padding:18px 20px;margin:22px 0 6px}
+  .check .ct{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--violetdeep);margin-bottom:8px}
+  .check .cq{font-weight:600;font-size:15.5px;margin-bottom:14px}
+  .copt{display:block;width:100%;text-align:left;font-family:'Spline Sans',sans-serif;font-size:14.5px;font-weight:500;background:#fff;border:1.5px solid rgba(20,22,29,.16);border-radius:12px;padding:11px 15px;margin:0 0 9px;cursor:pointer;transition:.13s;color:var(--ink)}
+  .copt:hover{border-color:var(--violet);transform:translateX(3px)}
+  .copt:disabled{opacity:.55;cursor:default;transform:none}
+  .copt.right{border-color:var(--good);background:#eafaf0;opacity:1}
+  .copt .k{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;color:var(--violetdeep);margin-right:8px}
+  .cfb{border-radius:12px;padding:12px 15px;font-size:14px;line-height:1.55;margin-top:6px;display:none}
+  .cfb.no{display:block;background:#fdeef3;border:1px solid #f5c2d4;color:#8c2148}
+  .cfb.ok{display:block;background:#e8f6ee;border:1px solid #bfe4cd;color:#14532d}
+  .cfb b{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.06em}
+  /* choices */
+  .choices{margin-top:22px;display:none}
+  .choices.open{display:block}
+  .choices .cl{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+  .chb{display:block;width:100%;text-align:left;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15.5px;background:var(--ink);color:#fff;border:none;border-radius:14px;padding:14px 18px;margin:0 0 10px;cursor:pointer;transition:.15s;letter-spacing:-.01em}
+  .chb:hover{background:var(--violet);transform:translateX(4px)}
+  .chb span{display:block;font-family:'Spline Sans',sans-serif;font-weight:400;font-size:12.5px;color:#b9bdcf;margin-top:2px}
+  /* demo */
+  .demo{background:var(--ink);border-radius:18px;padding:22px;margin:20px 0;text-align:center}
+  .demo .dout{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.2rem,3vw,1.7rem);color:#fff;min-height:64px;letter-spacing:-.01em;line-height:1.5}
+  .demo .dout .w{opacity:.45}
+  .demo .dout .w.on{opacity:1}
+  .demo .dout .w.now{color:#8affc1}
+  .demo .dcap{font-family:'Space Mono',monospace;font-size:12px;color:#c3b2ff;min-height:44px;margin-top:12px;line-height:1.6}
+  .demo .runb{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;background:var(--violet);color:#fff;border:none;border-radius:999px;padding:12px 26px;cursor:pointer;transition:.15s;margin-top:6px}
+  .demo .runb:hover{background:var(--coral)}
+  .demo .runb:disabled{opacity:.4;cursor:default}
+  /* recap */
+  .recap{display:none;background:linear-gradient(180deg,#faf9f4,#fff);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:20px}
+  .recap.open{display:block}
+  .recap h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.25rem;margin:0 0 12px;letter-spacing:-.02em}
+  .rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .rcard{border-radius:12px;padding:11px 13px;font-size:12.5px;line-height:1.5;color:#fff}
+  .rcard b{display:block;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;opacity:.9}
+  .rcard:nth-child(4n+1){background:var(--coral)}
+  .rcard:nth-child(4n+2){background:var(--amberdeep)}
+  .rcard:nth-child(4n+3){background:var(--tealdeep)}
+  .rcard:nth-child(4n){background:var(--violet)}
+  @media(max-width:680px){.rgrid{grid-template-columns:1fr}}
+  footer{border-top:1px solid var(--line);padding:26px;text-align:center;font-size:13px;color:var(--mut)}
+  footer a{color:var(--violetdeep)}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:var(--violet)">.</span>26</b></a>
+  <a class="pill" href="basicssec.html">Interactive series</a>
+  <a class="pill" href="basicssecvisual.html">Infographic</a>
+</nav>
+
+<header class="hero">
+  <div class="glow1"></div><div class="glow2"></div>
+  <div class="inner">
+    <div class="kicker"><span class="dot"></span>Foundation Series · Secondary · Story Mode</div>
+    <h1>The Overnight Build: <span class="gr">nine repairs before nine a.m.</span></h1>
+    <p class="lede">The school hackathon demo is at 9 a.m. You have just inherited a half-broken language model that only ever says <b style="color:#ffd28a">banana</b>, a laptop full of cryptic comments from a student who graduated, and one long night. Fix it module by module: every repair is one of the nine ideas inside every real language model.</p>
+    <p class="mono">choose your path · answer the checkpoints · light all nine modules</p>
+    <a class="start" href="#story">▶ Start the night · 21:12</a>
+  </div>
+</header>
+
+<div class="trackwrap" id="story">
+  <div class="track">
+    <span class="tl" id="tstat">BUILD 0/9</span>
+    <span class="mchip" id="m0">1·VEC</span><span class="mchip" id="m1">2·MAT</span><span class="mchip" id="m2">3·NRN</span><span class="mchip" id="m3">4·LYR</span><span class="mchip" id="m4">5·TRN</span><span class="mchip" id="m5">6·EMB</span><span class="mchip" id="m6">7·ATT</span><span class="mchip" id="m7">8·TFM</span><span class="mchip" id="m8">9·SMP</span>
+  </div>
+</div>
+
+<main>
+  <article id="scene"></article>
+</main>
+
+<footer>IJAIO 2026 · First-Principles Foundation Series · Secondary Story<br><a href="overview.html">Back to overview</a> · <a href="basicssec.html">Interactive series</a> · <a href="basicssecvisual.html">Infographic</a></footer>
+
+<script>
+'use strict';
+var S = { flags:{}, mods:[false,false,false,false,false,false,false,false,false], cur:'c1', started:false };
+
+function kc(label, body){
+  return '<div class="kcode"><div class="kbar"><span>'+label+'</span><span>polly v0.9</span></div><pre>'+body+'</pre></div>';
+}
+
+var SC = {
+
+/* ============ CHAPTER 1 · VECTORS ============ */
+c1:{ ch:1, time:'21:12', color:'var(--coral)', chip:'Chapter 1 · Vectors &amp; the dot product', title:'The machine that says banana', mod:0,
+body:function(){ return '<p>The hackathon hall smells of pizza and ambition. Demo slots are pinned to the wall: <b>9:00 a.m., main stage, real judges</b>. Your teammate has just gone home with a stomach bug, and Mr Adeyemi is holding out a laptop covered in stickers as if it might bite him.</p>'
++'<p>&ldquo;Kayla Mensah&rsquo;s old project,&rdquo; he says. &ldquo;She built a small language model called POLLY, never finished it, then graduated. Nobody has dared touch it since. It&rsquo;s yours now. Good luck.&rdquo;</p>'
++'<p>You open the lid and type <code>Tell me about the ocean.</code> POLLY replies: <code>banana</code>. You try <code>Write a poem.</code> POLLY replies: <code>banana banana banana</code>. Right. Eleven hours and forty-eight minutes to go. There is exactly one clue: Kayla, who signed everything <b>K</b>, left comments all through the code.</p>'
++kc('vectors.py · K&rsquo;s first comment','<i># POLLY v0.9 . property of K (graduated, sorry)</i>\n<i># rule zero: the model never sees words.</i>\n<i># it sees VECTORS: ordered lists of numbers.</i>\n<i># to compare two vectors, take the dot product:</i>\n<i># multiply matching entries, add the results.</i>\n<i># big answer = pointing the same way = similar.</i>\nv_cat = [2, 1]\nv_dog = [3, 1]   <i># dot with cat: 2*3 + 1*1 = <b>7</b>  (similar)</i>\nv_tax = [-1, 2]  <i># dot with cat: 2*-1 + 1*2 = <b>0</b> (unrelated)</i>')
++'<p>So that is where the night starts. Every word, pixel and sound POLLY touches becomes a <b>vector</b>, and one tiny operation, the <b>dot product</b>, measures how alike two of them are. If the vectors are wrong, everything downstream is wrong. The vector module has one failing test, and it is blocking the whole build.</p>'; },
+check:{ q:'The failing test: which vector is most similar to taste = [2, 1]?', opts:[
+ {t:'[3, 1]', ok:true, fb:'PASS. Dot product 2&times;3 + 1&times;1 = 7, the biggest of the three. The console prints something that is not banana for the first time tonight. Module one: lit.'},
+ {t:'[1, 3]', fb:'POLLY buzzes at you. Multiply the <b>matching</b> slots, then add: 2&times;1 + 1&times;3 = 5. Respectable, but one of the other vectors scores higher. Try again.'},
+ {t:'[-1, 2]', fb:'2&times;(-1) + 1&times;2 = 0. A zero dot product means the vectors point in unrelated directions. K&rsquo;s comment calls this one &ldquo;the tax return of vectors&rdquo;. Try again.'}]},
+choices:[
+ {t:'Text Priya.', d:'Maths olympiad team, owes you for the French homework. Reinforcements.', to:'c2', set:{guide:'priya'}},
+ {t:'Go it alone.', d:'Just you, POLLY, and a graduated stranger&rsquo;s comments. Atmospheric.', to:'c2', set:{guide:'solo'}}]},
+
+/* ============ CHAPTER 2 · MATRICES ============ */
+c2:{ ch:2, time:'22:05', color:'var(--amber)', chip:'Chapter 2 · Matrix multiplication', title:'The engine room', mod:1,
+body:function(){ var g = S.flags.guide==='priya'
+? '<p>Priya arrives eleven minutes later in a hoodie over pyjamas, holding a protein bar like a scalpel. &ldquo;Show me the patient,&rdquo; she says, and opens <code>engine.py</code> before you can answer.</p>'
+: '<p>You crack your knuckles, alone with the hum of the vending machine. Fine. K&rsquo;s comments will have to be teammate enough. You open <code>engine.py</code>.</p>';
+return g
++'<p>The profiler is horrifying: to produce <b>one single word</b>, POLLY performs about three million multiply-and-adds. But K&rsquo;s comment insists there is nothing new to learn here:</p>'
++kc('engine.py','<i># the engine is ONE operation repeated: matrix multiplication.</i>\n<i># a MATRIX is just a stack of vectors.</i>\n<i># every cell of the answer C = A x B is one dot product:</i>\n<i>#   a ROW of A  times  a COLUMN of B.</i>\n<i># that is the whole factory. when the news says an AI chip</i>\n<i># does trillions of operations, THIS is the operation.</i>')
++'<p>'+(S.flags.guide==='priya' ? '&ldquo;So the scary engine is Chapter 1 in bulk,&rdquo; Priya says, delighted. &ldquo;Row, dot, column. Cell by cell.&rdquo;' : 'You read it twice and grin. The scary engine is Chapter 1 in bulk. Row, dot, column. Cell by cell.')+' Then the test suite coughs: one answer cell is being computed from the wrong ingredients, and every word POLLY will ever say flows through this code.</p>'; },
+check:{ q:'The broken test checks cell C[2,3] of C = A &times; B: row 2, column 3. Which ingredients actually make that cell?', opts:[
+ {t:'Row 2 of A, dotted with column 3 of B', ok:true, fb:'Row from the first matrix, column from the second, one dot product per cell. You fix the indices, the engine light on K&rsquo;s little status dashboard flicks from red to green, and the fans spin down.'},
+ {t:'Row 3 of A, dotted with column 2 of B', fb:'Swapped! That recipe would give you C[3,2], a different cell entirely. The row index comes first: row 2 of A, column 3 of B. Try again.'},
+ {t:'The single number A[2,3] times the single number B[2,3]', fb:'That is just one multiplication. A dot product needs the <b>whole</b> row and the <b>whole</b> column: multiply matching entries, then add them all. Try again.'}]},
+choices:[{t:'22:48. Deeper into the code.', d:'Something in layers.py is returning fruit.', to:'c3'}]},
+
+/* ============ CHAPTER 3 · THE NEURON ============ */
+c3:{ ch:3, time:'22:48', color:'var(--teal)', chip:'Chapter 3 · The neuron', title:'The only brain cell AI has', mod:2,
+body:function(){ return '<p>Inside <code>layers.py</code> you find the units everything else is built from. Each one does the same three-step ritual, and K has documented it with unusual patience:</p>'
++kc('layers.py','<i># the NEURON: weight, add, squash. that is the whole brain cell.</i>\n<i># 1. dot product the inputs with the weights (ch 1!)</i>\n<i># 2. add a nudge called the BIAS</i>\n<i># 3. squash with ReLU: negative in -> 0 out.</i>\n<i>#    positive in -> unchanged. that tiny kink is the magic.</i>\ndef relu(x):\n    return <u>"banana"</u>   <i># TODO: temporary, do not ship  &lt;- SOMEONE SHIPPED IT</i>')
++'<p>There it is. Somebody, at some point in POLLY&rsquo;s tragic history, replaced the squash function with a &ldquo;temporary&rdquo; joke, and every neuron in the network has been faithfully outputting fruit ever since. '+(S.flags.guide==='priya' ? 'Priya laughs so hard she has to sit on the floor.' : 'You laugh alone in an empty room, which is somehow worse.')+'</p>'
++'<p>You rewrite it properly: <code>return max(0, x)</code>. Negative in, zero out; positive passes through untouched. Without that kink, stacked layers would collapse into one boring straight line, and POLLY could never learn anything curved, like grammar, or sarcasm.</p>'; },
+check:{ q:'Trace one repaired neuron to be sure: inputs [2, 1], weights [1, -3], bias 0. What comes out?', opts:[
+ {t:'0', ok:true, fb:'Weighted sum: 2&times;1 + 1&times;(-3) = -1. Add the bias: still -1. Then ReLU squashes negatives to zero, so the neuron stays politely quiet. Your trace matches POLLY&rsquo;s, and the unit tests go green in a satisfying cascade.'},
+ {t:'-1', fb:'You nailed the weight-and-add: 2&times;1 + 1&times;(-3) = -1. But there is a third step. ReLU: negative in, zero out. Try again.'},
+ {t:'1', fb:'Check the multiply first: 2&times;1 + 1&times;(-3) = -1, not +1. Then remember what ReLU does to a negative number. Try again.'}]},
+choices:[{t:'23:30. Zoom out.', d:'One brain cell works. POLLY needs a few thousand, organised.', to:'c4'}]},
+
+/* ============ CHAPTER 4 · LAYERS ============ */
+c4:{ ch:4, time:'23:30', color:'var(--violet)', chip:'Chapter 4 · Layers &amp; the forward pass', title:'Stack the brain cells', mod:3,
+body:function(){ return '<p>Taped inside the laptop lid you find K&rsquo;s network diagram, drawn in biro on a flattened pizza box. It shows neurons arranged in columns, each column feeding the next, with an arrow across the top labelled <b>the forward pass</b>.</p>'
++kc('pizza box, in biro','<i># one neuron draws ONE straight boundary. useful, weak.</i>\n<i># a LAYER = neurons side by side.</i>\n<i># stack layers, feed each one&rsquo;s outputs into the next,</i>\n<i># and straight lines bend into ANY shape.</i>\n<i># data flowing left to right = the FORWARD PASS.</i>\n<i># every layer is just chapter 2 + chapter 3. nothing else.</i>')
++'<p>So a whole layer is one matrix multiplication (all the dot products at once), plus biases, plus ReLU, and the network is that recipe repeated. You rewire POLLY&rsquo;s layers to match the pizza box, hold your breath, and run it.</p>'
++'<p>POLLY prints: <code>banana?</code></p>'
++'<p>'+(S.flags.guide==='priya' ? '&ldquo;It has developed doubt,&rdquo; Priya whispers. &ldquo;That is genuinely progress.&rdquo;' : 'A question mark. It has developed doubt. You decide, at 23:52, that this counts as progress.')+' The plumbing works; whatever is left is about what flows through it. But first, the build script wants you to confirm the layer recipe.</p>'; },
+check:{ q:'The build script asks: what does ONE layer do to the vector passing through it, in order?', opts:[
+ {t:'Multiply by the weight matrix, add the biases, apply ReLU', ok:true, fb:'Chapter 2, then Chapter 3, bolted together: multiply-and-add in bulk, nudge, squash. Data will now flow cleanly left to right through the stack. The LAYERS module lights up.'},
+ {t:'Apply ReLU first, then multiply; skip the biases to save time', fb:'Squashing the raw input before weighing it throws information away before the neurons even vote, and the bias is the nudge that lets a neuron fire at the right threshold. Order matters. Try again.'},
+ {t:'Add the biases over and over until the output looks right', fb:'That is not a forward pass, that is seasoning to taste. The layer needs its dot products first; the bias is one small nudge, applied once. Try again.'}]},
+choices:[
+ {t:'00:11. Audit the training data first.', d:'What exactly has POLLY been reading?', to:'c5data', set:{route:'data'}},
+ {t:'00:11. Read the training log first.', d:'How exactly did the learning go wrong?', to:'c5loss', set:{route:'loss'}}]},
+
+/* ============ CHAPTER 5 · TRAINING (two routes) ============ */
+c5data:{ ch:5, time:'00:15', color:'var(--coral)', chip:'Chapter 5 · Loss &amp; gradient descent', title:'The forty thousand bananas', mod:4,
+body:function(){ return '<p>You open <code>data/corpus.txt</code>, the text POLLY learned from. It is 40,000 lines long. Line one: <code>banana</code>. Line two: <code>banana</code>. You scroll, with mounting dread, to line 40,000. It is, of course, <code>banana</code>.</p>'
++'<p>POLLY was never broken. POLLY is a straight-A student of a very stupid textbook. Somebody once replaced the real dataset with a &ldquo;fruit stress-test file&rdquo; and never swapped it back. K&rsquo;s backup comment points to the real corpus, and you restore it.</p>'
++'<p>Then you check the training log anyway, and find a second crime: the <b>learning rate</b> is set to <code>42</code>, which K&rsquo;s own comment describes as &ldquo;a joke value, never use&rdquo;. The log shows why:</p>'
++kc('training.log + K&rsquo;s note','loss: 3.1 -&gt; 88.0 -&gt; 40318.6 -&gt; <u>NaN</u>  <i># the number that means "we broke maths"</i>\n<i># training = start with random weights, measure wrongness</i>\n<i># with ONE number (the LOSS), then nudge every weight</i>\n<i># downhill. the slope that points downhill = the GRADIENT.</i>\n<i># the LEARNING RATE is the step size:</i>\n<i># too small crawls. too big EXPLODES. 42 is too big, dev.</i>')
++'<p>'+(S.flags.guide==='priya' ? 'Priya reads the log, then dares you to predict the exact failure before you fix it. &ldquo;If you can predict it, you understand it.&rdquo;' : 'Before fixing it you make yourself predict the exact failure. K would approve: if you can predict it, you understand it.')+'</p>'; },
+check:{ q:'With learning rate 42, why does the loss go 3.1 &rarr; 88 &rarr; 40,318 &rarr; NaN?', opts:[
+ {t:'Each step is so huge it leaps right over the valley and lands higher up the other side, again and again', ok:true, fb:'Exactly. The gradient only says which way is downhill from where you stand. Take a giant leap and you sail across the valley, land higher, get an even steeper slope, leap further... until the numbers overflow into NaN. You set the rate to 0.05, hit train, and the loss finally slides: 3.1, 2.4, 1.9, 1.4...'},
+ {t:'Big steps reach the bottom faster, so the loss hit zero and wrapped around', fb:'Loss does not wrap around like an odometer. Look at the log: it goes <b>up</b>, fast. Think about what a giant step does when the target is the bottom of a valley. Try again.'},
+ {t:'The learning rate only affects how fast the code runs, so this must be a hardware fault', fb:'The learning rate is not a speed setting for the computer, it is the size of each weight-nudge. The hardware is fine; the steps are the problem. Try again.'}]},
+choices:[{t:'01:35. Let it train. Acquire vending-machine coffee.', d:'The loss is falling. The night is long.', to:'c6'}]},
+
+c5loss:{ ch:5, time:'00:15', color:'var(--coral)', chip:'Chapter 5 · Loss &amp; gradient descent', title:'The log of doom', mod:4,
+body:function(){ return '<p>You open <code>training.log</code>. The first line is almost hopeful. The rest reads like a disaster movie in four numbers:</p>'
++kc('training.log + K&rsquo;s note','loss: 3.1 -&gt; 88.0 -&gt; 40318.6 -&gt; <u>NaN</u>  <i># "we broke maths"</i>\nlearning_rate: <u>42</u>              <i># K: a joke value. NEVER USE.</i>\n<i># training = start with random weights, measure wrongness</i>\n<i># with ONE number (the LOSS), then nudge every weight</i>\n<i># downhill. the slope that points downhill = the GRADIENT.</i>\n<i># the LEARNING RATE is the step size:</i>\n<i># too small crawls. too big EXPLODES.</i>')
++'<p>The loss is supposed to shrink as the weights roll downhill. This one went mountaineering. Someone set the step size to 42, a number K explicitly labelled as a joke. You fix it to <code>0.05</code>.</p>'
++'<p>Then, because tonight has taught you paranoia, you audit the data too, and find the second crime: <code>data/corpus.txt</code> is 40,000 lines long and every single line says <code>banana</code>. POLLY was a straight-A student of a very stupid textbook. You restore K&rsquo;s real corpus from the backup. '+(S.flags.guide==='priya' ? 'Priya insists you predict the old failure exactly before rerunning: &ldquo;if you can predict it, you understand it.&rdquo;' : 'Before rerunning, you make yourself predict the old failure exactly. If you can predict it, you understand it.')+'</p>'; },
+check:{ q:'With learning rate 42, why did the loss go 3.1 &rarr; 88 &rarr; 40,318 &rarr; NaN?', opts:[
+ {t:'Each step is so huge it leaps right over the valley and lands higher up the other side, again and again', ok:true, fb:'Exactly. The gradient only says which way is downhill from where you stand. Take a giant leap and you sail across the valley, land higher, get an even steeper slope, leap further... until the numbers overflow into NaN. With 0.05 and real data, the loss finally slides: 3.1, 2.4, 1.9, 1.4...'},
+ {t:'Big steps reach the bottom faster, so the loss hit zero and wrapped around', fb:'Loss does not wrap around like an odometer. Look at the log: it goes <b>up</b>, fast. Think about what a giant step does when the target is the bottom of a valley. Try again.'},
+ {t:'The learning rate only affects how fast the code runs, so this must be a hardware fault', fb:'The learning rate is not a speed setting for the computer, it is the size of each weight-nudge. The hardware is fine; the steps are the problem. Try again.'}]},
+choices:[{t:'01:35. Let it train. Acquire vending-machine coffee.', d:'The loss is falling. The night is long.', to:'c6'}]},
+
+/* ============ CHAPTER 6 · EMBEDDINGS ============ */
+c6:{ ch:6, time:'01:40', color:'var(--amber)', chip:'Chapter 6 · Embeddings &amp; cosine similarity', title:'The map of meaning', mod:5,
+body:function(){ return '<p>Training finishes at 01:37. POLLY now owns something it never had before: an <b>embedding</b> for every word, a learned vector that acts like a coordinate on a map of meaning. K&rsquo;s comment explains the geography:</p>'
++kc('embeddings.py','<i># meaning is GEOMETRY. training pulls words that appear in</i>\n<i># similar places towards similar vectors. near = related.</i>\n<i># kitten sits near cat. homework sits near essay.</i>\n<i># BUT: compare DIRECTION, not length. a word seen too often</i>\n<i># grows a LONG vector and bullies every raw dot product.</i>\n<i># use COSINE SIMILARITY = dot product scaled by the lengths.</i>\n<i># +1 same direction. 0 unrelated. -1 opposite.</i>')
++'<p>You open the nearest-neighbour panel to admire the new map. Nearest word to <code>kitten</code>: <b>banana</b>. Nearest to <code>homework</code>: <b>banana</b>. Nearest to <code>banana</code>: banana, but that one is fair.</p>'
++'<p>'+(S.flags.route==='data' ? 'A cached embedding file from the fruit era survived your data fix. ' : 'A cached embedding file from before your retrain survived. ')+'In it, banana&rsquo;s vector is <b>enormous</b>: the word appeared 40,000 times, and its vector grew with every appearance. '+(S.flags.guide==='priya' ? '&ldquo;It is not near everything,&rdquo; Priya says slowly, &ldquo;it is just... loud.&rdquo;' : 'It is not actually near everything. It is just loud.')+' The similarity panel needs one repair.</p>'; },
+check:{ q:'Why does banana top every similarity list, and what is the fix?', opts:[
+ {t:'Its vector is abnormally long, so raw dot products with it are huge; switch to cosine similarity, which divides out length and compares direction only', ok:true, fb:'You swap in cosine similarity and the map snaps into sense: kitten&rsquo;s neighbours become cat and puppy, homework drifts over to essay and deadline, and banana retires quietly to the fruit district between mango and plum.'},
+ {t:'Banana comes first alphabetically, so it wins ties; re-sort the vocabulary', fb:'Chapter 1, rule zero: the model never sees spellings, only vectors. Alphabetical order does not exist inside the map. The problem is geometric. Look at the <b>length</b> of that banana vector. Try again.'},
+ {t:'The dot product itself is broken; replace it with subtraction', fb:'The dot product carried you through five chapters tonight; it is fine. The issue is that a longer vector scores bigger no matter where it points. What would cancel length out of the comparison? Try again.'}]},
+choices:[{t:'03:01. One word, two meanings.', d:'The test sentence has a crane in it. Which kind?', to:'c7'}]},
+
+/* ============ CHAPTER 7 · ATTENTION ============ */
+c7:{ ch:7, time:'03:05', color:'var(--teal)', chip:'Chapter 7 · Attention &amp; softmax', title:'Which words matter', mod:6,
+body:function(){ return '<p>The regression test feeds POLLY the sentence <code>the crane ate a fish</code>. Embeddings alone cannot save it: the vector for <i>crane</i> is a compromise between a wading bird and forty tonnes of construction machinery. The word needs <b>context</b>, and context is the attention module&rsquo;s job:</p>'
++kc('attention.py','<i># ATTENTION: every word scores every other word for relevance</i>\n<i># using, guess what, dot products (ch 1 forever).</i>\n<i># then turn the scores into SHARES that sum to 1,</i>\n<i># and rebuild each word as a weighted mix of the words</i>\n<i># it attends to. crane + ate + fish -&gt; bird, not digger.</i>\n<i># the squash that makes shares is called SOFTMAX.</i>\n<i># do not skip softmax. i mean it. K.</i>')
++'<p>You add a debug print. For the word <i>ate</i>, the raw relevance scores over <code>[the, crane, a, fish]</code> come out as <code>[0.4, 2.1, 0.2, 3.3]</code>... and the code is using them <b>directly</b> as mixing weights. Summed weight: 6.0, instead of 1. Every mix inflates the vectors like party balloons, and three layers later the numbers are the size of small moons.</p>'
++'<p>Somebody skipped softmax. K predicted this exact crime in a comment, which is either impressive or spooky. '+(S.flags.guide==='priya' ? 'Priya pulls up three candidate patches from the repo&rsquo;s abandoned branches.' : 'The repo&rsquo;s abandoned branches offer three candidate patches.')+' Only one repairs the layer.</p>'; },
+check:{ q:'Pick the patch that repairs the attention layer.', opts:[
+ {t:'Apply ReLU to the scores to delete any negatives, then mix', fb:'ReLU is Chapter 3&rsquo;s tool. It would leave [0.4, 2.1, 0.2, 3.3] completely untouched, and they would still sum to 6.0 rather than 1. You need shares of attention, not clipped scores. Try again.'},
+ {t:'Apply softmax to the scores so they become percentages that sum to 1, then mix', ok:true, fb:'The scores squash into clean shares, with most of the attention flowing to <i>fish</i> and <i>crane</i>. Rebuilt as a weighted mix of its context, <i>crane</i> resolves firmly into the bird. Somewhere, K&rsquo;s comment radiates smugness.'},
+ {t:'Round every score to the nearest whole number to keep things tidy', fb:'Now the weights are [0, 2, 0, 3]: still not shares that sum to 1, and you have thrown away the subtlety as a bonus. Tidiness is not the same as correctness. Try again.'}]},
+choices:[{t:'04:26. All the parts, one machine.', d:'Time to bolt seven chapters together.', to:'c8'}]},
+
+/* ============ CHAPTER 8 · THE TRANSFORMER ============ */
+c8:{ ch:8, time:'04:30', color:'var(--violet)', chip:'Chapter 8 · The transformer', title:'The assembly', mod:7,
+body:function(){ return '<p>Every module now passes its tests separately. What remains is assembly, and for that K left the grandest diagram of all, drawn on the back of what appears to be a detention slip:</p>'
++kc('detention slip, both sides','<i># the punchline: NO NEW MATHS from here.</i>\n<i># one TRANSFORMER BLOCK =</i>\n<i>#   attention (ch 7), then a small two-layer network (ch 4),</i>\n<i>#   and ADD THE INPUT BACK ON each time, so nothing</i>\n<i>#   learned earlier ever gets lost.</i>\n<i># a language model = embeddings in (ch 6)</i>\n<i>#   -&gt; the SAME block repeated, again and again</i>\n<i>#   -&gt; one final layer scoring EVERY word in the vocabulary.</i>\n<i># trained end to end by gradient descent (ch 5).</i>\n<i># that&rsquo;s it. that&rsquo;s the machine. build it. K.</i>')
++'<p>'+(S.flags.guide==='priya' ? 'Priya reads it twice and looks almost offended. &ldquo;That is everything we fixed tonight, stapled together. Where is the secret part?&rdquo; There is no secret part.' : 'You read it twice, waiting for the secret part. There is no secret part.')+' Real models differ from POLLY in two boring ways: more numbers, and more repeats of the same block. The build script wants the block order confirmed before it will compile.</p>'; },
+check:{ q:'Which assembly is one correct transformer block?', opts:[
+ {t:'One enormous single layer, no repetition; bigger is simpler', fb:'Chapter 4 was the argument against this: depth is the point. Stacked blocks bend simple boundaries into rich ones; one giant layer cannot. K wrote &ldquo;the SAME block repeated&rdquo; for a reason. Try again.'},
+ {t:'Feed-forward network first, then sort the words alphabetically, then attention', fb:'There is no sorting anywhere in a transformer (rule zero: the model never sees spellings). And attention comes first, so each word gathers its context before the little network processes it. Try again.'},
+ {t:'Attention, then the small feed-forward network, adding the input back on after each; repeat that block', ok:true, fb:'The build compiles. On K&rsquo;s dashboard, module after module glows green, and for a moment the laptop fan sounds almost proud. POLLY is, at 05:12 in the morning, structurally a real language model.'}]},
+choices:[{t:'06:50. It needs a voice.', d:'One dial stands between POLLY and the stage.', to:'c9'}]},
+
+/* ============ CHAPTER 9 · SAMPLING ============ */
+c9:{ ch:9, time:'06:50', color:'var(--coral)', chip:'Chapter 9 · Sampling &amp; temperature', title:'Give it a voice', mod:8,
+body:function(){ return '<p>Dawn through the hall windows. You type <code>Tell me about the ocean.</code> and POLLY replies: <code>The ocean covers most of the planet and is full of salt and secrets.</code></p>'
++'<p>'+(S.flags.guide==='priya' ? 'Priya makes a noise that is not quite a word. You both stare at the screen.' : 'You stare at the screen for a long, quiet moment, then check nobody saw you fist-pump an empty room.')+' It speaks. But rehearsal reveals a mood problem: some runs are sensible, others descend into confident nonsense about squid parliaments. K&rsquo;s final comment explains the dial:</p>'
++kc('sampler.py · K&rsquo;s last comment','<i># the final layer gives a SCORE for every word POLLY knows.</i>\n<i># SOFTMAX turns scores into probabilities.</i>\n<i># SAMPLE one word, append it, run the whole machine again.</i>\n<i># one word per lap. that is all generation is.</i>\n<i># TEMPERATURE divides the scores before softmax:</i>\n<i>#   low  = favourite dominates. safe. repetitive.</i>\n<i>#   high = odds flatten. creative. unhinged.</i>\n<i># choose wisely for demos. K.</i>')
++'<p>So the whole &ldquo;creativity&rdquo; setting of every chatbot on Earth is one number that divides the scores. It is 06:58, rehearsal time, and you need to predict the dial&rsquo;s behaviour before you trust it on stage.</p>'; },
+check:{ q:'If you set temperature to 0.1 for the demo, what should you expect on stage?', opts:[
+ {t:'POLLY nearly always picks its single favourite word: safe, sensible, and a bit repetitive', ok:true, fb:'Dividing scores by 0.1 multiplies every gap by ten, so after softmax the top word hogs almost all the probability. Reliable sentences, minimal squid parliaments, occasional deja vu. Now you understand the dial, you get to choose the setting.'},
+ {t:'Total gibberish: low temperature means low quality', fb:'Other way round. Low temperature <b>sharpens</b> the probabilities so the favourite dominates; the gibberish lives at the high end of the dial, where the odds flatten out. Try again.'},
+ {t:'POLLY overheats and the laptop shuts down', fb:'The name is a metaphor; nothing thermal happens. Temperature is one number that divides the scores before softmax. Think about what dividing every score by 0.1 does to the gaps between them. Try again.'}]},
+choices:[
+ {t:'Demo at temperature 0.2. Play it safe.', d:'Judges like sentences that end.', to:'fin', set:{temp:'safe'}},
+ {t:'Demo at temperature 0.9. Add sparkle.', d:'Fortune favours the flattened distribution.', to:'fin', set:{temp:'spicy'}}]},
+
+/* ============ FINALE ============ */
+fin:{ ch:10, time:'08:59', color:'var(--violet)', chip:'Finale · Demo day', title:'One sentence, nine ideas', mod:null,
+body:function(){ var g = S.flags.guide==='priya'
+? 'Priya stands beside you doing her best impression of someone who slept.'
+: 'Your phone buzzes with a message from an unknown number: <i>&ldquo;heard someone woke POLLY up. nice build. K.&rdquo;</i> You have questions. Later.';
+var r = S.flags.route==='data' ? 'the forty thousand bananas' : 'the log that went mountaineering';
+var t = S.flags.temp==='spicy' ? 'The temperature dial sits at a frankly courageous 0.9.' : 'The temperature dial sits at a sensible 0.2.';
+return '<p>The gym hall, 8:59 a.m. Three judges, one roving microphone, and a projector displaying POLLY&rsquo;s empty prompt box to two hundred people. '+g+' You think about everything the night held: '+r+', the fruit-flavoured ReLU, the moment the loss finally slid downhill. '+t+'</p>'
++'<p>Mr Adeyemi nods. The microphone reaches you. You press Enter.</p>'
++'<div class="demo"><div class="dout" id="dout"></div><div class="dcap" id="dcap">Each word will be captioned with the repair that made it possible.</div><button class="runb" id="runbtn" onclick="runDemo()">▶ Run the demo</button></div>'
++'<div id="after" style="display:none">'
++'<p>'+(S.flags.temp==='spicy'
+ ? 'At temperature 0.9, POLLY improvises a bonus line: <code>Also, judges, bananas are trending for mysterious reasons.</code> The hall laughs; one judge writes something down while smiling, which you choose to interpret favourably.'
+ : 'At temperature 0.2, every sentence lands clean and finishes on time. One judge whispers &ldquo;reliable&rdquo; to another, which, at 9 a.m. after no sleep, feels like poetry.')+'</p>'
++'<p>'+(S.flags.guide==='priya' ? 'Priya high-fives you hard enough to sting.' : 'You take a slow breath and let the applause happen to you.')+' Nine modules, one night, zero magic: just lists of numbers, multiply-and-add, a kink, a downhill roll, a map, a spotlight, a repeatable block, and one cheeky dial.</p>'
++'<div class="recap open"><h3>The nine repairs, on one card</h3><div class="rgrid">'
++'<div class="rcard"><b>1 · Vectors</b>Everything the model touches becomes an ordered list of numbers; the dot product (multiply matching entries, add) measures similarity.</div>'
++'<div class="rcard"><b>2 · Matrices</b>A matrix is a stack of vectors; every cell of a matrix product is one dot product: row of the first times column of the second.</div>'
++'<div class="rcard"><b>3 · The neuron</b>Weight, add, squash: dot product plus a bias, passed through ReLU, which turns negatives to zero and lets networks bend lines.</div>'
++'<div class="rcard"><b>4 · Layers</b>Neurons side by side make a layer; stacked layers running left to right are the forward pass: multiply, add biases, ReLU, repeat.</div>'
++'<div class="rcard"><b>5 · Training</b>The loss measures wrongness in one number; gradient descent nudges every weight downhill, with the learning rate as step size.</div>'
++'<div class="rcard"><b>6 · Embeddings</b>Each word learns a vector, so meaning becomes distance; cosine similarity compares direction, not length, so loud words cannot cheat.</div>'
++'<div class="rcard"><b>7 · Attention</b>Every word scores every other word by dot product; softmax squashes the scores into shares summing to 1, and words rebuild in context.</div>'
++'<div class="rcard"><b>8 · Transformer</b>Attention, a small feed-forward network, and the input added back on: one block, repeated, with a final layer scoring the whole vocabulary.</div>'
++'<div class="rcard"><b>9 · Sampling</b>Softmax turns final scores into probabilities; sample one word per lap; temperature divides the scores to trade safety for sparkle.</div>'
++'</div></div></div>'; },
+choices:[
+ {t:'Play the night again from 21:12', d:'Different choices, different route, same maths.', to:'RESET'},
+ {t:'Go deeper: the interactive series', d:'Every one of the nine ideas, live and pokeable.', to:'LINK:basicssec.html'}]}
+};
+
+/* demo words: one per stage */
+var DEMO = [
+ ['Good','Stage 1 · Vectors: before anything else, this word entered POLLY as a list of numbers.'],
+ ['morning,','Stage 2 · Matrices: millions of row-times-column dot products just scored it in bulk.'],
+ ['judges.','Stage 3 · Neurons: weight, add, squash decided exactly how much signal flowed on.'],
+ ['This','Stage 4 · Layers: stacked neurons bent simple boundaries into working grammar.'],
+ ['sentence','Stage 5 · Training: every weight involved was tuned downhill by gradient descent tonight.'],
+ ['is','Stage 6 · Embeddings: it sits near "words" on the meaning map, and far from banana now.'],
+ ['maths,','Stage 7 · Attention: this word checked every earlier word before committing itself.'],
+ ['not','Stage 8 · Transformer: the same block, repeated, assembled the whole context.'],
+ ['magic.','Stage 9 · Sampling: softmax plus temperature picked it from the scores. One word per lap.']
+];
+
+function esc(id){ return document.getElementById(id); }
+
+function updateTrack(){
+  var n = 0;
+  for (var i = 0; i < 9; i++){
+    if (S.mods[i]){ n++; esc('m'+i).classList.add('lit'); } else { esc('m'+i).classList.remove('lit'); }
+  }
+  esc('tstat').textContent = 'BUILD ' + n + '/9';
+}
+
+function choose(idx){
+  var sc = SC[S.cur], c = sc.choices[idx];
+  if (c.to === 'RESET'){ resetAll(); return; }
+  if (c.to && c.to.indexOf('LINK:') === 0){ window.location.href = c.to.slice(5); return; }
+  if (c.set){ for (var k in c.set){ S.flags[k] = c.set[k]; } }
+  go(c.to);
+}
+
+function answer(idx){
+  var sc = SC[S.cur], o = sc.check.opts[idx];
+  var fb = esc('cfb');
+  fb.className = 'cfb ' + (o.ok ? 'ok' : 'no');
+  fb.innerHTML = (o.ok ? '<b>MODULE REPAIRED ✔</b><br>' : '<b>NOT QUITE ✖</b><br>') + o.fb;
+  if (o.ok){
+    if (sc.mod !== null && sc.mod !== undefined){ S.mods[sc.mod] = true; updateTrack(); }
+    var btns = document.querySelectorAll('.copt');
+    for (var i = 0; i < btns.length; i++){ btns[i].disabled = true; }
+    btns[idx].classList.add('right');
+    esc('choices').classList.add('open');
+    setTimeout(function(){ esc('choices').scrollIntoView({behavior:'smooth', block:'nearest'}); }, 250);
+  }
+}
+
+function render(){
+  var sc = SC[S.cur];
+  var box = esc('scene');
+  box.style.setProperty('--c', sc.color);
+  var h = '<span class="schip">' + sc.chip + '</span><span class="stime">🕐 ' + sc.time + '</span>';
+  h += '<h2>' + sc.title + '</h2>';
+  h += (typeof sc.body === 'function') ? sc.body() : sc.body;
+  if (sc.check){
+    h += '<div class="check"><div class="ct">◈ Checkpoint · repair the module</div><div class="cq">' + sc.check.q + '</div>';
+    for (var i = 0; i < sc.check.opts.length; i++){
+      h += '<button class="copt" onclick="answer(' + i + ')"><span class="k">' + String.fromCharCode(65 + i) + '</span>' + sc.check.opts[i].t + '</button>';
+    }
+    h += '<div class="cfb" id="cfb"></div></div>';
+  }
+  var open = sc.check ? '' : ' open';
+  h += '<div class="choices' + open + '" id="choices"><div class="cl">' + (sc.choices.length > 1 ? '⌥ Your call' : '→ Continue') + '</div>';
+  for (var j = 0; j < sc.choices.length; j++){
+    var c = sc.choices[j];
+    h += '<button class="chb" onclick="choose(' + j + ')">' + c.t + (c.d ? '<span>' + c.d + '</span>' : '') + '</button>';
+  }
+  h += '</div>';
+  box.innerHTML = h;
+  if (S.started){ esc('story').scrollIntoView({behavior:'smooth'}); }
+  S.started = true;
+}
+
+function go(id){ S.cur = id; render(); }
+
+function runDemo(){
+  var btn = esc('runbtn'), out = esc('dout'), cap = esc('dcap');
+  btn.disabled = true;
+  out.innerHTML = DEMO.map(function(d){ return '<span class="w">' + d[0] + '</span>'; }).join(' ');
+  var ws = out.querySelectorAll('.w'), i = 0;
+  var tick = setInterval(function(){
+    if (i > 0){ ws[i-1].classList.remove('now'); }
+    if (i >= DEMO.length){
+      clearInterval(tick);
+      cap.innerHTML = 'Nine words. Nine ideas. Zero bananas.';
+      esc('after').style.display = 'block';
+      setTimeout(function(){ esc('after').scrollIntoView({behavior:'smooth', block:'nearest'}); }, 300);
+      return;
+    }
+    ws[i].classList.add('on','now');
+    cap.innerHTML = DEMO[i][1];
+    i++;
+  }, 1050);
+}
+
+function resetAll(){
+  S.flags = {}; S.mods = [false,false,false,false,false,false,false,false,false];
+  updateTrack();
+  go('c1');
+}
+
+updateTrack();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI Lab · Upper Secondary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --panel:#ffffff; --ink:#1b2130; --muted:#5b647a; --line:#e6e8f0;
+    --violet:#6d4bff; --violetSoft:#efeaff; --teal:#0fb5ad; --tealSoft:#e0f7f5;
+    --coral:#ff5d73; --amber:#e8920c; --code:#0e1424; --codeInk:#e7ecff; --ok:#17b26a; --bad:#ef4d5a;
+    --shadow:0 1px 2px rgba(20,25,50,.06), 0 12px 30px rgba(30,30,80,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.65;
+    background:
+      linear-gradient(rgba(109,75,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg,rgba(109,75,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+      var(--bg)}
+  .rpbar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--violet),var(--teal));z-index:60}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:11px 18px;
+    background:rgba(246,247,251,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .bt{font-weight:800;letter-spacing:-.02em;font-size:16px;margin-right:auto;display:flex;gap:8px;align-items:center}
+  .topbar .bt .dot{width:9px;height:9px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 4px var(--violetSoft)}
+  .menu{border:none;background:var(--violet);color:#fff;font-weight:600;font-size:13px;border-radius:10px;padding:8px 13px;cursor:pointer;font-family:inherit}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px 90px}
+
+  h1{font-weight:800;letter-spacing:-.03em;font-size:clamp(32px,6vw,50px);line-height:1.02;margin:0 0 8px}
+  h2{font-weight:800;letter-spacing:-.02em;font-size:27px;margin:8px 0 4px}
+  h3{font-weight:700;font-size:18px;margin:24px 0 4px}
+  p{margin:12px 0}
+  .lead{font-size:19px;color:#39415a}
+  .muted{color:var(--muted)}
+  b,strong{font-weight:700}
+  code.inline{font-family:'JetBrains Mono';background:#eef0f8;color:#4a34c7;padding:1px 6px;border-radius:6px;font-size:.9em}
+
+  /* cover */
+  .cover{padding:44px 4px 6px}
+  .kicker{font-family:'JetBrains Mono';font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+  .cover .lead{max-width:60ch}
+  .metastrip{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+  .tag{font-family:'JetBrains Mono';font-size:12px;font-weight:500;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 11px;color:#3a445e}
+  .startbtn{display:inline-block;margin-top:14px;font-weight:700;font-size:16px;color:#fff;background:var(--ink);border-radius:12px;padding:12px 22px;text-decoration:none}
+
+  /* contents */
+  .toc{display:grid;gap:10px;margin:16px 0}
+  .tocitem{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow);text-decoration:none;color:inherit}
+  .tocitem:hover{border-color:var(--violet)}
+  .tocitem .cn{flex:none;width:36px;height:36px;border-radius:9px;background:var(--violetSoft);color:var(--violet);font-family:'JetBrains Mono';font-weight:700;display:flex;align-items:center;justify-content:center}
+  .tocitem h4{margin:0;font-size:16px;font-weight:700} .tocitem .th{color:var(--muted);font-size:13.5px}
+
+  /* module */
+  .module{border-top:1px solid var(--line);margin-top:46px;padding-top:14px}
+  .mhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .mhead .mno{font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:var(--violet);letter-spacing:.1em}
+  .mhead .th{color:var(--muted);font-size:14px}
+
+  /* lab widget */
+  .lab{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:20px 0;box-shadow:var(--shadow)}
+  .labhead{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .labhead:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .warnlab .labhead{color:var(--coral)} .warnlab .labhead:before{background:var(--coral)}
+  .labnote{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .num{font-family:'JetBrains Mono';font-weight:700;color:var(--violet)}
+  .ctrls{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  label.field{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:#3a445e}
+  select,input[type=range]{font-family:inherit}
+  select{border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:14px;background:#fff;font-weight:600;color:var(--ink)}
+  input[type=range]{width:100%;accent-color:var(--violet);height:22px}
+  .slider{display:flex;flex-direction:column;gap:2px;margin:6px 0}
+  .slider .lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:#3a445e}
+  .bar{height:12px;border-radius:999px;background:#eef0f7;overflow:hidden;margin:8px 0}
+  .barfill{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--teal));transition:width .18s}
+  .btn{font-family:inherit;font-weight:600;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+  .btn.primary{background:var(--violet);color:#fff;border-color:var(--violet)}
+
+  /* probability bars */
+  .probrow{display:flex;align-items:center;gap:10px;margin:6px 0;font-family:'JetBrains Mono';font-size:13px}
+  .probrow .tok{width:64px;font-weight:600;color:#3a445e} .probrow .pv{width:56px;text-align:right;color:var(--violet);font-weight:700}
+  .probrow .pbar{flex:1;height:16px;border-radius:6px;background:#eef0f7;overflow:hidden}
+  .probrow .pbar>span{display:block;height:100%;background:linear-gradient(90deg,var(--violet),#a68bff)}
+
+  /* confusion + metrics */
+  .cm{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;font-family:'JetBrains Mono';font-size:13px;margin:10px 0;max-width:360px}
+  .cm .h{color:var(--muted);font-size:11.5px;display:flex;align-items:center;justify-content:center;text-align:center}
+  .cm .cell{border-radius:10px;padding:12px 6px;text-align:center;font-weight:700}
+  .cm .tp,.cm .tn{background:#e7f8ef;color:#0b7a49} .cm .fp,.cm .fn{background:#fdecee;color:#c0303c}
+  .metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .metric{background:var(--violetSoft);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;color:#4a34c7}
+  .metric b{font-family:'JetBrains Mono';font-size:16px;display:block;color:var(--violet)}
+
+  /* stepper */
+  .stepper{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+  .stepper .st{font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:6px 10px;border-radius:8px;background:#eef0f7;color:#6a7391}
+  .stepper .st.on{background:var(--violet);color:#fff}
+  .stagebox{background:#faf9ff;border:1px dashed #d9d2ff;border-radius:12px;padding:14px 16px;min-height:96px}
+  .stagebox .sv{font-family:'JetBrains Mono';font-size:14px;color:var(--ink);margin-top:6px}
+
+  /* code */
+  .codewrap{margin:18px 0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #0b1220}
+  .codebar{display:flex;align-items:center;justify-content:space-between;background:#0a1020;color:#9db2ff;font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:8px 14px}
+  .codebar .acts{display:flex;gap:8px}
+  .codebar button,.codebar a{background:#1a2340;color:#c7d2ff;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono';font-size:11px;text-decoration:none}
+  pre{margin:0;background:var(--code);color:var(--codeInk);padding:14px 16px;overflow:auto;font-family:'JetBrains Mono';font-size:13px;line-height:1.6}
+  pre .c{color:#7488c7} pre .k{color:#ff9d7a} pre .s{color:#8fe6b0} pre .n{color:#8fb8ff}
+
+  /* takeaways */
+  .take{background:linear-gradient(180deg,#f3f0ff,#fff);border:1px solid var(--violetSoft);border-radius:16px;padding:14px 18px;margin:22px 0}
+  .take h3{margin:0 0 8px;color:var(--violet)}
+  .take ul{margin:0;padding-left:18px} .take li{margin:5px 0;font-size:15px}
+  .take li b{color:var(--ink)}
+  .finish{text-align:center;background:linear-gradient(90deg,#efeaff,#e0f7f5);border-radius:18px;padding:28px 18px;margin-top:46px;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<div class="rpbar" id="rp"></div>
+<div class="topbar">
+  <div class="bt"><span class="dot"></span>The AI Lab</div>
+  <a class="menu" href="#contents">Modules</a>
+</div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="kicker">Upper Secondary · Grades 9–12</div>
+    <h1>The AI Lab</h1>
+    <p class="lead">The last stop in Ada's journey, now a working lab. You won't just read how modern AI works; you'll <b>drive it</b>: reshape a probability distribution, move a decision threshold, trace a transformer end to end, and audit a model for bias. Then take the Python to Colab and build the real thing.</p>
+    <div class="metastrip">
+      <span class="tag">interactive widgets</span>
+      <span class="tag">copy + Colab-ready Python</span>
+      <span class="tag">bridge to NOAI / IOAI</span>
+    </div>
+    <a class="startbtn" href="#contents">Enter the lab →</a>
+  </section>
+
+  <!-- CONTENTS -->
+  <section id="contents">
+    <h2>Modules</h2>
+    <p class="muted">Five modules, one per pillar. Each pairs a hands-on widget with the mechanism underneath and runnable code.</p>
+    <div class="toc">
+      <a class="tocitem" href="#m1"><span class="cn">01</span><div><h4>Representation: Embeddings &amp; similarity</h4><div class="th">Vectors, cosine similarity, and bias baked into meaning</div></div></a>
+      <a class="tocitem" href="#m2"><span class="cn">02</span><div><h4>Learning: Neurons, training &amp; evaluation</h4><div class="th">Forward pass, the confusion matrix, precision vs recall, overfitting</div></div></a>
+      <a class="tocitem" href="#m3"><span class="cn">03</span><div><h4>Generation: The transformer pipeline &amp; sampling</h4><div class="th">Tokens → embeddings → attention → probabilities → temperature</div></div></a>
+      <a class="tocitem" href="#m4"><span class="cn">04</span><div><h4>Interaction: Prompting, agents &amp; RAG</h4><div class="th">Chain-of-thought, tool-calling loops, retrieval grounding</div></div></a>
+      <a class="tocitem" href="#m5"><span class="cn">05</span><div><h4>Responsibility: Fairness, limits &amp; governance</h4><div class="th">Auditing per group, model cards, hallucination and real-world cost</div></div></a>
+    </div>
+  </section>
+
+  <!-- MODULE 1 -->
+  <section class="module" id="m1">
+    <div class="mhead"><span class="mno">MODULE 01</span><h2>Representation</h2><span class="th">Embeddings &amp; similarity</span></div>
+    <p>Every modern model begins by turning things into <b>vectors</b>: lists of numbers positioned in a high-dimensional space of meaning. Similar things land close together. The standard way to measure "close" is <b>cosine similarity</b>: the cosine of the angle between two vectors, running from <code class="inline">1</code> (identical direction) through <code class="inline">0</code> (unrelated) to <code class="inline">-1</code> (opposite).</p>
+
+    <div class="lab">
+      <div class="labhead">Interactive · cosine similarity</div>
+      <div class="ctrls">
+        <label class="field">Word A
+          <select id="wA"></select>
+        </label>
+        <label class="field">Word B
+          <select id="wB"></select>
+        </label>
+      </div>
+      <p style="margin:12px 0 4px">cos(A, B) = <span id="cosVal" class="num">–</span></p>
+      <div class="bar"><div id="cosBar" class="barfill"></div></div>
+      <p class="labnote" id="cosNote">Pick two words and watch the score. Try <b>cat / kitten</b> vs <b>cat / car</b>.</p>
+    </div>
+
+    <p>Because words are vectors, you can do <b>arithmetic on meaning</b>. The famous example takes the vector for <i>king</i>, subtracts <i>man</i>, adds <i>woman</i>, and lands near <i>queen</i>.</p>
+    <div class="lab">
+      <div class="labhead">Interactive · vector arithmetic</div>
+      <p style="margin:4px 0"><code class="inline">king − man + woman</code> ≈ <button class="btn primary" onclick="solveAnalogy()">compute nearest word</button> &nbsp; <span id="analogyOut" class="num"></span></p>
+    </div>
+
+    <div class="lab warnlab">
+      <div class="labhead">Interactive · spot the bias</div>
+      <p style="margin:4px 0">In this toy embedding, watch where "nurse" and "engineer" sit relative to "woman" and "man":</p>
+      <p style="margin:6px 0" id="biasOut" class="muted"></p>
+      <p class="labnote">That gap is <b>bias baked into the vectors</b>, learned from biased text. A hiring or search model built on these embeddings could quietly disadvantage people, which is exactly why we <b>audit</b> representations, not just trust them.</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · cosine similarity from scratch</span>
+        <span class="acts"><a href="https://colab.research.google.com/" target="_blank" rel="noopener">Open in Colab</a><button onclick="copyCode(this)">Copy</button></span></div>
+      <pre><code><span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="k">def</span> cosine(a, b):
+    a, b = np.array(a), np.array(b)
+    <span class="k">return</span> a @ b / (np.linalg.norm(a) * np.linalg.norm(b))
+
+king  = np.array([2, 3, 9]);  man   = np.array([2, 5, 7])
+woman = np.array([3, 5, 6]);  queen = np.array([3, 3, 8])
+
+analogy = king - man + woman          <span class="c"># vector arithmetic on meaning</span>
+print(cosine(analogy, queen))          <span class="c"># ~0.99  -> lands near "queen"</span></code></pre>
+    </div>
+
+    <div class="take">
+      <h3>Take-aways</h3>
+      <ul>
+        <li><b>I can</b> compute cosine similarity and do vector arithmetic on embeddings.</li>
+        <li><b>I can</b> demonstrate the bias embedded in vectors and judge its downstream impact.</li>
+        <li><b>I know</b> that computer vision works the same way: a CNN reads an image as grids of pixel numbers.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MODULE 2 -->
+  <section class="module" id="m2">
+    <div class="mhead"><span class="mno">MODULE 02</span><h2>Learning</h2><span class="th">Neurons, training &amp; evaluation</span></div>
+    <p>A neural network is built from <b>neurons</b>. Each one computes a weighted sum of its inputs, adds a bias, and passes the result through an <b>activation</b> function that squashes it into a usable range. Learning is the slow adjustment of those weights (via gradient descent) until predictions improve. Here is a single neuron you can tune by hand.</p>
+
+    <div class="lab">
+      <div class="labhead">Interactive · a neuron's forward pass</div>
+      <p style="margin:4px 0 8px">Input berry: <span class="num">spottiness = 0.9</span>, <span class="num">softness = 0.7</span>. Tune the weights and bias:</p>
+      <div class="slider"><div class="lbl"><span>weight w₁ · spottiness</span><span id="nW1v" class="num">1.5</span></div><input type="range" id="nW1" min="-3" max="3" step="0.1" value="1.5"></div>
+      <div class="slider"><div class="lbl"><span>weight w₂ · softness</span><span id="nW2v" class="num">1.0</span></div><input type="range" id="nW2" min="-3" max="3" step="0.1" value="1.0"></div>
+      <div class="slider"><div class="lbl"><span>bias b</span><span id="nBv" class="num">-1.4</span></div><input type="range" id="nB" min="-3" max="3" step="0.1" value="-1.4"></div>
+      <p style="margin:12px 0 2px">z = w₁·0.9 + w₂·0.7 + b = <span id="nZ" class="num">–</span></p>
+      <p style="margin:2px 0">σ(z) = P(ripe) = <span id="nP" class="num">–</span> &nbsp;→&nbsp; <span id="nDec" class="num">–</span></p>
+      <div class="bar"><div id="nBar" class="barfill"></div></div>
+    </div>
+
+    <h3>Evaluation: precision vs recall</h3>
+    <p>Training a model is easy; knowing whether it's any good is the real skill. We compare predictions to the truth in a <b>confusion matrix</b>, then derive <b>precision</b> (of the things flagged, how many were right?) and <b>recall</b> (of the things that mattered, how many did we catch?). A single <b>threshold</b> controls the trade-off.</p>
+
+    <div class="lab">
+      <div class="labhead">Interactive · precision, recall &amp; the confusion matrix</div>
+      <p style="margin:4px 0 8px">A spam filter scores 12 emails from 0 to 1. Slide the <b>decision threshold</b> and watch the trade-off move.</p>
+      <div class="slider"><div class="lbl"><span>flag as spam if score ≥ …</span><span id="thV" class="num">0.50</span></div><input type="range" id="th" min="0" max="1" step="0.05" value="0.5"></div>
+      <div class="cm">
+        <div class="h"></div><div class="h">predicted<br>spam</div><div class="h">predicted<br>ham</div>
+        <div class="h">actually<br>spam</div><div class="cell tp" id="cTP">–</div><div class="cell fn" id="cFN">–</div>
+        <div class="h">actually<br>ham</div><div class="cell fp" id="cFP">–</div><div class="cell tn" id="cTN">–</div>
+      </div>
+      <div class="metrics">
+        <div class="metric">Precision<b id="mPrec">–</b></div>
+        <div class="metric">Recall<b id="mRec">–</b></div>
+        <div class="metric">Accuracy<b id="mAcc">–</b></div>
+      </div>
+      <p class="labnote" id="thNote">Raise the threshold → precision climbs but recall falls (you miss real spam). Lower it → you catch more spam but throw false alarms. You pick the metric that matches the stakes.</p>
+    </div>
+
+    <div class="lab warnlab">
+      <div class="labhead">Concept · overfitting</div>
+      <p style="margin:4px 0">A model that scores <b>100% on the data it trained on</b> but poorly on <b>unseen test data</b> has <b>overfit</b>: it memorised instead of learning. That is why we always hold out a test set and report the test score, never the training score.</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · forward pass + evaluate</span>
+        <span class="acts"><a href="https://colab.research.google.com/" target="_blank" rel="noopener">Open in Colab</a><button onclick="copyCode(this)">Copy</button></span></div>
+      <pre><code><span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="k">def</span> sigmoid(z): <span class="k">return</span> 1 / (1 + np.exp(-z))
+
+<span class="k">def</span> forward(X, W, b):              <span class="c"># one linear layer + activation</span>
+    <span class="k">return</span> sigmoid(X @ W + b)
+
+X = np.array([[0.9,0.7],[0.2,0.1],[0.8,0.9],[0.3,0.4]])
+y = np.array([1, 0, 1, 0])           <span class="c"># ripe? (true labels)</span>
+W = np.array([1.5, 1.0]);  b = -1.4
+
+pred = (forward(X, W, b) >= 0.5).astype(int)
+print(pred, (pred == y).mean())      <span class="c"># predictions and accuracy</span></code></pre>
+    </div>
+
+    <h3>One model, three phases: training, fine-tuning &amp; inference</h3>
+    <p>Stack neurons into <b>layers</b> (early layers learning simple features, deeper layers combining them into concepts) and you have <b>deep learning</b>. Every deep model then lives through three phases. <b>Training</b> (called <b>pretraining</b> for large models) is the expensive one: the model sweeps huge amounts of general data while gradient descent adjusts the weights until general patterns stick. <b>Fine-tuning</b> continues training that pretrained model on a <b>smaller, focused dataset</b> (medical notes, legal contracts, polite dialogue) so it specialises without starting from scratch; <b>RLHF</b> is fine-tuning where the "dataset" is <b>human feedback</b> ranking the model's own answers. <b>Inference</b> is game day: the trained model answers your prompt using the weights it already has: <b>no weights change at all</b>.</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint · training, fine-tuning or inference?</div>
+      <p style="margin:4px 0 8px">A hospital takes a language model <b>already pretrained on general web text</b> and continues training it on 50,000 anonymised discharge summaries so it writes better clinical notes. Which phase is that?</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" onclick="ckAnswer(0)">Pretraining</button>
+        <button class="btn" onclick="ckAnswer(1)">Fine-tuning</button>
+        <button class="btn" onclick="ckAnswer(2)">Inference</button>
+      </div>
+      <p class="labnote" id="ckOut">Pick one: whether the weights update, and on what data, is the tell.</p>
+    </div>
+
+    <div class="take">
+      <h3>Take-aways</h3>
+      <ul>
+        <li><b>I can</b> implement a forward pass and a small classifier in Python.</li>
+        <li><b>I can</b> read a confusion matrix and compute precision, recall and accuracy, and pick the metric that matters.</li>
+        <li><b>I know</b> the layers of deep learning, and the difference between training, fine-tuning, and inference.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MODULE 3 -->
+  <section class="module" id="m3">
+    <div class="mhead"><span class="mno">MODULE 03</span><h2>Generation</h2><span class="th">The transformer pipeline &amp; sampling</span></div>
+    <p>A large language model is a next-token predictor. Text flows through a fixed pipeline: it is split into <b>tokens</b>, each token becomes an <b>embedding</b>, <b>attention</b> lets every position weigh the others, and out come <b>probabilities</b> over the whole vocabulary. Finally we <b>sample</b> from those probabilities, and one dial, <b>temperature</b>, controls how adventurous that sampling is.</p>
+
+    <div class="lab">
+      <div class="labhead">Interactive · temperature &amp; sampling</div>
+      <p style="margin:4px 0 8px">Fixed model scores (logits) for the next token after <i>"The cat sat on the ___"</i>. Move the temperature and watch the distribution reshape.</p>
+      <div class="slider"><div class="lbl"><span>temperature T</span><span id="tV" class="num">1.0</span></div><input type="range" id="temp" min="0.1" max="2" step="0.1" value="1.0"></div>
+      <div id="probBars"></div>
+      <p class="labnote" id="tNote"></p>
+    </div>
+
+    <p>Low temperature makes the top token almost certain: safe but repetitive. High temperature flattens the distribution: creative, but more likely to go off the rails. This single trade-off is why the same prompt can give different answers.</p>
+
+    <div class="lab">
+      <div class="labhead">Interactive · trace the transformer</div>
+      <div class="stepper" id="tfSteps"></div>
+      <div class="stagebox"><div id="tfTitle" style="font-weight:700"></div><div class="sv" id="tfViz"></div><div id="tfText" class="labnote"></div></div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="tfPrev()">← Prev</button><button class="btn primary" onclick="tfNext()">Next →</button></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span>PYTHON · softmax with temperature</span>
+        <span class="acts"><a href="https://colab.research.google.com/" target="_blank" rel="noopener">Open in Colab</a><button onclick="copyCode(this)">Copy</button></span></div>
+      <pre><code><span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="k">def</span> softmax(logits, T=1.0):
+    z = np.array(logits) / T
+    z = z - z.max()                    <span class="c"># numerical stability</span>
+    e = np.exp(z)
+    <span class="k">return</span> e / e.sum()
+
+logits = [3.0, 2.0, 1.5, 0.5, -1.0]    <span class="c"># mat, floor, sofa, roof, banana</span>
+print(softmax(logits, T=0.5))          <span class="c"># peaked  -> almost always "mat"</span>
+print(softmax(logits, T=1.5))          <span class="c"># flatter -> more variety (and risk)</span></code></pre>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Concept · diffusion</div>
+      <p style="margin:4px 0">Image generators use a different idea: <b>diffusion</b>. A model learns to take an image buried in random noise and remove that noise step by step, <b>conditioned on your prompt</b>, until a picture emerges, like reversing static back into a photo.</p>
+    </div>
+
+    <div class="take">
+      <h3>Take-aways</h3>
+      <ul>
+        <li><b>I can</b> trace the transformer pipeline end to end: tokens → embeddings → attention → next-token probabilities → sampling.</li>
+        <li><b>I can</b> compute a softmax with temperature and interpret the usefulness-versus-reliability trade-off.</li>
+        <li><b>I know</b> diffusion generates images by reversing noise, conditioned on a prompt.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MODULE 4 -->
+  <section class="module" id="m4">
+    <div class="mhead"><span class="mno">MODULE 04</span><h2>Interaction</h2><span class="th">Prompting, agents &amp; RAG</span></div>
+    <p>A model is only as good as how you steer it. A <b>system prompt</b> sets its role and rules; <b>few-shot</b> examples show it the pattern to copy; and <b>chain-of-thought</b> ("think step by step") makes it reason before answering. Together they turn a raw model into a reliable tool.</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span>PROMPT · system + few-shot + chain-of-thought</span>
+        <span class="acts"><button onclick="copyCode(this)">Copy</button></span></div>
+      <pre><code>SYSTEM: You are a careful maths tutor. Always show your steps.
+
+<span class="c"># few-shot example teaches the format</span>
+Q: A shirt is $40 with 25% off. Final price?
+A: 25% of 40 = 10.  40 - 10 = 30.  Answer: $30.
+
+<span class="c"># chain-of-thought on the real question</span>
+Q: A $240 jacket has 15% off. Final price?
+A: Let's think step by step. ___</code></pre>
+    </div>
+
+    <p>A plain model only talks. An <b>agent</b> can act: it runs a loop (plan, call a <b>tool</b>, observe the result, then re-plan) until the goal is met. Step through one below.</p>
+    <div class="lab">
+      <div class="labhead">Interactive · an agent's tool-calling loop</div>
+      <div class="stepper" id="agSteps"></div>
+      <div class="stagebox"><div id="agTitle" style="font-weight:700"></div><div class="sv" id="agViz"></div><div id="agText" class="labnote"></div></div>
+      <div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="agPrev()">← Prev</button><button class="btn primary" onclick="agNext()">Next →</button></div>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Concept · retrieval-augmented generation (RAG)</div>
+      <p style="margin:4px 0"><b>RAG</b> fetches relevant, trusted passages first, then asks the model to answer <b>using only those sources</b>, and to cite them. It grounds answers in real documents, which cuts hallucination. But it has limits: if retrieval brings back the wrong passage, the model can still be confidently wrong.</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codebar"><span>PSEUDOCODE · the agent loop</span>
+        <span class="acts"><button onclick="copyCode(this)">Copy</button></span></div>
+      <pre><code>goal = "What is 15% of $240?"
+while not done:
+    thought = model.plan(goal, memory)
+    if thought.needs_tool:
+        obs = call(thought.tool, thought.args)   <span class="c"># calculator -> 36.0</span>
+        memory.add(obs)                          <span class="c"># observe, then re-plan</span>
+    else:
+        answer = model.respond(goal, memory)
+        done = True</code></pre>
+    </div>
+
+    <div class="take">
+      <h3>Take-aways</h3>
+      <ul>
+        <li><b>I can</b> construct chain-of-thought, system and few-shot prompts.</li>
+        <li><b>I can</b> design and evaluate a multi-step agent or RAG system against a defined metric.</li>
+        <li><b>I know</b> how an agentic system plans, calls tools, observes and re-plans, and where each can fail.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MODULE 5 -->
+  <section class="module" id="m5">
+    <div class="mhead"><span class="mno">MODULE 05</span><h2>Responsibility</h2><span class="th">Fairness, limits &amp; governance</span></div>
+    <p>The most important module. A model trained to predict the most <b>plausible</b> next token is not optimising for <b>truth</b>, so a <b>hallucination</b> (a fluent, confident, false answer) is a built-in risk, not a bug. Techniques like RLHF and RAG reduce it but never fully remove it. Using AI responsibly means measuring its harms, not just its accuracy.</p>
+
+    <div class="lab warnlab">
+      <div class="labhead">Interactive · fairness audit</div>
+      <p style="margin:4px 0 8px">A loan model is <b>90% accurate overall</b>. Impressive, until you break the score down by group.</p>
+      <button class="btn primary" onclick="runAudit()">Run the audit →</button>
+      <div id="auditOut" style="margin-top:12px"></div>
+      <p class="labnote">Aggregate accuracy can hide serious harm to a subgroup. Auditing <b>per group</b>, and writing it down in a model card, is how you catch it before it ships.</p>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Artifact · a model card (excerpt)</div>
+      <pre style="background:#faf9ff;color:#2a3350;border-radius:12px;border:1px dashed #d9d2ff;font-size:12.5px"><code><span class="c"># Model Card: LoanScorer v0.3</span>
+Intended use : screen applications for human review (NOT auto-decide)
+Training data: 40k past loans, 2019-2024 (under-represents rural applicants)
+Metrics      : accuracy 0.90 | recall(group A) 0.94 | recall(group B) 0.71
+Limitations  : weaker on thin credit histories; do not use outside training region
+Risks        : disparate impact by group -> require human oversight + appeal route</code></pre>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Concept · governance &amp; real-world cost</div>
+      <p style="margin:4px 0"><b>Governance</b> means accountability, transparency and explainable AI (being able to say <i>why</i> a decision was made). And every answer has a physical cost: training and running large models consumes real <b>energy and water</b>. Responsible design weighs the benefit against that footprint.</p>
+    </div>
+
+    <div class="take">
+      <h3>Take-aways</h3>
+      <ul>
+        <li><b>I can</b> interpret fairness metrics and error types, and audit a model or dataset, documenting it in a model card.</li>
+        <li><b>I know</b> why hallucination follows from the next-token objective, and the limits of RLHF and retrieval.</li>
+        <li><b>I care</b> about governance, accountability, and the societal and environmental cost of what I deploy.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <div class="finish">
+    <div style="font-size:44px">🧪🚀</div>
+    <h2 style="margin:6px 0">You've reached the frontier</h2>
+    <p style="max-width:58ch;margin:8px auto">You can now drive the machinery of modern AI: represent data as vectors, train and evaluate a model, trace a transformer, steer it with prompts and tools, and audit it for harm. This is where the syllabus ends and the real work begins: the same ideas, at full scale, are what you'll build in the <b>National (NOAI)</b> and <b>International (IOAI)</b> Olympiads in Artificial Intelligence.</p>
+    <p style="font-weight:700;color:var(--violet)">Open the notebooks. Build something that matters.</p>
+  </div>
+
+</div>
+<script>
+function el(id){ return document.getElementById(id); }
+function copyCode(btn){
+  var code = btn.closest('.codewrap').querySelector('code').innerText;
+  if(navigator.clipboard){ navigator.clipboard.writeText(code); }
+  var old = btn.textContent; btn.textContent='Copied!'; setTimeout(function(){ btn.textContent=old; },1400);
+}
+window.addEventListener('scroll', function(){
+  var h=document.documentElement, sc=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  var rp=el('rp'); if(rp) rp.style.width=sc+'%';
+});
+
+/* ---- embeddings ---- */
+var VEC = {
+  cat:[9,1,1], kitten:[8,2,1], dog:[7,3,2], car:[1,8,3],
+  king:[2,3,9], queen:[3,3,8], man:[2,5,7], woman:[3,5,6],
+  nurse:[3,6,5], engineer:[3,5,8]
+};
+function dot(a,b){ var s=0; for(var i=0;i<a.length;i++) s+=a[i]*b[i]; return s; }
+function norm(a){ return Math.sqrt(dot(a,a)); }
+function cos(a,b){ return dot(a,b)/(norm(a)*norm(b)); }
+function fillSelect(id, sel){ var o=''; for(var w in VEC){ o+='<option'+(w===sel?' selected':'')+'>'+w+'</option>'; } el(id).innerHTML=o; }
+function updCos(){
+  var a=el('wA').value, b=el('wB').value, c=cos(VEC[a],VEC[b]);
+  el('cosVal').textContent=c.toFixed(3);
+  el('cosBar').style.width=Math.max(0,c*100)+'%';
+  var n = c>0.9 ? 'very close in meaning' : (c>0.6 ? 'somewhat related' : 'barely related');
+  el('cosNote').textContent='cos('+a+', '+b+') = '+c.toFixed(3)+': '+n+'.';
+}
+function solveAnalogy(){
+  var v=[]; for(var i=0;i<3;i++) v[i]=VEC.king[i]-VEC.man[i]+VEC.woman[i];
+  var best='', bc=-2;
+  for(var w in VEC){ if(w==='king'||w==='man'||w==='woman') continue; var c=cos(v,VEC[w]); if(c>bc){ bc=c; best=w; } }
+  el('analogyOut').textContent='= '+best+'  (cos '+bc.toFixed(3)+')';
+}
+function showBias(){
+  var nw=cos(VEC.nurse,VEC.woman), nm=cos(VEC.nurse,VEC.man);
+  var em=cos(VEC.engineer,VEC.man), ew=cos(VEC.engineer,VEC.woman);
+  el('biasOut').innerHTML='cos(nurse, woman) = <b>'+nw.toFixed(3)+'</b> &nbsp;·&nbsp; cos(nurse, man) = '+nm.toFixed(3)+
+    '<br>cos(engineer, man) = <b>'+em.toFixed(3)+'</b> &nbsp;·&nbsp; cos(engineer, woman) = '+ew.toFixed(3);
+}
+
+/* ---- neuron ---- */
+function updNeuron(){
+  var w1=+el('nW1').value, w2=+el('nW2').value, b=+el('nB').value;
+  el('nW1v').textContent=w1.toFixed(1); el('nW2v').textContent=w2.toFixed(1); el('nBv').textContent=b.toFixed(1);
+  var z=w1*0.9 + w2*0.7 + b, p=1/(1+Math.exp(-z));
+  el('nZ').textContent=z.toFixed(2); el('nP').textContent=p.toFixed(2);
+  el('nDec').textContent = p>=0.5 ? 'RIPE ✓' : 'unripe';
+  el('nBar').style.width=(p*100).toFixed(0)+'%';
+}
+
+/* ---- evaluation ---- */
+var MAIL=[{s:0.95,y:1},{s:0.88,y:1},{s:0.80,y:1},{s:0.72,y:0},{s:0.65,y:1},{s:0.55,y:0},
+          {s:0.48,y:1},{s:0.40,y:0},{s:0.33,y:0},{s:0.25,y:1},{s:0.15,y:0},{s:0.07,y:0}];
+function updEval(){
+  var t=+el('th').value; el('thV').textContent=t.toFixed(2);
+  var TP=0,FP=0,FN=0,TN=0;
+  for(var i=0;i<MAIL.length;i++){ var m=MAIL[i], pred=m.s>=t;
+    if(pred&&m.y) TP++; else if(pred&&!m.y) FP++; else if(!pred&&m.y) FN++; else TN++; }
+  el('cTP').textContent=TP; el('cFP').textContent=FP; el('cFN').textContent=FN; el('cTN').textContent=TN;
+  var prec=(TP+FP)?TP/(TP+FP):0, rec=(TP+FN)?TP/(TP+FN):0, acc=(TP+TN)/MAIL.length;
+  el('mPrec').textContent=prec.toFixed(2); el('mRec').textContent=rec.toFixed(2); el('mAcc').textContent=acc.toFixed(2);
+}
+
+/* ---- phase checkpoint ---- */
+var CK_KEY = 1;   // correct answer: fine-tuning
+var CK_FB = [
+  'Pretraining is the first pass over huge <b>general</b> data; this model has already had it. Continuing on a focused dataset is something else.',
+  'Further training a pretrained model on a smaller, focused dataset (weights updating again) is <b>fine-tuning</b>.',
+  'Inference never updates the weights; it only <b>uses</b> them. Here the hospital is still training on new data.'
+];
+function ckAnswer(i){
+  var right = (i === CK_KEY);
+  el('ckOut').innerHTML = (right
+    ? '<b style="color:var(--ok)">✓ Correct.</b> '
+    : '<b style="color:var(--bad)">✗ Not quite.</b> ') + CK_FB[i];
+}
+
+/* ---- temperature ---- */
+var TOK=[['mat',3.0],['floor',2.0],['sofa',1.5],['roof',0.5],['banana',-1.0]];
+function updTemp(){
+  var T=+el('temp').value; el('tV').textContent=T.toFixed(1);
+  var mx=-1e9, i; for(i=0;i<TOK.length;i++){ var z=TOK[i][1]/T; if(z>mx) mx=z; }
+  var e=[], sum=0; for(i=0;i<TOK.length;i++){ var v=Math.exp(TOK[i][1]/T-mx); e.push(v); sum+=v; }
+  var html=''; for(i=0;i<TOK.length;i++){ var p=e[i]/sum;
+    html+='<div class="probrow"><span class="tok">'+TOK[i][0]+'</span><span class="pbar"><span style="width:'+(p*100).toFixed(0)+'%"></span></span><span class="pv">'+(p*100).toFixed(0)+'%</span></div>'; }
+  el('probBars').innerHTML=html;
+  el('tNote').textContent = T<0.7 ? 'Low temperature: the top token dominates. Safe but repetitive.'
+    : (T>1.3 ? 'High temperature: the distribution flattens. Creative, but riskier.' : 'Around T = 1: a balanced mix.');
+}
+
+/* ---- transformer stepper ---- */
+var TF=[
+ {t:'1 · Tokenise', v:'"The cat sat on the ___"  ->  [The][cat][sat][on][the]', x:'Text is split into tokens; each maps to an ID number.'},
+ {t:'2 · Embed', v:'[cat]  ->  [0.21, -0.44, 0.90, ...]', x:'Each token ID becomes a vector (embedding) in meaning-space.'},
+ {t:'3 · Attention', v:'weights while choosing next word:  cat 0.5 · sat 0.3 · the 0.1', x:'Every position weighs the others; relevant words get more attention.'},
+ {t:'4 · Probabilities', v:'mat 0.55 · floor 0.20 · sofa 0.15 · roof 0.07 · banana 0.03', x:'The model outputs a probability for every token in the vocabulary.'},
+ {t:'5 · Sample', v:'temperature dial  ->  pick "mat"', x:'We sample from those probabilities; temperature sets the risk.'}
+];
+var tfI=0;
+function tfRender(){
+  var s=''; for(var i=0;i<TF.length;i++) s+='<span class="st'+(i===tfI?' on':'')+'">'+TF[i].t+'</span>';
+  el('tfSteps').innerHTML=s; el('tfTitle').textContent=TF[tfI].t; el('tfViz').textContent=TF[tfI].v; el('tfText').textContent=TF[tfI].x;
+}
+function tfNext(){ tfI=(tfI+1)%TF.length; tfRender(); }
+function tfPrev(){ tfI=(tfI-1+TF.length)%TF.length; tfRender(); }
+
+/* ---- agent stepper ---- */
+var AG=[
+ {t:'Goal', v:'"What is 15% of $240?"', x:'The user hands the agent a goal.'},
+ {t:'Plan', v:'model: "exact arithmetic; I should use a tool, not guess."', x:'It reasons about what to do next.'},
+ {t:'Act', v:'call: calculator("0.15 * 240")', x:'It invokes a tool instead of hallucinating a number.'},
+ {t:'Observe', v:'tool returns  ->  36.0', x:'It reads the result and stores it in memory.'},
+ {t:'Answer', v:'"15% of $240 is $36."', x:'Goal met, so it replies. If not, it loops and re-plans.'}
+];
+var agI=0;
+function agRender(){
+  var s=''; for(var i=0;i<AG.length;i++) s+='<span class="st'+(i===agI?' on':'')+'">'+AG[i].t+'</span>';
+  el('agSteps').innerHTML=s; el('agTitle').textContent=AG[agI].t; el('agViz').textContent=AG[agI].v; el('agText').textContent=AG[agI].x;
+}
+function agNext(){ agI=(agI+1)%AG.length; agRender(); }
+function agPrev(){ agI=(agI-1+AG.length)%AG.length; agRender(); }
+
+/* ---- fairness audit ---- */
+function runAudit(){
+  var rows=[['Overall accuracy',0.90,'var(--violet)'],['Group A · recall',0.94,'var(--ok)'],['Group B · recall',0.71,'var(--bad)']];
+  var h=''; for(var i=0;i<rows.length;i++){
+    h+='<div style="margin:6px 0"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600"><span>'+rows[i][0]+'</span><span class="num">'+rows[i][1].toFixed(2)+'</span></div>'+
+       '<div class="bar"><div class="barfill" style="width:'+(rows[i][1]*100)+'%;background:'+rows[i][2]+'"></div></div></div>';
+  }
+  h+='<p class="labnote" style="color:var(--coral)"><b>Group B is being failed.</b> The 90% headline hid a 23-point recall gap: real people wrongly denied. This is why you audit per group.</p>';
+  el('auditOut').innerHTML=h;
+}
+
+/* ---- init ---- */
+function init(){
+  fillSelect('wA','cat'); fillSelect('wB','kitten');
+  el('wA').onchange=updCos; el('wB').onchange=updCos; updCos(); showBias();
+  el('nW1').oninput=updNeuron; el('nW2').oninput=updNeuron; el('nB').oninput=updNeuron; updNeuron();
+  el('th').oninput=updEval; updEval();
+  el('temp').oninput=updTemp; updTemp();
+  tfRender(); agRender();
+}
+init();
+</script>
+</body>
+</html>

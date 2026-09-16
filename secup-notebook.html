@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Upper Secondary · Python Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:#0f1016;color:#e9e7f2;line-height:1.6}
+  ::selection{background:#8E6BFF;color:#fff}
+  @keyframes nbPulse{0%,100%{opacity:.45}50%{opacity:1}}
+  @keyframes usDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,24px) scale(1.1)}100%{transform:translate(0,0) scale(1)}}
+  .bar{height:6px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF)}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 26px;background:rgba(15,16,22,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(142,107,255,.18)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#e9e7f2;margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:999px;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.14);color:#b9a6ff;white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:#8E6BFF;transform:translateY(-1px)}
+  .pill.solid{background:#8E6BFF;border-color:#8E6BFF;color:#fff}
+  header.hero{position:relative;padding:clamp(42px,6vw,66px) 26px clamp(38px,5vw,56px);overflow:hidden}
+  header.hero .glow1{position:absolute;top:-120px;right:-60px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.38),transparent 66%);filter:blur(40px);animation:usDrift 18s ease-in-out infinite;pointer-events:none}
+  header.hero .glow2{position:absolute;bottom:-160px;left:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(22,196,192,.18),transparent 66%);filter:blur(44px);animation:usDrift 22s ease-in-out infinite;pointer-events:none}
+  header.hero .inner{position:relative;z-index:2;max-width:980px;margin:0 auto}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#b9a6ff;border:1px solid rgba(142,107,255,.4);padding:6px 13px;border-radius:8px;margin-bottom:18px}
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:#8E6BFF;animation:nbPulse 2s infinite}
+  header.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 12px}
+  header.hero h1 .vio{color:#b9a6ff}
+  header.hero p.lede{font-size:clamp(.98rem,1.3vw,1.1rem);color:#c4c0db;max-width:64ch;margin:0}
+  .toolbar{position:sticky;top:60px;z-index:40;max-width:980px;margin:6px auto 0;padding:0 26px}
+  .toolbar .box{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#171823;border:1px solid rgba(142,107,255,.3);border-radius:14px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  .kchip{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:8px 14px;border-radius:999px;border:2px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#a09bbd}
+  .kchip .kdot{width:9px;height:9px;border-radius:50%;background:#FFB23E;animation:nbPulse 1.4s infinite}
+  .kchip.ready .kdot{background:#8E6BFF;animation:none}
+  .kchip.running .kdot{background:#16C4C0;animation:nbPulse .7s infinite}
+  .kchip.offline .kdot{background:#FF6A5A;animation:none}
+  .kchip.ready{border-color:#8E6BFF;color:#b9a6ff}
+  .kchip.offline{border-color:#FF6A5A;color:#ff8d80}
+  .runall{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:10px 18px;border-radius:999px;background:#8E6BFF;color:#fff;border:none;cursor:pointer;transition:.15s}
+  .runall:hover:not(:disabled){transform:translateY(-1px);background:#7a56ea}
+  .runall:disabled{opacity:.45;cursor:not-allowed}
+  .toolbar .hint{font-size:12.5px;color:#8b86a8;margin-left:auto}
+  main{max-width:980px;margin:0 auto;padding:34px 26px 60px}
+  .nb-sec{background:#171823;border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:clamp(22px,3vw,32px);margin-bottom:26px}
+  .chip{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#b9a6ff;background:rgba(142,107,255,.1);border:1px solid rgba(142,107,255,.35);border-radius:999px;padding:5px 12px;margin-bottom:12px}
+  .nb-sec h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.35rem,2.6vw,1.8rem);letter-spacing:-.02em;margin:0 0 10px;color:#e9e7f2}
+  .nb-sec p.ex{margin:0 0 16px;font-size:15px;color:#b3afca;max-width:74ch}
+  .nb-sec p.ex b{color:#e9e7f2}
+  .nb-sec code{font-family:'Space Mono',monospace;font-size:.88em;background:rgba(142,107,255,.12);border:1px solid rgba(142,107,255,.3);border-radius:6px;padding:1px 6px;color:#b9a6ff}
+  .cell{border:1px solid rgba(142,107,255,.35);border-radius:14px;overflow:hidden;margin:0 0 14px;background:#0b0c12}
+  .cellbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:#12131e;border-bottom:1px solid rgba(142,107,255,.25)}
+  .cno{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#b9a6ff;min-width:64px}
+  .cellbar .spacer{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:#6f6a8c}
+  .runbtn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:6px 14px;border-radius:8px;background:#8E6BFF;color:#fff;border:none;cursor:pointer;transition:.15s}
+  .runbtn:hover:not(:disabled){background:#a087ff}
+  .runbtn:disabled{opacity:.45;cursor:not-allowed}
+  textarea.code{display:block;width:100%;border:none;outline:none;resize:none;background:#0b0c12;color:#e6e1ff;font-family:'Space Mono',monospace;font-size:13.5px;line-height:1.62;padding:14px 16px;caret-color:#b9a6ff;overflow:hidden}
+  textarea.code:focus{background:#0e0f17}
+  pre.out{margin:0;padding:12px 16px;background:#12131c;border-top:2px solid #8E6BFF;font-family:'Space Mono',monospace;font-size:12.8px;line-height:1.6;color:#d6d2ea;white-space:pre-wrap;word-break:break-word}
+  pre.out .res{color:#b9a6ff;font-weight:700}
+  pre.out .err{color:#ff8d80;font-weight:700}
+  pre.out .sys{color:#8b86a8;font-style:italic}
+  .try{margin:14px 0 0;font-size:14px;color:#c4c0db;background:rgba(142,107,255,.08);border:1px dashed #8E6BFF;border-radius:12px;padding:11px 15px}
+  .try b{color:#b9a6ff}
+  footer.pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding:8px 24px 20px}
+  footer.credit{text-align:center;border-top:1px solid rgba(255,255,255,.08);padding:26px;font-size:13px;color:#6f6a8c}
+  @media (max-width:640px){.toolbar{top:104px}.toolbar .hint{display:none}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:#8E6BFF">.</span>26</b></a>
+  <a class="pill" href="secup-syllabus.html">← Back to syllabus</a>
+  <a class="pill" href="secup-lab.html">Practice Lab</a>
+  <a class="pill solid" href="secup-problem-set-b.html">Problem sets →</a>
+</nav>
+
+<header class="hero">
+  <div class="glow1"></div>
+  <div class="glow2"></div>
+  <div class="inner">
+    <div class="kicker"><span class="dot"></span>Interactive Notebook · Grades 9–12</div>
+    <h1>The machinery,<br><span class="vio">runnable</span></h1>
+    <p class="lede">A real Python notebook that runs entirely in your browser: nothing to install, numpy included. Eight builds trace the full pipeline: embeddings and the bias inside them, a convolution, a forward pass and its loss, a trained classifier with honest metrics, temperature sampling, retrieval-grounded prompting, and a fairness audit written up as a model card. Every cell shares one Python memory; edit anything and run it again.</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="box">
+    <span class="kchip" id="kchip"><span class="kdot"></span><span id="kmsg">Kernel: loading Python + numpy…</span></span>
+    <button class="runall" id="runall" disabled>▶▶ Run all</button>
+    <span class="hint">Tip: press <b>Shift + Enter</b> inside a cell to run it</span>
+  </div>
+</div>
+
+<main>
+<!-- Section 1 · Vectors of meaning · Outcomes: US.P1.1 (compute embedding similarity with cosine similarity and demonstrate vector arithmetic) -->
+<section class="nb-sec" id="s1">
+  <span class="chip">01 · Representation · embeddings</span>
+  <h2>Vectors of meaning</h2>
+  <p class="ex">A language model stores every token as an <b>embedding</b>: a list of numbers positioned so that similar meanings sit close together. Distance is measured with <b>cosine similarity</b>: the cosine of the angle between two vectors, <code>a·b / (|a||b|)</code>, which is <code>1.0</code> for parallel vectors, <code>0</code> for unrelated ones and negative for opposites. Below is a toy 4-dimensional space (real models use hundreds of dimensions). Run the cell: <code>king</code> and <code>queen</code> come out at <b>0.787</b>, <code>king</code> and <code>cabbage</code> at a distant <b>0.097</b>.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">cosine similarity</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">import numpy as np
+
+E = {
+    "king":    np.array([ 0.90,  0.32, 0.05, 0.10]),
+    "queen":   np.array([ 0.88, -0.30, 0.06, 0.11]),
+    "man":     np.array([ 0.10,  0.60, 0.04, 0.06]),
+    "woman":   np.array([ 0.08, -0.58, 0.05, 0.07]),
+    "cabbage": np.array([ 0.01,  0.02, 0.95, 0.30]),
+}
+# dimensions: [royalty, masculine&lt;-&gt;feminine, vegetable, misc]
+
+def cosine(a, b):
+    return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b)))
+
+for a, b in [("king", "queen"), ("king", "man"), ("king", "cabbage")]:
+    print(f"cos({a}, {b}) = {cosine(E[a], E[b]):.3f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Because meanings are now geometry, you can do <b>arithmetic on them</b>. The famous test: take <code>king</code>, subtract <code>man</code>, add <code>woman</code>: the result should land near <code>queen</code>. Run it and check the ranking: <code>queen</code> wins at <b>0.903</b>. Nobody programmed that; it falls out of where the vectors sit.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">king − man + woman</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">target = E["king"] - E["man"] + E["woman"]
+print("king - man + woman =", np.round(target, 2))
+
+ranked = sorted(E, key=lambda w: cosine(target, E[w]), reverse=True)
+for w in ranked:
+    print(f"{w:&gt;8}: {cosine(target, E[w]):.3f}")
+print("Closest word:", ranked[0])</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> add a sixth word, <code>"prince": np.array([0.85, 0.55, 0.04, 0.08])</code>, to <code>E</code> in the first cell and re-run both. Then predict what <code>prince − man + woman</code> should land on before testing it. What breaks if you set every dimension of a word to zero?</p>
+</section>
+
+<!-- Section 2 · Bias in the space · Outcomes: US.P1.2 (demonstrate the bias baked into embeddings), US.P1.3 (judge the impact of embedded bias on a downstream use) -->
+<section class="nb-sec" id="s2">
+  <span class="chip">02 · Representation · bias</span>
+  <h2>Bias in the space</h2>
+  <p class="ex">Embeddings are learnt from human text, so they absorb human associations, including ones we would rather they didn't. A standard audit: build a <b>gender axis</b> as the unit vector <code>man − woman</code>, then <b>project</b> profession vectors onto it with a dot product. Positive projection = the space treats the word as male-leaning; negative = female-leaning. Run it: <code>engineer</code> lands at <b>+0.499</b>, <code>nurse</code> at <b>−0.552</b>, even though a profession has no gender.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">projection onto a gender axis</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">P = {
+    "nurse":     np.array([0.20, -0.55, 0.05, 0.60]),
+    "engineer":  np.array([0.25,  0.50, 0.04, 0.62]),
+    "teacher":   np.array([0.22, -0.02, 0.05, 0.61]),
+    "scientist": np.array([0.24,  0.08, 0.04, 0.63]),
+}
+
+axis = E["man"] - E["woman"]
+axis = axis / np.linalg.norm(axis)          # unit-length gender axis
+
+for job, v in P.items():
+    proj = float(v @ axis)
+    lean = "male-leaning" if proj &gt; 0.05 else ("female-leaning" if proj &lt; -0.05 else "~ neutral")
+    print(f"{job:&gt;10}: projection = {proj:+.3f}  ({lean})")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Why does this matter <b>downstream</b>? Imagine a CV-screening tool that ranks applicants by embedding similarity to the job title. Run the cell: the space says a man "fits" <code>engineer</code> at <b>+0.711</b> while a woman scores <b>−0.454</b>, a huge gap driven entirely by the gender dimension, not by any skill. A system built on these vectors inherits the prejudice invisibly, at scale, with a veneer of mathematical objectivity.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">downstream impact</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">for job in ["engineer", "nurse"]:
+    print(f"Who fits '{job}'? (cosine to each person)")
+    for person in ["man", "woman"]:
+        print(f"   cos({job}, {person}) = {cosine(P[job], E[person]):+.3f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> debias <code>engineer</code> by subtracting its gender component (<code>v - (v @ axis) * axis</code>), then re-project it and re-run the cosine comparison. Does the man/woman gap close? Note what information you did <i>not</i> lose: the royalty, vegetable and skill dimensions are untouched. Real debiasing is harder, but this is the core idea.</p>
+</section>
+<!-- Section 3 · A pixel grid meets a filter · Outcomes: US.P1.4 (explain how computer vision and CNNs read images as pixel grids) -->
+<section class="nb-sec" id="s3">
+  <span class="chip">03 · Representation · vision</span>
+  <h2>A pixel grid meets a filter</h2>
+  <p class="ex">To a computer, an image is a <b>grid of numbers</b>: here a 5×5 patch where <code>9</code> is bright and <code>0</code> is dark, with a vertical edge down the middle. A <b>convolution</b> slides a small 3×3 <b>kernel</b> across the grid; at each position it multiplies overlapping numbers and sums them. This kernel is a vertical-edge detector: it responds where left ≠ right. Run it: the feature map lights up with <b>27</b>s exactly along the edge and stays <b>0</b> in the flat region. This one operation, stacked and repeated with <i>learnt</i> kernels, is the entire idea of a convolutional neural network (CNN).</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">hand-rolled 3×3 convolution</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">image = [
+    [9, 9, 9, 0, 0],
+    [9, 9, 9, 0, 0],
+    [9, 9, 9, 0, 0],
+    [9, 9, 9, 0, 0],
+    [9, 9, 9, 0, 0],
+]
+kernel = [[1, 0, -1],
+          [1, 0, -1],
+          [1, 0, -1]]      # vertical-edge detector
+
+feature_map = []
+for r in range(3):                    # slide the window
+    row = []
+    for c in range(3):
+        total = 0
+        for i in range(3):
+            for j in range(3):
+                total += image[r + i][c + j] * kernel[i][j]
+        row.append(total)
+    feature_map.append(row)
+
+for row in feature_map:
+    print(row, "  ", "".join("#" if v != 0 else "." for v in row))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Kernels are <b>orientation-specific</b>. Rotate the detector 90° and run it on the same image: every output is <b>0</b>, because the image never changes from top to bottom. A trained CNN holds thousands of kernels: some find edges, later layers combine edges into textures, shapes, and eventually "cat". Training is just gradient descent choosing the kernel numbers (which is exactly where the next section picks up).</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">a horizontal detector sees nothing</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">kernel_h = [[ 1,  1,  1],
+            [ 0,  0,  0],
+            [-1, -1, -1]]   # horizontal-edge detector
+
+for r in range(3):
+    row = []
+    for c in range(3):
+        total = 0
+        for i in range(3):
+            for j in range(3):
+                total += image[r + i][c + j] * kernel_h[i][j]
+        row.append(total)
+    print(row)</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> redraw <code>image</code> so the bright region is the <b>top two rows</b> instead of the left three columns, predict both feature maps, then run the cells to check. Bonus: make an image containing a corner. Which positions do <i>both</i> detectors fire on?</p>
+</section>
+
+<!-- Section 4 · Forward pass & loss · Outcomes: US.P2.1 (explain forward pass, activation, loss, gradient-descent / backpropagation intuition); also supports US.P2.3 (implement a forward pass in Python) -->
+<section class="nb-sec" id="s4">
+  <span class="chip">04 · Learning · forward pass</span>
+  <h2>Forward pass &amp; loss</h2>
+  <p class="ex">A neural network is a stack of matrix multiplications with a squashing function between them. Here is a complete <b>2-2-1 network</b>: two inputs, two hidden neurons, one output. Each layer computes <code>weights @ inputs + bias</code>, then applies the <b>sigmoid</b> activation <code>1/(1+e^−z)</code> to squash the result into (0, 1). The <b>forward pass</b> runs the data through; the <b>loss</b> then scores how wrong the prediction is: squared error <code>(ŷ − y)²</code> against the target <code>y = 1</code>. Run it: the untrained network predicts <b>0.530</b>, giving a loss of <b>0.221</b>.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">2-2-1 network, one forward pass</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+x  = np.array([1.0, 0.5])            # input
+W1 = np.array([[0.4, -0.2],
+               [0.3,  0.8]])         # input -&gt; hidden weights
+b1 = np.array([0.0, 0.1])
+w2 = np.array([0.6, -0.4])           # hidden -&gt; output weights
+b2 = 0.05
+
+h     = sigmoid(W1 @ x + b1)         # hidden layer
+y_hat = sigmoid(w2 @ h + b2)         # output layer
+y     = 1.0                          # the true answer
+loss  = (y_hat - y) ** 2
+
+print("hidden activations h =", np.round(h, 3))
+print(f"prediction y_hat     = {y_hat:.3f}")
+print(f"squared-error loss   = {loss:.3f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">How does training work? For every weight, ask: <b>if I nudge this number, does the loss go up or down?</b> Try it on <code>w2[0]</code>. Nudging it down to <code>0.1</code> raises the loss to <b>0.294</b>; nudging it up to <code>1.1</code> drops it to <b>0.160</b>. So "increase <code>w2[0]</code>" is the downhill direction. <b>Gradient descent</b> does exactly this, but computes the slope for <i>all</i> weights simultaneously with calculus (backpropagation), then takes a small step downhill. Repeat thousands of times and the loss walks to a minimum.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">nudge a weight, watch the loss</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">for nudge in [-0.5, 0.0, +0.5]:
+    w2_try = w2.copy()
+    w2_try[0] += nudge
+    y_try = sigmoid(w2_try @ h + b2)
+    print(f"w2[0] {nudge:+.1f}  -&gt;  y_hat = {y_try:.3f}, loss = {(y_try - y)**2:.3f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> nudge <code>w2[1]</code> instead. Which direction is downhill for it? Then change the target to <code>y = 0.0</code> in the first cell and re-run both: every downhill direction should flip. Finally, shrink the nudge to <code>±0.01</code>; the tiny loss differences you see are (approximately) the gradient itself.</p>
+</section>
+<!-- Section 5 · Train a tiny classifier · Outcomes: US.P2.3 (implement a small classifier in Python), US.P2.4 (evaluate on accuracy, precision/recall and overfitting, then iterate), US.P5.1 (interpret fairness metrics and error types) -->
+<section class="nb-sec" id="s5">
+  <span class="chip">05 · Learning · train &amp; evaluate</span>
+  <h2>Train a tiny classifier</h2>
+  <p class="ex">Time to train for real. We generate two clouds of 2-D points (class 0 centred at (1, 1), class 1 at (3, 3)) with a <b>seeded</b> random generator so every run is identical, then split them: <b>30 training points</b> the model may learn from, <b>10 test points</b> it never sees. The split is the whole discipline of machine learning: performance on unseen data is the only honest score.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">data + train/test split</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">rng = np.random.default_rng(0)
+blue = rng.normal([1.0, 1.0], 1.0, size=(20, 2))   # class 0
+red  = rng.normal([3.0, 3.0], 1.0, size=(20, 2))   # class 1
+X = np.vstack([blue, red])
+labels = np.array([0] * 20 + [1] * 20)
+
+order = rng.permutation(40)                        # shuffle, then split
+X, labels = X[order], labels[order]
+X_train, y_train = X[:30], labels[:30]
+X_test,  y_test  = X[30:], labels[30:]
+print("train:", len(X_train), "points   test:", len(X_test), "points")
+print("first training point:", np.round(X_train[0], 2), " label:", y_train[0])</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">The model is logistic regression: a weighted sum squashed by sigmoid, trained by the <b>real gradient-descent update</b> (the calculus version of section 4's nudge test). Watch the log-loss fall from <b>0.693</b> (exactly the loss of pure 50/50 guessing) to <b>0.242</b>. Then the honest scores on unseen data: <b>accuracy 0.90</b>, <b>precision 0.80</b> (of the points it called class 1, 80% really were; one false positive), <b>recall 1.00</b> (it missed no true class-1 point). Note train accuracy is <b>0.97</b>: the small train→test drop is a mild sign of <b>overfitting</b>, the model fitting quirks of its 30 examples. More data, fewer parameters or earlier stopping all shrink that gap.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">gradient descent + honest metrics</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">w = np.zeros(2)
+b = 0.0
+lr = 0.1
+
+for epoch in range(300):
+    p = 1 / (1 + np.exp(-(X_train @ w + b)))          # forward pass
+    w -= lr * (X_train.T @ (p - y_train)) / len(y_train)   # gradient step
+    b -= lr * (p - y_train).mean()
+    if epoch % 100 == 0:
+        loss = -np.mean(y_train * np.log(p) + (1 - y_train) * np.log(1 - p))
+        print(f"epoch {epoch:&gt;3}: log-loss = {loss:.3f}")
+
+def predict(A):
+    return (1 / (1 + np.exp(-(A @ w + b))) &gt; 0.5).astype(int)
+
+train_acc = (predict(X_train) == y_train).mean()
+pred = predict(X_test)
+tp = int(((pred == 1) &amp; (y_test == 1)).sum())
+fp = int(((pred == 1) &amp; (y_test == 0)).sum())
+fn = int(((pred == 0) &amp; (y_test == 1)).sum())
+print(f"train accuracy = {train_acc:.2f}")
+print(f"test accuracy  = {(pred == y_test).mean():.2f}")
+print(f"precision      = {tp / (tp + fp):.2f}")
+print(f"recall         = {tp / (tp + fn):.2f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> move the clusters closer (centre red at <code>(2.0, 2.0)</code>) and re-run both cells. Which metric collapses first? Then train for 3&nbsp;000 epochs instead of 300: does the <i>test</i> accuracy improve as much as the train loss suggests it should? That divergence is overfitting made visible.</p>
+</section>
+
+<!-- Section 6 · Temperature sampling · Outcomes: US.P3.1 (trace tokens → … → next-token probabilities → sampling / temperature), US.P3.3 (compare outputs at different temperatures and interpret the usefulness-versus-reliability trade-off) -->
+<section class="nb-sec" id="s6">
+  <span class="chip">06 · Generation · temperature</span>
+  <h2>Temperature sampling</h2>
+  <p class="ex">At the end of the transformer pipeline sits a score (a <b>logit</b>) for every token in the vocabulary. <b>Softmax</b> turns scores into probabilities; <b>temperature</b> <code>T</code> divides the logits first, reshaping the distribution. Here are toy logits for "The cat sat on the ___". Run it: at <code>T = 0.2</code> the distribution collapses onto <code>mat</code> (<b>0.993</b>); at <code>T = 1.5</code> it flattens, giving <code>roof</code> and even <code>moon</code> a real chance. Low temperature sharpens, high temperature flattens; the logits never change.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">softmax with temperature</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">logits = {"mat": 4.0, "sofa": 3.0, "roof": 2.5, "moon": 1.0, "spoon": 0.5}
+
+def softmax_T(logits, T):
+    z = np.array(list(logits.values())) / T
+    z = z - z.max()                  # numerical stability
+    p = np.exp(z)
+    p = p / p.sum()
+    return dict(zip(logits.keys(), p))
+
+for T in [0.2, 1.0, 1.5]:
+    print(f"T = {T}")
+    for tok, p in softmax_T(logits, T).items():
+        print(f"  {tok:&gt;6}: {p:.3f} " + "#" * int(p * 40))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Now actually <b>sample</b> 20 next tokens at each setting (seeded, so your output matches this text). At <code>T = 0.2</code> you get <code>mat</code> nineteen times out of twenty: reliable, predictable, dull. At <code>T = 1.5</code> the same model, same logits, produces a mix including <code>moon</code> and <code>roof</code>: more surprising, less dependable. That is the <b>usefulness-versus-reliability trade-off</b> in one knob: low T for facts and code, higher T for brainstorming and poetry.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">sample at T = 0.2 vs T = 1.5</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">from collections import Counter
+rng6 = np.random.default_rng(7)
+
+for T in [0.2, 1.5]:
+    d = softmax_T(logits, T)
+    seq = [str(t) for t in rng6.choice(list(d), size=20, p=list(d.values()))]
+    print(f"T = {T}: {' '.join(seq)}")
+    print("        counts:", dict(Counter(seq)))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> what happens as <code>T → 0</code>? Try <code>T = 0.01</code> (this is effectively <b>greedy decoding</b>: always the top token). Then try <code>T = 5</code> and check the five probabilities: they approach <code>0.2</code> each, i.e. uniform randomness. Where would you set T for a medical-advice chatbot, and why?</p>
+</section>
+<!-- Section 7 · RAG in 20 lines · Outcomes: US.P4.2 (explain how retrieval-augmented generation grounds answers in sources), US.P4.3 (design a RAG system against a defined metric: retrieval by cosine, answers cite sources) -->
+<section class="nb-sec" id="s7">
+  <span class="chip">07 · Interaction &amp; agency · RAG</span>
+  <h2>RAG in 20 lines</h2>
+  <p class="ex">A language model answers from its training data, which may be stale, or silent about <i>your</i> documents. <b>Retrieval-augmented generation (RAG)</b> fixes this: embed the documents as vectors, embed the question, <b>retrieve</b> the closest documents by cosine similarity, and paste them into the prompt so the model answers from evidence. Here is the retrieval half, using simple word-count vectors as a stand-in for learnt embeddings. Run it: the query about meeting times pulls <code>D1</code> to the top at <b>0.667</b>, and <code>D4</code>, which shares no useful words, scores <b>0.000</b>.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">embed + retrieve top 2</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">docs = {
+    "D1": "The robotics club meets on Tuesdays in Lab 3.",
+    "D2": "Club membership costs five dollars per term.",
+    "D3": "The annual robot derby is held in March in the main hall.",
+    "D4": "Lab 3 safety rules require closed shoes and goggles.",
+}
+
+def tokens(text):
+    return [w.strip(".,?").lower().rstrip("s") for w in text.split()]
+
+vocab = sorted({t for d in docs.values() for t in tokens(d)})
+
+def embed(text):                      # toy embedding: word counts
+    ts = tokens(text)
+    return np.array([ts.count(v) for v in vocab], dtype=float)
+
+query = "When does the robotics club meet?"
+q = embed(query)
+
+scores = {name: cosine(q, embed(text)) for name, text in docs.items()}
+for name, s in sorted(scores.items(), key=lambda kv: -kv[1]):
+    print(f"{name}: {s:.3f}   {docs[name]}")
+
+top2 = sorted(scores, key=scores.get, reverse=True)[:2]
+print("Retrieved:", top2)</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Now the generation half: build a <b>grounded prompt</b> that hands the model only the retrieved sources and demands citations. Compare the two behaviours below. Ungrounded, a model must produce <i>something</i>: the next-token objective rewards fluency, not truth, so it may confidently invent "Fridays at 4 pm". Grounded, the correct answer is sitting in the context window with an ID to cite, and a wrong answer is now <b>checkable</b> against <code>[D1]</code>. RAG doesn't make a model honest; it makes the evidence auditable.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">the grounded prompt</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">prompt = "Answer using ONLY the sources below. Cite the source ID.\n\n"
+for name in top2:
+    prompt += f"[{name}] {docs[name]}\n"
+prompt += f"\nQ: {query}\nA:"
+print(prompt)
+print()
+print("Ungrounded model : 'The club meets on Fridays at 4 pm.'  (fluent, invented)")
+print("Grounded model   : 'The club meets on Tuesdays in Lab 3 [D1].'")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> ask <code>"How much does membership cost?"</code>. Does the right document win? Then ask <code>"What must I wear in the lab?"</code> and note the failure: <i>wear</i> matches nothing, even though <code>D4</code> is the answer. Word-count vectors miss synonyms; learnt embeddings (section 1) place <i>wear</i> near <i>shoes</i>, which is precisely why real RAG uses them. What retrieval metric would you report for this system, and what counts as a "hit"?</p>
+</section>
+
+<!-- Section 8 · Audit & model card · Outcomes: US.P5.1 (interpret fairness metrics and error types), US.P5.4 (audit a model or dataset for bias and document it in a model card), US.P5.5 (weigh the societal and environmental costs of a deployment) -->
+<section class="nb-sec" id="s8">
+  <span class="chip">08 · Responsibility · audit</span>
+  <h2>Audit &amp; model card</h2>
+  <p class="ex">A single overall accuracy can hide a lot. The audit that finds it: <b>compute the metrics per group</b>. Below, a screening model's predictions for ten applicants from group A and ten from group B; each group has six genuine positives. <b>Recall</b> asks: of the people who truly deserved a yes, how many did the model catch? A false negative here is a person wrongly passed over. Run it: group A gets recall <b>0.83</b>, group B only <b>0.50</b>: a gap of <b>0.33</b>. Same model, same threshold, very different error rates.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">group-wise recall</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">y_true_A = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0]
+y_pred_A = [1, 1, 1, 1, 1, 0, 0, 0, 1, 0]
+y_true_B = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0]
+y_pred_B = [1, 1, 1, 0, 0, 0, 0, 1, 0, 0]
+
+def recall_of(y_true, y_pred):
+    tp = sum(1 for t, p in zip(y_true, y_pred) if t == 1 and p == 1)
+    fn = sum(1 for t, p in zip(y_true, y_pred) if t == 1 and p == 0)
+    return tp / (tp + fn)
+
+r_A = recall_of(y_true_A, y_pred_A)
+r_B = recall_of(y_true_B, y_pred_B)
+print(f"recall, group A = {r_A:.2f}")
+print(f"recall, group B = {r_B:.2f}")
+print(f"recall gap      = {abs(r_A - r_B):.2f}")</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="ex">Finding the gap is half the job; <b>documenting it</b> is the other half. A <b>model card</b> is the standard artefact of AI governance: what the model does, what it was trained on, its measured metrics (including the uncomfortable ones), its known limitations, and how it may be used. Transparency turns a hidden failure into an accountable design decision that a regulator, a school, or the affected group can challenge.</p>
+  <div class="cell">
+    <div class="cellbar"><span class="cno">In [ ]</span><span class="spacer">a mini model card</span><button class="runbtn">▶ Run</button></div>
+    <textarea class="code" spellcheck="false">import json
+model_card = {
+    "model": "toy-screener-v1",
+    "task": "flag applications for human review",
+    "training_data": "600 past decisions, 2019-2024 (group B under-represented)",
+    "metrics": {"recall_group_A": round(r_A, 2),
+                "recall_group_B": round(r_B, 2),
+                "recall_gap": round(abs(r_A - r_B), 2)},
+    "known_limitations": [
+        "misses half of group B's genuine positives",
+        "trained on historical decisions that may encode past bias",
+    ],
+    "recommended_use": "assist a human reviewer; never auto-reject",
+}
+print(json.dumps(model_card, indent=2))</textarea>
+    <pre class="out" hidden></pre>
+  </div>
+  <p class="try">💡 <b>Try it:</b> compute <b>precision</b> per group as well. Does it tell the same story? Then decide: would you ship this model with a warning, hold it until the gap closes, or redesign the training data? Defend your call in two sentences. And a closing thought on scale: this audit cost you one loop; the systems it stands in for are trained on billions of examples, at real energy, water and labour cost, and their errors land on real people. Every build in this notebook (embeddings, gradients, sampling, retrieval) is the same machinery, only larger. Knowing how it works is what makes you qualified to question it.</p>
+</section>
+</main>
+
+<footer class="pills">
+  <a class="pill" href="secup-syllabus.html">← Back to syllabus</a>
+  <a class="pill" href="secup-lab.html">Practice Lab</a>
+  <a class="pill solid" href="secup-problem-set-b.html">Problem sets →</a>
+</footer>
+<footer class="credit">IJAIO 2026 · Upper Secondary · In-browser Python Notebook (Pyodide + numpy)</footer>
+
+<script>
+(function(){
+  'use strict';
+  var pyodide = null, state = 'loading', execCount = 0, busy = false;
+  var kchip = document.getElementById('kchip');
+  var kmsg  = document.getElementById('kmsg');
+  var runallBtn = document.getElementById('runall');
+  var OFFLINE_MSG = 'Python could not load (are you offline?). The cells above still read as a worked example. Reconnect and reload this page to run them for real.';
+
+  function setState(s, msg){
+    state = s;
+    kchip.className = 'kchip ' + s;
+    kmsg.textContent = msg;
+    runallBtn.disabled = (s !== 'ready');
+  }
+
+  /* ---------- kernel boot with graceful offline fallback ---------- */
+  var loader = document.createElement('script');
+  loader.src = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+  loader.onload = function(){
+    loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/' }).then(function(py){
+      pyodide = py;
+      kmsg.textContent = 'Kernel: loading numpy…';
+      return py.loadPackage('numpy').then(function(){
+        pyodide.runPython(RUNNER_SRC);
+        setState('ready', 'Kernel: ready (Python 3.12 + numpy)');
+      });
+    }).catch(function(){ setState('offline', 'Kernel: offline'); });
+  };
+  loader.onerror = function(){ setState('offline', 'Kernel: offline'); };
+  document.head.appendChild(loader);
+
+  /* ---------- Python-side cell runner: shared namespace, stdout capture, last-expression repr ---------- */
+  var RUNNER_SRC = [
+    'import sys, ast, io, json',
+    '__nb_ns__ = {"__name__": "__main__"}',
+    'def __run_cell__(code):',
+    '    buf = io.StringIO()',
+    '    old_out, old_err = sys.stdout, sys.stderr',
+    '    sys.stdout = sys.stderr = buf',
+    '    ok, result = True, None',
+    '    try:',
+    '        tree = ast.parse(code)',
+    '        last = None',
+    '        if tree.body and isinstance(tree.body[-1], ast.Expr):',
+    '            last = ast.Expression(tree.body[-1].value)',
+    '            tree.body = tree.body[:-1]',
+    '        exec(compile(tree, "<cell>", "exec"), __nb_ns__)',
+    '        if last is not None:',
+    '            val = eval(compile(last, "<cell>", "eval"), __nb_ns__)',
+    '            if val is not None:',
+    '                result = repr(val)',
+    '    except SyntaxError as e:',
+    '        ok = False',
+    '        result = "SyntaxError: %s (line %s)" % (e.msg, e.lineno)',
+    '    except BaseException as e:',
+    '        ok = False',
+    '        where = ""',
+    '        tb = e.__traceback__',
+    '        while tb is not None:',
+    '            if tb.tb_frame.f_code.co_filename == "<cell>":',
+    '                where = " (line %d)" % tb.tb_lineno',
+    '            tb = tb.tb_next',
+    '        result = type(e).__name__ + ": " + str(e) + where',
+    '    finally:',
+    '        sys.stdout, sys.stderr = old_out, old_err',
+    '    return json.dumps({"ok": ok, "out": buf.getvalue(), "result": result})'
+  ].join('\n');
+
+  /* ---------- cell UI wiring ---------- */
+  var cells = Array.prototype.slice.call(document.querySelectorAll('.cell'));
+
+  function fit(ta){ ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
+
+  function render(cell, data){
+    var out = cell.querySelector('pre.out');
+    out.hidden = false;
+    out.textContent = '';
+    if (data.out) out.appendChild(document.createTextNode(data.out));
+    if (data.result !== null && data.result !== undefined){
+      var span = document.createElement('span');
+      span.className = data.ok ? 'res' : 'err';
+      span.textContent = data.result + '\n';
+      out.appendChild(span);
+    }
+    if (!data.out && (data.result === null || data.result === undefined)){
+      var s = document.createElement('span');
+      s.className = 'sys';
+      s.textContent = '(ran fine, nothing to print)';
+      out.appendChild(s);
+    }
+  }
+
+  function sysMsg(cell, text){
+    var out = cell.querySelector('pre.out');
+    out.hidden = false;
+    out.innerHTML = '';
+    var s = document.createElement('span');
+    s.className = 'sys';
+    s.textContent = text;
+    out.appendChild(s);
+  }
+
+  function runCell(cell){
+    if (state === 'offline'){ sysMsg(cell, OFFLINE_MSG); return Promise.resolve(); }
+    if (state === 'loading'){ sysMsg(cell, 'The Python kernel is still loading. Give it a few seconds, then try again.'); return Promise.resolve(); }
+    if (busy) return Promise.resolve();
+    busy = true;
+    setState('running', 'Kernel: running…');
+    kchip.className = 'kchip running';
+    var cno = cell.querySelector('.cno');
+    cno.textContent = 'In [*]';
+    return new Promise(function(resolve){
+      setTimeout(function(){
+        var code = cell.querySelector('textarea.code').value;
+        var data;
+        try {
+          pyodide.globals.set('__cell_code__', code);
+          data = JSON.parse(pyodide.runPython('__run_cell__(__cell_code__)'));
+        } catch (e) {
+          data = { ok: false, out: '', result: 'Kernel error: ' + (e && e.message ? e.message.split('\n')[0] : e) };
+        }
+        execCount += 1;
+        cno.textContent = 'In [' + execCount + ']';
+        render(cell, data);
+        busy = false;
+        setState('ready', 'Kernel: ready (Python 3.12 + numpy)');
+        resolve();
+      }, 30);
+    });
+  }
+
+  cells.forEach(function(cell){
+    var ta = cell.querySelector('textarea.code');
+    fit(ta);
+    ta.addEventListener('input', function(){ fit(ta); });
+    ta.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' && e.shiftKey){ e.preventDefault(); runCell(cell); }
+      else if (e.key === 'Tab'){
+        e.preventDefault();
+        var s = ta.selectionStart, t = ta.selectionEnd;
+        ta.value = ta.value.slice(0, s) + '    ' + ta.value.slice(t);
+        ta.selectionStart = ta.selectionEnd = s + 4;
+        fit(ta);
+      }
+    });
+    cell.querySelector('.runbtn').addEventListener('click', function(){ runCell(cell); });
+  });
+
+  window.addEventListener('load', function(){ cells.forEach(function(c){ fit(c.querySelector('textarea.code')); }); });
+
+  runallBtn.addEventListener('click', function(){
+    var chain = Promise.resolve();
+    cells.forEach(function(cell){
+      chain = chain.then(function(){ return runCell(cell); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Hundred-Recipe Kitchen · Lower Secondary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#0FA8A4; --tealDeep:#0a6f6c; --tealSoft:#d4f0ef; --paper:#fffdf7; --panel:#fff;
+    --ink:#22303a; --muted:#5c6f72; --coral:#ff6a5a; --violet:#7b5cff; --amber:#E8920C;
+    --ok:#0b7a49; --bad:#c0303c;
+    --code:#0f1e24; --line:#e7e0d3; --shadow:0 10px 24px rgba(20,50,50,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Lora',Georgia,serif;color:var(--ink);line-height:1.72;
+    background:
+      radial-gradient(900px 380px at 100% -60px,#fdeee0,transparent),
+      radial-gradient(700px 340px at 0% 20%,#e0f5f4,transparent),
+      var(--paper)}
+  .rpbar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--amber),var(--teal));z-index:60}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 16px;
+    background:rgba(255,253,247,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .bt{font-family:'Fredoka';font-weight:700;color:var(--tealDeep);font-size:16px;margin-right:auto;display:flex;gap:8px;align-items:center}
+  .menu{border:none;background:var(--teal);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;border-radius:12px;padding:8px 13px;cursor:pointer;text-decoration:none}
+  .wrap{max-width:730px;margin:0 auto;padding:0 18px 80px}
+
+  h1{font-family:'Fredoka';font-weight:700;font-size:clamp(30px,6vw,46px);line-height:1.05;margin:0 0 6px;color:#123}
+  h2{font-family:'Fredoka';font-weight:700;font-size:26px;margin:34px 0 6px;color:var(--tealDeep)}
+  h3{font-family:'Fredoka';font-weight:600;font-size:19px;margin:22px 0 4px;color:#1c3b3a}
+  p{margin:12px 0}
+  .lead{font-size:19px;color:#31474b}
+
+  /* cover */
+  .cover{text-align:center;padding:40px 10px 8px}
+  .cover .heroes{font-size:82px;line-height:1;animation:bob 3.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .pill{display:inline-block;font-family:'Fredoka';font-weight:600;background:#fff;color:var(--tealDeep);
+    border:2px solid var(--tealSoft);border-radius:999px;padding:6px 16px;margin-bottom:12px}
+  .startbtn{font-family:'Fredoka';font-weight:700;font-size:19px;color:#fff;background:var(--teal);border:none;
+    border-radius:16px;padding:14px 26px;box-shadow:var(--shadow);cursor:pointer;margin-top:12px;text-decoration:none;display:inline-block}
+
+  /* contents */
+  .toc{display:grid;gap:12px;margin:18px 0}
+  .tocitem{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;text-decoration:none;color:inherit}
+  .tocitem:hover{border-color:var(--teal)}
+  .tocitem .cn{flex:none;width:42px;height:42px;border-radius:12px;background:var(--tealSoft);color:var(--tealDeep);
+    font-family:'Fredoka';font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+  .tocitem .ci{font-size:30px;flex:none} .tocitem h4{font-family:'Fredoka';margin:0;font-size:18px} .tocitem .th{color:var(--muted);font-size:14px}
+
+  /* chapter */
+  .chapter{border-top:2px dashed var(--tealSoft);margin-top:40px;padding-top:10px}
+  .chero{display:flex;gap:16px;align-items:center;margin:8px 0 6px}
+  .chero .big-emo{font-size:56px;line-height:1}
+  .chero .ch-no{font-family:'JetBrains Mono';font-size:13px;color:var(--teal);font-weight:600;letter-spacing:.08em}
+  .chero .th{color:var(--muted);font-size:15px}
+
+  /* dialogue scenes */
+  .scene{background:linear-gradient(180deg,#fffaf2,#fff);border-left:3px solid var(--amber);border-radius:0 14px 14px 0;padding:4px 18px;margin:16px 0;font-size:16px}
+  .scene .who{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+
+  /* callouts */
+  .box{border-radius:16px;padding:14px 18px;margin:18px 0;font-size:16.5px;line-height:1.6}
+  .box .bt{font-family:'Fredoka';font-weight:700;display:block;margin-bottom:4px;font-size:15px;letter-spacing:.02em}
+  .glass{background:#eafaf8;border:1px solid #b9e7e3} .glass .bt{color:var(--tealDeep)}
+  .watch{background:#fff5e9;border:1px solid #f6ddb4} .watch .bt{color:#9a6402}
+  .try{background:#f3efff;border:1px solid #ddd3ff} .try .bt{color:var(--violet)}
+
+  /* lab checkpoints */
+  .lab{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:20px 0;box-shadow:var(--shadow)}
+  .labhead{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .labhead:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .labnote{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .num{font-family:'JetBrains Mono';font-weight:700;color:var(--violet)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .btn{font-family:inherit;font-weight:600;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+  .btn:hover{border-color:var(--teal)}
+  .fb{display:block;margin-top:10px;font-size:14.5px;font-weight:600;min-height:1em}
+  .fb.good{color:var(--ok)} .fb.bad{color:var(--bad)} .fb.warm{color:var(--tealDeep)}
+
+  /* pixel grid */
+  .pxgrid{display:grid;grid-template-columns:repeat(3,54px);gap:4px;margin:12px 0;font-family:'JetBrains Mono';font-size:13px;font-weight:600}
+  .pxgrid span{height:44px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid var(--line)}
+
+  /* code */
+  .codewrap{margin:18px 0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #0b1418}
+  .codebar{display:flex;align-items:center;justify-content:space-between;background:#0b1a20;color:#8fd9d3;
+    font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:8px 14px;letter-spacing:.04em}
+  .codebar .copy{background:#12303a;color:#bfeae6;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono';font-size:11px}
+  pre{margin:0;background:var(--code);color:#e6f2f1;padding:14px 16px;overflow:auto;font-family:'JetBrains Mono';font-size:13.5px;line-height:1.6}
+  pre .c{color:#6d8c8a} pre .k{color:#ff9d7a} pre .s{color:#9ce6b0} pre .n{color:#8fb8ff}
+  code.inline{font-family:'JetBrains Mono';background:#eef4f3;color:#0a5b57;padding:1px 6px;border-radius:6px;font-size:.92em}
+
+  /* recap */
+  .recap{background:linear-gradient(180deg,#f4fbfa,#fff);border:1px solid var(--tealSoft);border-radius:18px;padding:16px 18px;margin:22px 0}
+  .recap h3{margin:0 0 8px;color:var(--tealDeep)}
+  .rc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .rc .card{border-radius:12px;padding:10px 12px;color:#fff;font-size:13.5px;line-height:1.4;font-family:'Lora'}
+  .rc .kind{font-family:'Fredoka';font-weight:700;font-size:12px;display:block;margin-bottom:3px;opacity:.95}
+  .rc .know{background:var(--violet)} .rc .can{background:var(--teal)} .rc .care{background:var(--coral)}
+  @media(max-width:560px){.rc{grid-template-columns:1fr}.pxgrid{grid-template-columns:repeat(3,44px)}}
+  .finish{text-align:center;background:linear-gradient(90deg,#fdf3e3,#e9fbf9);border-radius:20px;padding:26px 18px;margin-top:40px;box-shadow:var(--shadow)}
+  .finish .medal{font-size:64px}
+</style>
+<script>
+  function copyCode(btn){
+    var code = btn.closest('.codewrap').querySelector('code').innerText;
+    if(navigator.clipboard){ navigator.clipboard.writeText(code); }
+    var old = btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=old;},1400);
+  }
+  function answer(fbId, ok, okMsg, badMsg){
+    var fb=document.getElementById(fbId);
+    fb.className='fb '+(ok?'good':'bad');
+    fb.textContent=(ok?'✔ ':'✘ ')+(ok?okMsg:badMsg);
+  }
+  function choose(fbId, msg){
+    var fb=document.getElementById(fbId);
+    fb.className='fb warm';
+    fb.textContent='✦ '+msg;
+  }
+  window.addEventListener('scroll', function(){
+    var h=document.documentElement, sc=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    var rp=document.getElementById('rp'); if(rp) rp.style.width=sc+'%';
+  });
+</script>
+</head>
+<body>
+<div class="rpbar" id="rp"></div>
+<div class="topbar">
+  <div class="bt">🍲 The Hundred-Recipe Kitchen</div>
+  <a class="menu" href="#contents">Chapters</a>
+</div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="pill">Lower Secondary · Grades 7–8</div>
+    <div class="heroes">📖🍲👵</div>
+    <h1>The Hundred-Recipe Kitchen</h1>
+    <p class="lead" style="max-width:36ch;margin:8px auto 0">A story about a flooded kitchen, a family's handwritten history, and the girl who taught a machine to listen.</p>
+    <p style="max-width:54ch;margin:10px auto 0;color:var(--muted)">Mei-Ling can't cook like her grandmother. But she can build. Five chapters, five real AI ideas, and one anniversary dinner that has to happen, with Po-Po's judgment guiding every step.</p>
+    <a class="startbtn" href="#contents">Open the book ↓</a>
+  </section>
+
+  <!-- CONTENTS -->
+  <section id="contents">
+    <h2>Five Chapters</h2>
+    <p>Read the story, meet the idea, check your working at each checkpoint, and watch a family put itself back together, page by page.</p>
+    <div class="toc">
+      <a class="tocitem" href="#ch1"><span class="cn">1</span><span class="ci">💧</span><div><h4>Pages as Pixels</h4><div class="th">Scanning damaged pages; images and words as numbers</div></div></a>
+      <a class="tocitem" href="#ch2"><span class="cn">2</span><span class="ci">🗂️</span><div><h4>Sorting the Unsorted</h4><div class="th">Learning from an elder: labels, classifiers and embeddings</div></div></a>
+      <a class="tocitem" href="#ch3"><span class="cn">3</span><span class="ci">⚖️</span><div><h4>Honest Testing</h4><div class="th">Train/test splits, a neuron's sum, and the error Po-Po caught</div></div></a>
+      <a class="tocitem" href="#ch4"><span class="cn">4</span><span class="ci">👻</span><div><h4>The Missing Recipe</h4><div class="th">A bigram model, a hallucinated step, and careful prompting</div></div></a>
+      <a class="tocitem" href="#ch5"><span class="cn">5</span><span class="ci">🏮</span><div><h4>The Dinner</h4><div class="th">An agent in the kitchen, and a book that tells the truth about itself</div></div></a>
+    </div>
+  </section>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter" id="ch1">
+    <div class="chero"><span class="big-emo">💧</span><div><div class="ch-no">CHAPTER ONE</div><h1 style="font-size:30px;margin:0">Pages as Pixels</h1><div class="th">How a damaged page becomes something a computer can hold</div></div></div>
+
+    <p>The flood came from a split pipe under the sink, quietly, on a Tuesday night. By morning the bottom shelf of the kitchen dresser, the shelf with Po-Po's recipe books, had stood in four centimetres of water for eight hours. Mei-Ling, thirteen, found her grandmother at the kitchen table with the swollen books spread on tea towels, peeling pages apart with the gentleness of a surgeon.</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span><br>"Sixty years in October. Sixty years since your great-grandfather opened this kitchen, and I wanted to cook the whole book for the family. Now look. The ink swims. Half the pages have let go of their spines. I don't even know which page belongs to which dish any more."</p>
+    <p><span class="who">Mei</span><br>"I can't cook them back, Po-Po. But I can scan them. All of them. And if a computer can hold them, maybe we can sort them, read the faded bits, put them back in order. Together… you'd have to tell me what everything means."</p></div>
+
+    <p>Po-Po looked at her for a long moment, then slid the least-damaged book across the table. <i>"Start with the soup pages,"</i> she said. <i>"Soup forgives."</i></p>
+
+    <h2>What the scanner actually sees</h2>
+    <p>Mei's scanner doesn't see "a recipe". It sees a <b>grid of numbers</b>. Each tiny square of the page, each <b>pixel</b>, gets a brightness value, usually from <span class="num">0</span> (black ink) to <span class="num">255</span> (white paper). A greyscale scan of a page is just thousands of those numbers arranged in rows and columns. That's it. That's how a computer "sees": no paper, no ink, no memory of Sunday dinners… <b>numbers in a grid</b>.</p>
+
+    <p>Here is a tiny 3×3 patch from a water-stained corner. Paper should read near 255; ink near 0. Water damage drags everything into the murky middle:</p>
+    <div class="pxgrid">
+      <span style="background:#5a5a5a;color:#fff">90</span><span style="background:#646464;color:#fff">100</span><span style="background:#6e6e6e;color:#fff">110</span>
+      <span style="background:#5f5f5f;color:#fff">95</span><span style="background:#696969;color:#fff">105</span><span style="background:#737373;color:#fff">115</span>
+      <span style="background:#555;color:#fff">85</span><span style="background:#646464;color:#fff">100</span><span style="background:#646464;color:#fff">100</span>
+    </div>
+
+    <div class="box glass"><span class="bt">🔍 Why smudges fool machines</span>
+    A character-reading model learned from examples where ink was dark (near 0) and paper was bright (near 255). A smudge pushes whole regions to middling values like 100, numbers the model rarely saw during training. To us it's "obviously a water stain over the character for salt". To the model it's a pattern of numbers it has no good match for, so it guesses, sometimes confidently, and wrongly. The problem isn't that the machine is careless. It's that <b>it only ever had the numbers.</b></div>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 01 · Read the stain like a machine</div>
+      <p>Mei's clean-up tool flags any 3×3 patch whose <b>average brightness</b> is between 60 and 140 as "possible water damage". Work out the average of the nine pixel values above (they sum to a friendly number).</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb1',false,'','Close, but add again: the rows sum to 300, 315 and 285. Total first, then divide by 9.')">95</button>
+        <button class="btn" onclick="answer('fb1',true,'Rows: 300 + 315 + 285 = 900, and 900 ÷ 9 = 100. Squarely inside the 60–140 murk zone: the tool flags it, and Mei sends the patch to the &quot;ask Po-Po&quot; pile instead of trusting a guess.','')">100</button>
+        <button class="btn" onclick="answer('fb1',false,'','That would be the average if the total were 945. Check: 300 + 315 + 285.')">105</button>
+        <button class="btn" onclick="answer('fb1',false,'','That\'s the largest single pixel, not the average of all nine.')">115</button>
+      </div>
+      <span class="fb" id="fb1"></span>
+      <p class="labnote">A colour scan works the same way, except every pixel holds three numbers (red, green, blue) instead of one.</p>
+    </div>
+
+    <h2>Three languages, one line of tokens</h2>
+    <p>The pages hold more than pictures. Po-Po wrote in three languages, often in one sentence: Cantonese characters for the dish, English for measurements, a scatter of Malay from her years in Penang. Before any language model can touch that, the text must be <b>tokenised</b>: split into chunks called <b>tokens</b>, each swapped for an ID number. Mei tokenises one margin note by hand:</p>
+
+    <p style="font-family:'JetBrains Mono';font-size:14px;background:#eef4f3;border-radius:12px;padding:12px 14px">"slow fire two hours" → <code class="inline">slow</code> <code class="inline">fire</code> <code class="inline">two</code> <code class="inline">hours</code> → <span class="num">[2041, 887, 402, 1315]</span></p>
+
+    <p>From then on the model never sees letters again, only the IDs. That explains a strange failure Mei notices at once: ask a model how many letter <i>r</i>s are in a word, and it can miscount, because it isn't looking at letters at all. It's looking at token IDs, the way the scanner looks at pixel numbers. <b>Whole languages become arithmetic</b>, which is exactly why Po-Po, who knows what the numbers <i>mean</i>, stays in charge.</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span><br>"So to your machine, my handwriting is just… numbers?"</p>
+    <p><span class="who">Mei</span><br>"Everything is numbers to it. That's its whole trick, and its whole weakness. It can hold your pages, Po-Po. It can't hold what they mean. That part's still yours."</p></div>
+
+    <div class="recap"><h3>Chapter 1 · What Mei collected</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">KNOW</span>Images are grids of number-pixels (0–255); text becomes tokens, then token IDs.</div>
+        <div class="card can"><span class="kind">CAN</span>Average a pixel patch by hand; hand-tokenise a sentence; explain a letter-miscount.</div>
+        <div class="card care"><span class="kind">CARE</span>The machine holds the numbers. The meaning stays with the person who wrote them.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="ch2">
+    <div class="chero"><span class="big-emo">🗂️</span><div><div class="ch-no">CHAPTER TWO</div><h1 style="font-size:30px;margin:0">Sorting the Unsorted</h1><div class="th">Supervised learning: literally learning from an elder</div></div></div>
+
+    <p>By Friday, Mei had 214 scanned pages in a folder named <code class="inline">the_whole_kitchen</code>, and no idea what most of them were. Pages had drifted out of their books like leaves off a tree. Was this water-blurred page a soup? A steamed fish? One of the eleven variations of braised duck?</p>
+
+    <p>She could write rules ("if the page mentions ginger…"), but ginger is in half the book. Instead, Mei set up something better: a small <b>classifier</b> that would <b>learn from labelled examples</b>. And there was exactly one person alive who could provide the labels.</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span> <i>(holding a scan at arm's length)</i><br>"This one? Soup. See the little circle I drew? I always marked soups with a circle, because your Ma would only drink soup if I told her it was 'moon water'. This one: braise. This one: dessert, that's my tapioca. Next."</p>
+    <p><span class="who">Mei</span> <i>(typing labels as fast as her grandmother talks)</i><br>"Po-Po, you realise you're doing the most important job in machine learning right now? The model is only ever as good as your labels."</p>
+    <p><span class="who">Po-Po</span><br>"Then it will be very good. Keep up."</p></div>
+
+    <p>This is <b>supervised learning</b>: the machine gets examples <i>with the answers attached</i> (page features in, "SOUP" out) and adjusts itself until its guesses match the labels. It's one of three ways machines learn. <b>Unsupervised</b> learning gets no labels and just clusters similar pages together (useful, but it would never know Po-Po's circle means soup). <b>Reinforcement</b> learning learns from trial, error and rewards, more like how Mei's little cousin Theo learned not to touch the wok. For this job, the elder's knowledge <i>is</i> the training signal. Sixty years of kitchen memory, distilled into forty labelled pages.</p>
+
+    <div class="lab">
+      <div class="labhead">Story choice · The margin nobody labelled</div>
+      <p>Page 108 has handwriting that isn't Po-Po's: spidery, older, in faded pencil. Mei freezes. Scan it into the training pile, or take it to Po-Po first?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="choose('fbS1','Mei carries it over. Po-Po goes very quiet: it is her own mother\'s hand: a correction to the vinegar, written the year Mei\'s Ma was born. It becomes the first page in a new folder: do_not_let_the_machine_touch_alone. Some data needs a human before it needs a model.')">Take it to Po-Po first</button>
+        <button class="btn" onclick="choose('fbS1','Mei scans it (carefully, at the highest resolution), then carries the scan AND the original to Po-Po. Her grandmother touches the screen, then the paper. It is her own mother\'s handwriting. “Good,” Po-Po says at last. “Now it exists twice.” Either way, this page was always ending up in her hands.')">Scan it first, so it's safe</button>
+      </div>
+      <span class="fb" id="fbS1"></span>
+    </div>
+
+    <h2>A map where "braise" lives next to "stew"</h2>
+    <p>One problem: Po-Po's pages don't use one word per idea. Some say <i>braise</i>, some say <i>stew</i>, one says <i>let it sulk in the pot</i>. A classifier that treats these as unrelated words will scatter one dish across three categories. The fix is <b>embeddings</b>: every word gets a position in a space of meaning, learned from how words are used. Words used in similar ways land close together. Mei plots four cooking words on a toy 2-D flavour map:</p>
+
+    <p style="font-family:'JetBrains Mono';font-size:14px;background:#eef4f3;border-radius:12px;padding:12px 14px">braise = (2, 7) &nbsp; stew = (3, 7) &nbsp; steam = (2, 3) &nbsp; fry = (8, 2)</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 02 · Who lives next door to "braise"?</div>
+      <p>Use squared distance: (Δx)² + (Δy)². Which word sits closest to <b>braise</b> at (2, 7)?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb2',true,'Squared distance braise→stew = (3−2)² + (7−7)² = 1. Compare steam at (0)² + (−4)² = 16 and fry at (6)² + (−5)² = 61. Slow, wet, gentle cooking clusters together, so the classifier treats &quot;stew&quot; pages and &quot;braise&quot; pages as kin, exactly as Po-Po does.','')">stew · squared distance 1</button>
+        <button class="btn" onclick="answer('fb2',false,'','Steam is (2−2)² + (3−7)² = 0 + 16 = 16 away. Closer than fry, but not the neighbour.')">steam · squared distance 16</button>
+        <button class="btn" onclick="answer('fb2',false,'','Fry is (8−2)² + (2−7)² = 36 + 25 = 61 away: the far side of the map, as any braise-lover would expect.')">fry · squared distance 61</button>
+      </div>
+      <span class="fb" id="fb2"></span>
+      <p class="labnote">Real embeddings use hundreds of dimensions, not two, but "similar meaning ⇒ nearby point" is the whole idea.</p>
+    </div>
+
+    <p>By Sunday night the classifier had sorted all 214 pages into Po-Po's seven categories, using her forty labelled examples. Po-Po scrolled through the SOUP folder with an expression Mei had never seen her aim at a screen.</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span><br>"It put the winter melon page next to the lotus root page. Your great-grandfather always kept those together too. He said soups that take patience should keep each other company."</p></div>
+
+    <div class="recap"><h3>Chapter 2 · What Mei collected</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">KNOW</span>Supervised learning trains on labelled examples; unsupervised clusters without labels; reinforcement learns from rewards.</div>
+        <div class="card can"><span class="kind">CAN</span>Compute squared distances in an embedding space to find a word's nearest neighbour.</div>
+        <div class="card care"><span class="kind">CARE</span>Labels come from people. A model trained on Po-Po's memory carries Po-Po's knowledge, and her responsibility.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="ch3">
+    <div class="chero"><span class="big-emo">⚖️</span><div><div class="ch-no">CHAPTER THREE</div><h1 style="font-size:30px;margin:0">Honest Testing</h1><div class="th">The exam you don't let the model revise for</div></div></div>
+
+    <p>Mei's Ba was impressed. "It sorted everything? A hundred per cent?" Mei winced. That was exactly the claim she couldn't make, because so far, the model had only ever been marked on pages it trained on. A model can ace those by <b>memorising</b> them, the way you could "ace" a test you'd already seen the answers to, and still be useless on anything new.</p>
+
+    <p>So Mei did what honest builders do: a <b>train/test split</b>. Before training, she set aside 20 labelled pages the model would never see. Train on the rest; sit the exam on the hidden 20. The workflow is always the same: <b>data → train → test → evaluate</b>, and the evaluation only means something if the test pages are genuinely unseen.</p>
+
+    <p>Results: <span class="num">17 out of 20</span> correct: 85%. Good. But averages hide the interesting part, so Mei tallied <b>confusion counts</b>: <i>which</i> categories got mixed up with which. Two desserts had been labelled BRAISE. One soup had been labelled STEAM. The desserts bothered her. The model hadn't hesitated; it was confident. Why?</p>
+
+    <h2>Inside one neuron of the classifier</h2>
+    <p>A <b>neuron</b> is the smallest deciding unit in a neural network. It takes input numbers, multiplies each by a <b>weight</b> (how much that clue matters), adds a <b>bias</b>, and "fires" if the total clears zero. Stack thousands and you get a network; but you can run one by hand. Mei pulls out her braise-neuron. Its inputs are three yes/no clues from a page (yes = 1, no = 0):</p>
+
+    <p style="font-family:'JetBrains Mono';font-size:14px;background:#eef4f3;border-radius:12px;padding:12px 14px">clues: says "slow fire"? (w = 3) &nbsp; says "sugar"? (w = 1) &nbsp; says "soy sauce"? (w = 2) &nbsp; bias = −3<br>sum = 3·x₁ + 1·x₂ + 2·x₃ − 3 &nbsp; → &nbsp; fires "BRAISE" if sum &gt; 0</p>
+
+    <p>Now the page the model got confidently wrong: a sweet, dark, water-stained page that says <b>"slow fire"</b> (yes), <b>"sugar"</b> (yes), <b>"soy sauce"</b> (no).</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 03 · Run the neuron by hand</div>
+      <p>Compute the neuron's sum for that page: 3×1 + 1×1 + 2×0 − 3. Does it fire?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb3',true,'3 + 1 + 0 − 3 = 1, and 1 &gt; 0: the neuron fires BRAISE. Now you can see exactly why the model was confident and wrong: &quot;slow fire&quot; carries the heaviest weight, and this dish cooks slow too. The mechanism did its job perfectly; the mistake was in what the weights assume.','')">sum = 1 → fires BRAISE</button>
+        <button class="btn" onclick="answer('fb3',false,'','Check the bias: it gets added (as −3) exactly once: 3 + 1 + 0 − 3.')">sum = 4 → fires BRAISE</button>
+        <button class="btn" onclick="answer('fb3',false,'','The soy clue contributes 2×0 = 0, not −2. Recompute: 3 + 1 + 0 − 3.')">sum = −1 → stays quiet</button>
+        <button class="btn" onclick="answer('fb3',false,'','A sum of exactly 0 would sit on the fence, but 3 + 1 + 0 − 3 isn\'t 0.')">sum = 0 → stays quiet</button>
+      </div>
+      <span class="fb" id="fb3"></span>
+    </div>
+
+    <p>Mei brought the mislabelled page to the kitchen. Po-Po glanced at it for half a second.</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span><br>"Braise? That is your Ma's red-date tong sui. Sweet soup. She had it every birthday from when she was three. Your machine saw 'slow fire' and stopped thinking."</p>
+    <p><span class="who">Mei</span><br>"It can't stop thinking, Po-Po. It never started. It just adds up weights. That's why the test set matters, and why you're in the loop. You caught in half a second what the model was 100% sure about."</p>
+    <p><span class="who">Po-Po</span><br>"Then write that down somewhere in your machine: <i>confidence is not a flavour of correctness.</i>"</p></div>
+
+    <div class="box watch"><span class="bt">⚠️ The rule Mei tapes above her desk</span>
+    Never mark a model on its own training data, and never confuse a confident output with a correct one. Accuracy comes from the held-out test; <i>trust</i> comes from a person who knows the domain checking where the errors land.</div>
+
+    <div class="recap"><h3>Chapter 3 · What Mei collected</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">KNOW</span>The ML workflow: data → train → test → evaluate, with the test set kept unseen.</div>
+        <div class="card can"><span class="kind">CAN</span>Compute a neuron's weighted sum plus bias by hand and say whether it fires; read confusion counts.</div>
+        <div class="card care"><span class="kind">CARE</span>A domain expert reviewing the errors (Po-Po in the loop) catches what accuracy scores hide.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="ch4">
+    <div class="chero"><span class="big-emo">👻</span><div><div class="ch-no">CHAPTER FOUR</div><h1 style="font-size:30px;margin:0">The Missing Recipe</h1><div class="th">A model that invents, a memory that corrects</div></div></div>
+
+    <p>Three recipes were beyond saving: their pages dissolved past scanning. The cruellest loss was the anniversary soup itself: red dates, lotus seeds, the soup Po-Po has made for every family milestone since the kitchen opened. The paper had dissolved into felt. Uncle Kit, only half joking, said: <i>"Can't your machine just write it back?"</i></p>
+
+    <p>Mei knew enough now to hear the danger in that sentence. But first, to show everyone <i>how</i> a machine writes, she built the smallest language model there is: a <b>bigram model</b> of Po-Po's kitchen sayings. She typed in every saying the family could remember, and counted which word follows which. To generate text, the model repeatedly asks one question: <i>given the last word, which word most often comes next?</i> A real LLM is this idea grown enormous (neural, trained on oceans of text, with attention to look further back than one word), but the engine is the same: <b>predict the next token from learned probabilities</b>.</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span>popo_bigrams.py · a tiny language model</span><button class="copy" onclick="copyCode(this)">Copy</button></div>
+<pre><code><span class="c"># Count which word follows which in Po-Po's sayings</span>
+sayings = <span class="s">"slow fire good soup / slow fire good broth / "</span> \
+          <span class="s">"slow fire never lies / slow hands quick wok"</span>
+words = sayings.replace(<span class="s">"/"</span>, <span class="s">""</span>).split()
+follows = {}
+<span class="k">for</span> a, b <span class="k">in</span> zip(words, words[1:]):
+    follows.setdefault(a, []).append(b)
+
+<span class="k">print</span>(follows[<span class="s">"slow"</span>])   <span class="c"># ['fire', 'fire', 'fire', 'hands']</span>
+<span class="c"># P(next = "fire" | "slow") = 3 out of 4</span></code></pre>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 04 · Be the language model</div>
+      <p>In the sayings above, the word <b>"slow"</b> appears 4 times: 3 times followed by <b>"fire"</b>, once by <b>"hands"</b>. If the model has just produced "slow", what probability does it give to "fire" coming next?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb4a',false,'','That\'s P(hands | slow), the 1 time out of 4. Fire got the other 3.')">0.25</button>
+        <button class="btn" onclick="answer('fb4a',false,'','Count again: fire follows slow in 3 of the 4 cases, not 3 of 5.')">0.60</button>
+        <button class="btn" onclick="answer('fb4a',true,'3 ÷ 4 = 0.75. Three-quarters of the time, &quot;slow&quot; leads to &quot;fire&quot;. Notice what the model is doing, and all it is doing: turning counts into probabilities. It has no idea what fire is.','')">0.75</button>
+        <button class="btn" onclick="answer('fb4a',false,'','3 is the count, not the probability; divide by the 4 times &quot;slow&quot; appears.')">3</button>
+      </div>
+      <span class="fb" id="fb4a"></span>
+      <p style="margin-top:16px">Mei let a bigger model draft the lost soup recipe from the family's descriptions. It produced this: fluent, warm, and printed here with its trap intact. <b>One step never existed.</b> Which?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb4b',false,'','That step is real: it survives on the scanned half-page, in Po-Po\'s own hand.')">"Rinse the dates and lotus seeds"</button>
+        <button class="btn" onclick="answer('fb4b',false,'','Real: it\'s practically the family motto. Slow fire, two hours, always.')">"Simmer on a slow fire, two hours"</button>
+        <button class="btn" onclick="answer('fb4b',true,'Invented. The model wrote &quot;add a third date for extra sweetness&quot; because plenty of recipes online do; it is a perfectly plausible step. But this soup takes two dates, not three. Great-Grandpa could only afford two the year Ma was born, and two it has stayed, in his honour, for every milestone since. No model could know that. Plausible is not the same as true, and only a source outside the model (Po-Po, and the surviving pages) could catch it.','')">"Add a third date for extra sweetness"</button>
+        <button class="btn" onclick="answer('fb4b',false,'','Real: Po-Po confirms it, and the stained corner of the scan shows the character for &quot;skim&quot;.')">"Skim the froth in the first boil"</button>
+      </div>
+      <span class="fb" id="fb4b"></span>
+    </div>
+
+    <div class="box watch"><span class="bt">⚠️ Hallucination, properly understood</span>
+    A language model's training objective is to produce <b>plausible</b> next tokens, not <b>true</b> ones. Usually plausible and true coincide; when they don't, the model states fiction with the same fluent confidence as fact. That's a <b>hallucination</b>. The fix is never "trust a better-sounding answer"; it's <b>verification against sources the model can't invent</b>: the surviving scans, and Po-Po.</div>
+
+    <h2>Prompting for the faded characters</h2>
+    <p>The AI helper earned its keep elsewhere: transcribing faded characters on the salvageable pages. Mei's first prompt (<i>"read this"</i>) produced guesses. Her second followed a proper framework: give the model a <b>role and context</b>, a <b>clear task</b>, <b>constraints</b>, and (the big unlock) <b>few-shot examples</b>: three pairs of <i>faded scrap → Po-Po's confirmed transcription</i>, so the model could see the style of hand and the mixed Cantonese–English–Malay before touching a new scrap.</p>
+
+    <p style="font-family:'JetBrains Mono';font-size:13.5px;background:#eef4f3;border-radius:12px;padding:12px 14px">You are transcribing a 1960s handwritten recipe book (Cantonese, English, some Malay).<br>Here are 3 examples of this writer's hand, with verified transcriptions: […]<br>Transcribe scrap 4. Mark every character you are unsure of with 〔?〕; do not guess silently.</p>
+
+    <p>The difference was dramatic, and measurable, because every transcription still crossed the kitchen table for Po-Po's sign-off. Prompt two, with the examples and the "mark your uncertainty" rule, needed a third of the corrections. Better asking, better answers; <b>human verification either way</b>.</p>
+
+    <div class="recap"><h3>Chapter 4 · What Mei collected</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">KNOW</span>LLMs predict next tokens from learned probabilities; their objective is plausibility, not truth.</div>
+        <div class="card can"><span class="kind">CAN</span>Compute a bigram probability from counts; improve a prompt with role, constraints and few-shot examples; compare two prompts.</div>
+        <div class="card care"><span class="kind">CARE</span>Verify generated content against sources outside the model. Two dates, not three.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="ch5">
+    <div class="chero"><span class="big-emo">🏮</span><div><div class="ch-no">CHAPTER FIVE</div><h1 style="font-size:30px;margin:0">The Dinner</h1><div class="th">An agent in the kitchen, and a book that tells the truth about itself</div></div></div>
+
+    <p>Anniversary day. Eleven dishes, one cooker, four generations arriving at seven. Po-Po commanding the wok; Ma on desserts; Ba and Uncle Kit on chopping duty; cousin Theo under the table "supervising". And on the counter, propped on a biscuit tin: Mei's last build, a kitchen-timer <b>agent</b> wired to a probe thermometer.</p>
+
+    <p>An agent isn't magic; it's a loop. <b>Sense → Think → Act</b>, round and round, until the goal is met. Sensors feed the sensing step: the agent can't think about a temperature it never measured. And when the loop needs something beyond itself, it makes a <b>tool call</b>: Mei's agent can read the thermometer, ring a chime, and send one very specific kind of message to her phone.</p>
+
+    <p style="font-family:'JetBrains Mono';font-size:13.5px;background:#eef4f3;border-radius:12px;padding:12px 14px">GOAL: soup at gentle simmer (92–96°C) for 120 min<br>SENSE: probe reads 88°C &nbsp;→&nbsp; THINK: 88 &lt; 92, below band &nbsp;→&nbsp; ACT: chime + "nudge the flame up, please"<br>…then back to SENSE. The agent asks; a human touches the flame. Always.</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 05 · Trace one turn of the loop</div>
+      <p>18:40. The probe has just returned 97°C (above the 92–96 band). What happens at the <b>THINK</b> step of this turn?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb5',false,'','Reading the probe is the SENSE step: this turn\'s reading (97°C) is already in. Thinking is what happens to it next.')">Read the probe thermometer again</button>
+        <button class="btn" onclick="answer('fb5',true,'Right: THINK is where the agent compares the reading to the goal (97 &gt; 96, so the soup is running hot) and decides which action fits. Sense gathers, think compares and decides, act carries it out.','')">Compare 97 to the 92–96 band and decide the flame is too high</button>
+        <button class="btn" onclick="answer('fb5',false,'','Chiming is the ACT step: the loop\'s output. It only makes sense after a decision.')">Ring the chime</button>
+        <button class="btn" onclick="answer('fb5',false,'','Nobody\'s agent touches Po-Po\'s flame. By design, the ACT step requests a human; that\'s the human-in-the-loop safeguard, not a missing feature.')">Turn the gas down itself</button>
+      </div>
+      <span class="fb" id="fb5"></span>
+      <p class="labnote">Spot the tool calls: the thermometer read feeds SENSE; the chime and the phone message are ACT. The agent that can't sense can't reason; the agent that acts without asking shouldn't be in this kitchen.</p>
+    </div>
+
+    <p>All afternoon the little loop ticked around (sense, think, chime) while the humans did everything that mattered. At six, Mei slipped away to collect the surprise from the printer's.</p>
+
+    <h2>The provenance page</h2>
+    <p>The restored book, <i>The Hundred-Recipe Kitchen, 1966–2026</i>, opens with a page no recipe book usually has. Mei insisted on it, and Po-Po, once she understood it, insisted harder. It states, for every page, exactly what the reader is holding:</p>
+
+    <div class="box glass"><span class="bt">📜 About this restoration</span>
+    <b>Original scans (166 pages):</b> photographed as found, water stains and all.<br>
+    <b>AI-assisted transcriptions (48 pages):</b> faded text transcribed by a language model from few-shot prompts, then checked character-by-character and approved by Chan Yuet-Ying (Po-Po). Every uncertain character is marked 〔?〕, never silently guessed.<br>
+    <b>Reconstructed from memory (3 recipes):</b> no page survived; written down from Po-Po's dictation, witnessed by the family.<br>
+    <b>Generated text that failed verification:</b> not included.</div>
+
+    <p>That page is a <b>verification routine made visible</b>, the same honesty the family used all along: check every AI output against a source it can't invent, label what the machine did, and keep a person with the knowledge, and the right, to say no. Without it, AI-transcribed pages could pass silently as Po-Po's own words; sixty years from now, nobody could untangle which was which. With it, the book can be trusted <i>because</i> it admits what it is.</p>
+
+    <div class="lab">
+      <div class="labhead">Story choice · The dedication</div>
+      <p>One blank line remains under the title. The printer is waiting. What does Mei put there?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="choose('fbS2','She sets Great-Grandpa\'s two dates in tiny type under the title: a secret only the family will read correctly. Po-Po spots it at once, of course, and pretends she has something in her eye.')">Two small printed dates: the fruit, not the years</button>
+        <button class="btn" onclick="choose('fbS2','She lists every cook whose hand appears in the book, from Great-Grandma\'s pencilled vinegar correction to Po-Po\'s circles to her own scanning notes. Four generations on one line. Po-Po reads it twice and says, &quot;Add Theo. He supervised.&quot;')">Every family cook's name, oldest first</button>
+      </div>
+      <span class="fb" id="fbS2"></span>
+    </div>
+
+    <p>At seven the family sat: Po-Po, her children, their children, and Theo, asleep before dessert. The soup went round: two dates in every bowl, and the story of why told aloud for the youngest to keep. Then Po-Po stood, and set the first printed copy of the restored book in front of Mei. On the flyleaf, in the strong hand the whole model had learned from:</p>
+
+    <p class="lead" style="text-align:center;font-style:italic;max-width:44ch;margin:18px auto">"To the girl who taught the machine to listen,<br>and listened to me."</p>
+
+    <div class="scene"><p><span class="who">Po-Po</span><br>"Sixty years ago this kitchen opened with one pot and one recipe. Tonight it has a hundred, and a machine that knows its manners. Next year, Mei-Ling, you cook. The machine can time."</p></div>
+
+    <div class="recap"><h3>Chapter 5 · What Mei collected</h3>
+      <div class="rc">
+        <div class="card know"><span class="kind">KNOW</span>An agent runs Sense → Think → Act; sensors feed sensing, tool calls do what the loop can't do alone.</div>
+        <div class="card can"><span class="kind">CAN</span>Trace an agent's loop and place the tool calls; apply a verification-and-labelling routine to AI output.</div>
+        <div class="card care"><span class="kind">CARE</span>Label what the machine did, keep humans over the flame, and over the family history.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINISH -->
+  <section class="finish">
+    <div class="medal">🏮</div>
+    <h2 style="margin-top:6px">Sixty years, one hundred recipes, four generations</h2>
+    <p style="max-width:56ch;margin:10px auto">The machine sorted the pages. But only Po-Po knew why the soup gets two dates, not three. Keep building things that listen, and keep listening to the people they're for.</p>
+  </section>
+
+</div>
+</body>
+</html>

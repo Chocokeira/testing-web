@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · Upper Primary Practice Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--coral:#E8920C;--deep:#9a6402;--amber:#FFB23E;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1714;--cream:#FFF6F2;--line:#f3e3c8}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:26px 22px 18px;max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .mascot{width:74px;height:74px;flex:none;animation:bob 3s ease-in-out infinite}
+  @keyframes bob{50%{transform:translateY(-8px)}}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.4rem);margin:0}
+  .sub{font-size:14.5px;color:#7a5a52;margin-top:2px}
+  .stars{margin-left:auto;font-family:'Space Mono',monospace;font-weight:700;background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;font-size:15px;color:var(--deep)}
+  .tabs{max-width:1080px;margin:6px auto 0;padding:0 22px;display:flex;gap:10px}
+  .tab{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:2px solid var(--line);background:#fff;color:var(--deep);border-radius:999px;padding:10px 20px;cursor:pointer}
+  .tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  main{max-width:1080px;margin:18px auto 70px;padding:0 22px}
+  .intro{font-size:14.5px;color:#6b554e;margin:0 0 18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:20px 22px;border-top:6px solid var(--c,var(--coral))}
+  .chip{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#9a6402;background:#fbe7c8;padding:4px 10px;border-radius:999px}
+  .ctitle{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:10px 0 4px}
+  .cprompt{font-size:14.5px;color:#5a443d;margin:0 0 14px}
+  .fb{min-height:22px;font-size:14px;font-weight:600;margin-top:12px}
+  .fb.ok{color:#1f8a4c}.fb.no{color:#d6336c}
+  .btn{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;border:none;border-radius:999px;padding:9px 15px;cursor:pointer;background:var(--coral);color:#fff}
+  .btn:hover{background:var(--deep)}
+  .btn.ghost{background:#fff;border:2px solid var(--line);color:var(--deep)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .mini{font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;cursor:pointer}
+  .mini.good{background:#e9f7ee;border-color:#1f8a4c;color:#1f8a4c}
+  .mini.bad{background:#fdeaef;border-color:#d6336c;color:#d6336c}
+  .mini.sel{background:#efe9ff;border-color:var(--violet);color:var(--violet)}
+  .mini:disabled{cursor:default}
+  .why{font-size:12.5px;color:#6b554e;margin-top:6px;padding:7px 11px;border-radius:10px;background:#FFFaF8;border:1px dashed var(--line);line-height:1.45}
+  .why.ok{border-color:#9bd9b1;background:#eef9f1;color:#206a3c}
+  .why.no{border-color:#f2b8cb;background:#fdeef3;color:#a23258}
+  .choices{display:flex;gap:8px;flex-wrap:wrap}
+  .choice{flex:1;min-width:78px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 6px;cursor:pointer;text-align:center}
+  .choice:hover{border-color:var(--violet)}
+  .choice.cgood{background:#e9f7ee;border-color:#1f8a4c;color:#1f8a4c}
+  .choice.cbad{background:#fdeaef;border-color:#d6336c;color:#d6336c}
+  .robobox{display:flex;align-items:flex-start;gap:12px;background:#f3eeff;border:2px solid #d9c9ff;border-radius:16px;padding:12px 14px;margin:10px 0;font-size:13.5px;line-height:1.5}
+  .robobox .rob{font-size:32px;flex:none}
+  /* ripeness sorter */
+  .banrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .ban{width:64px;border:2px solid var(--line);border-radius:14px;padding:6px 4px;text-align:center;background:#FFFaF8;font-size:12px}
+  .ban .em{font-size:26px;display:block}
+  .ban .sp{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:var(--deep)}
+  .ban.ripe{border-color:#e8930c;background:#fff7e9}
+  .ban.unripe{border-color:#8fbf6f;background:#eef8e7}
+  .ban .cls{font-family:'Space Mono',monospace;font-size:10px;margin-top:3px;font-weight:700}
+  .ban.wrong{box-shadow:0 0 0 3px #f2b8cb}
+  .ban.right{box-shadow:0 0 0 3px #9bd9b1}
+  .slidewrap{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+  input[type=range]{flex:1;accent-color:var(--coral)}
+  .cutval{font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:var(--deep);min-width:32px;text-align:center}
+  /* prompt lab */
+  .promptchips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+  .pchip{font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;border:2px solid var(--line);background:#fff;color:#7a5a52;border-radius:999px;padding:8px 13px;cursor:pointer}
+  .pchip.on{background:var(--violet);border-color:var(--violet);color:#fff}
+  .preview{font-size:13.5px;background:#FFF1ED;border:2px dashed #ffc4b9;border-radius:12px;padding:10px 12px;color:#7a3d32;line-height:1.5;min-height:44px}
+  .score{font-family:'Space Mono',monospace;font-weight:700;font-size:14px;color:var(--deep);margin-top:8px}
+  /* decision tree */
+  .qbox{background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;font-size:14.5px}
+  .feats{font-family:'Space Mono',monospace;font-size:12.5px;background:#FFF1ED;border:1px dashed #ffc4b9;border-radius:10px;padding:8px 11px;color:#7a3d32;line-height:1.7;margin-bottom:8px}
+  .path{font-family:'Space Mono',monospace;font-size:12px;color:#6b554e;margin-top:8px}
+  /* integration */
+  .journey{background:#fff;border:2px solid var(--line);border-radius:26px;padding:22px}
+  .prog{height:10px;background:#f3e4df;border-radius:999px;overflow:hidden;margin:12px 0 18px}
+  .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--violet));width:0;transition:width .4s}
+  .step h3{font-family:'Fredoka',sans-serif;margin:0 0 4px;font-size:20px}
+  .trainrow{display:flex;align-items:center;gap:12px;background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:8px}
+  .trainrow .em{font-size:24px;flex:none}
+  .moodbtns{margin-left:auto;display:flex;gap:6px}
+  .mini.selr{background:#e9f7ee;border-color:#1f8a4c;color:#1f8a4c}
+  .mini.selt{background:#fdeaef;border-color:#d6336c;color:#d6336c}
+  .pop{animation:pop .4s}@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+  .conf{position:fixed;font-size:22px;pointer-events:none;animation:rise 1.1s ease-out forwards;z-index:99}
+  @keyframes rise{to{transform:translateY(-120px) rotate(40deg);opacity:0}}
+  .hide{display:none}
+  .done{text-align:center;padding:18px}
+  .done .big{font-size:54px;animation:pop .5s}
+  .cprog{margin:0 0 18px}
+  .cmsg{font-family:'Space Mono',monospace;font-size:12.5px;color:var(--deep);font-weight:700;margin-top:6px;text-align:center}
+  .celebrate{background:#fff;border:2px solid var(--line);border-left:7px solid var(--coral);border-radius:18px;padding:18px 20px;margin:0 0 18px;font-size:15px;line-height:1.5;color:var(--ink);font-family:'Fredoka',sans-serif;font-weight:600;text-align:center;animation:pop .4s}
+  /* next-word machine */
+  .nwstem{font-size:15px;background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:11px 14px;margin:6px 0 12px;font-family:'Fredoka',sans-serif;font-weight:600}
+  .nwopts{display:flex;flex-direction:column;gap:8px}
+  .nwopt{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer;text-align:left}
+  .nwopt:hover{border-color:var(--violet)}
+  .nwopt.sel{background:#efe9ff;border-color:var(--violet);color:var(--violet)}
+  .nwopt.cgood{background:#e9f7ee;border-color:#1f8a4c;color:#1f8a4c}
+  .nwopt.cbad{background:#fdeaef;border-color:#d6336c;color:#d6336c}
+  .nwprob{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:var(--deep);min-width:46px;text-align:right}
+  .nwbar{height:8px;background:#f3e4df;border-radius:999px;overflow:hidden;margin-top:5px}
+  .nwbar i{display:block;height:100%;background:linear-gradient(90deg,var(--coral),var(--violet))}
+</style></head>
+<body>
+<div class="bar"></div>
+<header>
+  <svg class="mascot" viewBox="0 0 80 80"><rect x="14" y="20" width="52" height="46" rx="16" fill="#E8920C"/><rect x="38" y="6" width="4" height="12" fill="#FFB23E"/><circle cx="40" cy="6" r="5" fill="#FFB23E"/><rect x="26" y="34" width="11" height="15" rx="5" fill="#fff"/><rect x="43" y="34" width="11" height="15" rx="5" fill="#fff"/><circle cx="31" cy="42" r="3.5" fill="#2A1714"/><circle cx="49" cy="42" r="3.5" fill="#2A1714"/><path d="M32 56 q8 7 16 0" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+  <div><h1>Upper Primary · Practice Lab</h1><div class="sub">Grades 4–6 · think it through, build and test, earn a ⭐ for each one you solve!</div></div>
+  <div class="stars" id="stars">⭐ 0</div>
+</header>
+<div class="tabs">
+  <button class="tab on" data-tab="consol" onclick="showTab('consol')">🧩 Consolidate</button>
+  <button class="tab" data-tab="integ" onclick="showTab('integ')">🚀 Integrate</button>
+</div>
+
+<main>
+  <section id="consol">
+    <p class="intro">Practise one idea at a time. Each activity makes you reason, not just guess. Make your choice, press <b>Check</b>, read the explanation, then tap <b>Try another</b> for a fresh version.</p>
+    <div class="cprog"><div class="prog"><i id="consolBar" style="width:0%"></i></div><div class="cmsg" id="consolMsg">0 of 5 activities solved</div></div>
+    <div id="consolDone" class="celebrate hide"></div>
+    <div class="grid">
+      <div class="card" style="--c:var(--teal)"><span class="chip">Outcome 2.2 · P2 learning</span><div class="ctitle">🍌 Train a Ripeness Sorter</div><p class="cprompt">A sorter calls a banana <b>ripe</b> when its spottiness is high enough. Drag the threshold so the line splits ripe from unripe, then press <b>Check</b>.</p><div id="ripeArea"></div><div class="fb" id="ripeFb"></div><div class="row" style="margin-top:8px"><button class="btn" onclick="checkRipe()">Check</button><button class="btn ghost" onclick="initRipe()">Try another</button></div></div>
+
+      <div class="card" style="--c:var(--violet)"><span class="chip">Outcome 3.3 · prompt writing</span><div class="ctitle">✍️ Prompt Lab</div><p class="cprompt">A strong prompt tells the AI four things. Toggle the chips to build one. Watch the preview and the quality score change, then press <b>Check</b> to see what is missing.</p><div id="promptArea"></div><div class="fb" id="promptFb"></div><div class="row" style="margin-top:8px"><button class="btn" onclick="checkPrompt()">Check</button><button class="btn ghost" onclick="initPrompt()">Try another</button></div></div>
+
+      <div class="card" style="--c:var(--amber)"><span class="chip">Outcome 1.2 · group by features</span><div class="ctitle">🌳 Decision-Tree Detective</div><p class="cprompt">A decision tree sorts animals by asking yes/no questions about their features. Read the mystery animal, then click through the branches to reach a leaf.</p><div id="treeArea"></div><div class="fb" id="treeFb"></div><button class="btn ghost" style="margin-top:8px" onclick="initTree()">Try another</button></div>
+
+      <div class="card" style="--c:var(--coral)"><span class="chip">Outcome 1.4 · sample fairness</span><div class="ctitle">🌙 Spot the Skew</div><p class="cprompt">A model only ever trained on a narrow set of examples. A brand-new case arrives that is nothing like the training data. Predict what happens and why, then press <b>Check</b>.</p><div id="skewArea"></div><div class="fb" id="skewFb"></div><div class="row" style="margin-top:8px"><button class="btn" id="skewBtn" onclick="checkSkew()">Check</button><button class="btn ghost" onclick="initSkew()">Try another</button></div></div>
+
+      <div class="card" style="--c:var(--violet)"><span class="chip">Outcome 3.1 · P3 next-word prediction</span><div class="ctitle">🔮 Next-Word Machine</div><p class="cprompt">A language model reads a sentence stem and predicts the most likely next word. Pick the word you think it will output, then press <b>Check</b> to reveal the probabilities and how it decided.</p><div id="nwArea"></div><div class="fb" id="nwFb"></div><div class="row" style="margin-top:8px"><button class="btn" id="nwBtn" onclick="checkNextWord()">Check</button><button class="btn ghost" onclick="initNextWord()">Try another</button></div></div>
+    </div>
+  </section>
+
+  <section id="integ" class="hide">
+    <p class="intro">One connected build: you label rubbish to make a dataset, the sorter learns a rule from <i>your</i> labels, you test it on items it never saw, and you decide what it should do with a tricky item its rule cannot handle. Representation, learning, prediction and responsibility, all in one system.</p>
+    <div class="journey">
+      <div class="prog"><i id="prog"></i></div>
+      <div id="journey"></div>
+    </div>
+  </section>
+</main>
+<footer style="text-align:center;padding:28px 24px 40px">
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+    <a href="overview.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--deep)">← Back to syllabus</a>
+    <a href="priup-problem-set-b.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:var(--coral);color:#fff">Problem sets →</a>
+  </div>
+  <div style="color:#9a857d;font-size:13px">IJAIO 2026 · Upper Primary Practice Lab</div>
+</footer>
+
+<script>
+let stars=0;
+function addStar(){stars++;document.getElementById('stars').textContent='⭐ '+stars;}
+function confetti(x,y){const e=['⭐','🎉','✨','🌟','💛'];for(let i=0;i<8;i++){const s=document.createElement('div');s.className='conf';s.textContent=e[i%e.length];s.style.left=(x+(Math.random()*80-40))+'px';s.style.top=y+'px';document.body.appendChild(s);setTimeout(()=>s.remove(),1100);}}
+function celebrate(el){const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top);}
+function showTab(t){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));document.getElementById('consol').classList.toggle('hide',t!=='consol');document.getElementById('integ').classList.toggle('hide',t!=='integ');}
+const pick=a=>a[Math.floor(Math.random()*a.length)], shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+
+const CONSOL_TOTAL=5;const consolDone=new Set();
+function markDone(id){if(consolDone.has(id))return;consolDone.add(id);updateConsol();}
+function updateConsol(){const n=consolDone.size;const bar=document.getElementById('consolBar');if(bar)bar.style.width=(n/CONSOL_TOTAL*100)+'%';const m=document.getElementById('consolMsg');if(m)m.textContent=n+' of '+CONSOL_TOTAL+' activities solved';
+  if(n>=CONSOL_TOTAL){const d=document.getElementById('consolDone');if(d&&d.classList.contains('hide')){d.classList.remove('hide');d.innerHTML='🌟 Outstanding! You completed every practice activity and you are reasoning like a real AI builder. Now take on the <b>Integrate</b> tab and build a system of your own.';confetti(window.innerWidth/2,110);}}}
+
+/* ---------- 1. Train a Ripeness Sorter (P2) ---------- */
+let ripe={};
+function initRipe(){
+  const fb=document.getElementById('ripeFb');fb.textContent='';fb.className='fb';
+  // hidden true cutoff between 4 and 7; build 6 examples that are cleanly separable by it
+  const cut=4+Math.floor(Math.random()*4); // 4..7
+  let vals=[];
+  // 3 clearly unripe (below cut by a margin), 3 clearly ripe (above cut by a margin)
+  while(vals.filter(v=>v<cut).length<3){let v=Math.floor(Math.random()*(cut));if(v<=cut-1)vals.push(v);}
+  while(vals.filter(v=>v>=cut).length<3){let v=cut+Math.floor(Math.random()*(11-cut));if(v>=cut)vals.push(v);}
+  vals=shuffle(vals).slice(0,6);
+  // guarantee 3 and 3 around cut
+  vals=vals.sort((a,b)=>a-b);
+  const items=vals.map(v=>({sp:v,ripe:v>=cut}));
+  ripe={items,cut,chosen:5};
+  const area=document.getElementById('ripeArea');
+  area.innerHTML=`<div class="banrow" id="banrow"></div>
+    <div class="slidewrap"><span style="font-size:13px;color:#7a5a52">cutoff</span><input type="range" min="0" max="11" step="1" value="5" id="ripeSlide"><span class="cutval" id="cutval">5</span></div>
+    <div style="font-size:12.5px;color:#6b554e">Bananas with spottiness <b>at or above</b> the cutoff are called ripe.</div>`;
+  document.getElementById('ripeSlide').oninput=e=>{ripe.chosen=+e.target.value;document.getElementById('cutval').textContent=ripe.chosen;drawBan(false);};
+  drawBan(false);
+}
+function drawBan(showTruth){
+  const row=document.getElementById('banrow');row.innerHTML='';
+  ripe.items.forEach(it=>{
+    const pred=it.sp>=ripe.chosen;
+    const d=document.createElement('div');
+    d.className='ban '+(it.ripe?'ripe':'unripe');
+    let cls='';
+    if(showTruth){const right=pred===it.ripe;d.classList.add(right?'right':'wrong');cls=`<div class="cls">${pred?'ripe?':'unripe?'}</div>`;}
+    d.innerHTML=`<span class="em">🍌</span><span class="sp">${it.sp}</span><div style="font-size:10px;color:#7a5a52">${it.ripe?'ripe':'unripe'}</div>${cls}`;
+    row.appendChild(d);
+  });
+}
+function checkRipe(){
+  const fb=document.getElementById('ripeFb');
+  let correct=ripe.items.filter(it=>(it.sp>=ripe.chosen)===it.ripe).length;
+  drawBan(true);
+  if(correct===6){
+    fb.className='fb ok';
+    fb.textContent='Perfect split! Your cutoff of '+ripe.chosen+' classifies all 6 correctly ⭐';
+    addStar();celebrate(document.getElementById('banrow'));markDone('ripe');
+  } else {
+    const maxUnripe=Math.max(...ripe.items.filter(i=>!i.ripe).map(i=>i.sp));
+    const minRipe=Math.min(...ripe.items.filter(i=>i.ripe).map(i=>i.sp));
+    fb.className='fb no';
+    fb.textContent=correct+'/6 correct. A good threshold sits between the spottiest unripe banana ('+maxUnripe+') and the least spotty ripe one ('+minRipe+'), so it separates the two groups. Slide it into that gap and check again.';
+  }
+}
+
+/* ---------- 2. Prompt Lab (P3) ---------- */
+const PROMPT_TASKS=[
+ {task:'write a class invitation to a science fair',
+  role:'for our school newsletter readers',length:'in about 4 sentences',format:'as a short paragraph',purpose:'so families know the date and come along'},
+ {task:'explain how a rainbow forms',
+  role:'for a curious 7-year-old',length:'in 3 short steps',format:'as a numbered list',purpose:'so they can retell it to a friend'},
+ {task:'describe our recycling club',
+  role:'for new students',length:'in two sentences',format:'as a friendly notice',purpose:'so they decide whether to join'},
+ {task:'summarise a story about a lost dog',
+  role:'for younger readers',length:'in about 50 words',format:'as one tidy paragraph',purpose:'so they get the main events quickly'}
+];
+let plab={};
+function initPrompt(){
+  const t=pick(PROMPT_TASKS);
+  plab={t,on:{role:false,length:false,format:false,purpose:false},checked:false};
+  const fb=document.getElementById('promptFb');fb.textContent='';fb.className='fb';
+  const labels={role:'👥 Who it is for',length:'📏 How long',format:'🧱 What format',purpose:'🎯 Why / purpose'};
+  const area=document.getElementById('promptArea');
+  area.innerHTML=`<div style="font-size:13.5px;margin-bottom:6px">Base task: <b>"${t.task}"</b></div>
+    <div class="promptchips" id="pchips"></div>
+    <div style="font-size:12.5px;color:#6b554e;margin-bottom:4px">AI preview:</div>
+    <div class="preview" id="ppreview"></div>
+    <div class="score" id="pscore"></div>`;
+  const wrap=document.getElementById('pchips');
+  ['role','length','format','purpose'].forEach(k=>{
+    const b=document.createElement('button');b.className='pchip';b.textContent=labels[k];
+    b.onclick=()=>{plab.on[k]=!plab.on[k];b.classList.toggle('on',plab.on[k]);updatePrompt();};
+    wrap.appendChild(b);
+  });
+  updatePrompt();
+}
+function updatePrompt(){
+  const t=plab.t,on=plab.on;
+  // order: task, role, format, length, purpose for natural reading
+  let p=[t.task];
+  if(on.role)p.push(t.role);
+  if(on.format)p.push(t.format);
+  if(on.length)p.push(t.length);
+  if(on.purpose)p.push(t.purpose);
+  const score=[on.role,on.length,on.format,on.purpose].filter(Boolean).length;
+  document.getElementById('ppreview').textContent='Please '+p.join(', ')+'.';
+  document.getElementById('pscore').textContent='Quality score: '+score+' / 4';
+}
+function checkPrompt(){
+  const on=plab.on,fb=document.getElementById('promptFb');
+  const missing=[];
+  if(!on.role)missing.push('who it is for');
+  if(!on.length)missing.push('how long');
+  if(!on.format)missing.push('what format');
+  if(!on.purpose)missing.push('why / the purpose');
+  if(missing.length===0){
+    fb.className='fb ok';
+    fb.textContent='Full marks: 4 / 4. Your prompt names the audience, length, format and purpose, so the AI knows exactly what to make ⭐';
+    addStar();celebrate(document.getElementById('promptArea'));markDone('prompt');
+  } else {
+    fb.className='fb no';
+    fb.textContent='Score '+(4-missing.length)+' / 4. The AI is still guessing about: '+missing.join(', ')+'. Each missing piece makes the answer vaguer. Add those chips, then check again.';
+  }
+}
+
+/* ---------- 3. Decision-Tree Detective (P1) ---------- */
+// Animals defined by features: legs(0/2/4), feathers(t/f), waterhome(t/f)
+const TREE_ANIMALS=[
+ {name:'a sparrow',legs:2,feathers:true,water:false,leaf:'Bird'},
+ {name:'a penguin',legs:2,feathers:true,water:false,leaf:'Bird'},
+ {name:'a goldfish',legs:0,feathers:false,water:true,leaf:'Fish'},
+ {name:'a shark',legs:0,feathers:false,water:true,leaf:'Fish'},
+ {name:'a fox',legs:4,feathers:false,water:false,leaf:'Mammal'},
+ {name:'a rabbit',legs:4,feathers:false,water:false,leaf:'Mammal'},
+ {name:'a duck',legs:2,feathers:true,water:false,leaf:'Bird'},
+ {name:'a horse',legs:4,feathers:false,water:false,leaf:'Mammal'}
+];
+let tree={};
+function initTree(){
+  const a=pick(TREE_ANIMALS);
+  tree={a,node:'q1',path:[],done:false};
+  const fb=document.getElementById('treeFb');fb.textContent='';fb.className='fb';
+  renderTree();
+}
+function treeAnswer(ans){
+  if(tree.done)return;
+  const a=tree.a;let realFeat;
+  if(tree.node==='q1'){ // Does it have feathers?
+    realFeat=a.feathers;
+    tree.path.push('feathers? '+(ans?'yes':'no'));
+    if(ans){tree.node='leafBird';} else {tree.node='q2';}
+  } else if(tree.node==='q2'){ // Does it live in water?
+    realFeat=a.water;
+    tree.path.push('lives in water? '+(ans?'yes':'no'));
+    if(ans){tree.node='leafFish';} else {tree.node='leafMammal';}
+  }
+  renderTree();
+}
+function renderTree(){
+  const a=tree.a;const area=document.getElementById('treeArea');const fb=document.getElementById('treeFb');
+  const feats=`legs: ${a.legs} &nbsp; feathers: ${a.feathers?'yes':'no'} &nbsp; lives in water: ${a.water?'yes':'no'}`;
+  let q='',leaf=null;
+  if(tree.node==='q1')q='Does it have feathers?';
+  else if(tree.node==='q2')q='Does it live in water?';
+  else if(tree.node==='leafBird')leaf='Bird';
+  else if(tree.node==='leafFish')leaf='Fish';
+  else if(tree.node==='leafMammal')leaf='Mammal';
+  let body=`<div class="feats">Mystery animal: <b>${a.name}</b><br>${feats}</div>`;
+  if(leaf===null){
+    body+=`<div class="qbox"><b>Question:</b> ${q}<div class="row" style="margin-top:8px"><button class="mini" onclick="treeAnswer(true)">Yes</button><button class="mini" onclick="treeAnswer(false)">No</button></div></div>`;
+  } else {
+    tree.done=true;
+    const right=leaf===a.leaf;
+    if(right){fb.className='fb ok';fb.textContent='Correct leaf: '+leaf+'! ⭐';addStar();markDone('tree');}
+    else {fb.className='fb no';fb.textContent='That path led to "'+leaf+'", but '+a.name+' is really a '+a.leaf+'. Read its features and answer each question truthfully.';}
+    body+=`<div class="robobox"><span class="rob">🌳</span><span>You reached the leaf <b>${leaf}</b>. ${right?'That matches the animal.':'That does not match.'} The tree split the animals step by step: the feathers question separates birds, then the water question separates fish from mammals. Each yes/no answer narrows the group until only one class is left.</span></div>`;
+  }
+  if(tree.path.length)body+=`<div class="path">Your path: ${tree.path.join(' → ')}</div>`;
+  area.innerHTML=body;
+}
+
+/* ---------- 4. Spot the Skew (P5/P2) ---------- */
+const SKEW_SETS=[
+ {train:'Every photo the model trained on was taken outdoors on a bright sunny day.',
+  newcase:'a photo taken outdoors at night',
+  emoji:'🌙',
+  opts:[
+   ['It will probably struggle, because it never saw dark night scenes during training',true],
+   ['It will work fine, because a photo is a photo no matter the lighting',false],
+   ['It will work fine, because night photos are simpler than sunny ones',false],
+   ['It will struggle, but only because night photos have fewer pixels to read',false]
+  ],
+  why:'The model only ever saw bright daytime images, so its training data is narrow and skewed. A night photo is out of distribution: it does not look like anything the model learned from, so its guesses become unreliable. The fix is to train on a wider, more balanced set that includes night scenes.'},
+ {train:'A bird recogniser was trained only on photos of large birds like eagles and swans.',
+  newcase:'a photo of a tiny hummingbird',
+  emoji:'🐦',
+  opts:[
+   ['It may struggle, because tiny birds are unlike the large ones it learned from',true],
+   ['It will be perfectly accurate, because all birds share the same shape',false],
+   ['It will be perfectly accurate, because small birds are easier to recognise',false],
+   ['It may struggle, but only because the photo file is smaller in size',false]
+  ],
+  why:'The recogniser only learned from large birds, so its training data is skewed toward one body type. A tiny hummingbird sits outside that range, so the model has little to compare against and may misjudge it. Training on a balanced mix of bird sizes would make it far more dependable.'},
+ {train:'A voice helper was trained only on adult voices speaking slowly and clearly.',
+  newcase:'a young child speaking quickly',
+  emoji:'🎤',
+  opts:[
+   ['It will likely struggle, because it never heard fast young voices in training',true],
+   ['It will understand perfectly, because all human speech sounds the same',false],
+   ['It will understand perfectly, because children use simpler words',false],
+   ['It will struggle, but only because children speak at a lower volume',false]
+  ],
+  why:'The helper only practised on slow, clear adult voices, so its training data does not represent how children speak. A fast young voice is unfamiliar, so accuracy drops. Collecting a more representative set of voices, including children, is the responsible fix.'}
+];
+let skew={};
+function initSkew(){
+  const s=pick(SKEW_SETS);
+  skew={s,done:false};
+  const fb=document.getElementById('skewFb');fb.textContent='';fb.className='fb';
+  document.getElementById('skewBtn').disabled=false;
+  const area=document.getElementById('skewArea');
+  const opts=shuffle(s.opts);
+  let html=`<div class="feats">Training data: ${s.train}</div>
+    <div style="text-align:center;font-size:34px;margin:6px 0">${s.emoji}</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:8px">New case the model meets: <b>${s.newcase}</b>. Will the model struggle, and why?</div>
+    <div class="choices" id="skewChoices" style="flex-direction:column"></div>`;
+  area.innerHTML=html;
+  const cw=document.getElementById('skewChoices');
+  opts.forEach(o=>{
+    const b=document.createElement('button');b.className='choice';b.style.width='100%';b.style.textAlign='left';b.style.alignItems='flex-start';
+    b.textContent=o[0];b.dataset.ok=o[1]?'1':'';
+    b.onclick=()=>{if(skew.done)return;document.querySelectorAll('#skewChoices .choice').forEach(c=>c.classList.remove('sel'));b.classList.add('sel');skew.picked=b;};
+    cw.appendChild(b);
+  });
+}
+function checkSkew(){
+  if(skew.done)return;
+  const fb=document.getElementById('skewFb');
+  if(!skew.picked){fb.className='fb no';fb.textContent='Pick the answer you think is right first.';return;}
+  const ok=skew.picked.dataset.ok==='1';
+  if(ok){
+    skew.done=true;
+    skew.picked.classList.remove('sel');skew.picked.classList.add('cgood');
+    document.getElementById('skewBtn').disabled=true;
+    fb.className='fb ok';fb.textContent='Exactly right ⭐ '+skew.s.why;
+    addStar();celebrate(document.getElementById('skewArea'));markDone('skew');
+  } else {
+    skew.picked.classList.remove('sel');skew.picked.classList.add('cbad');
+    fb.className='fb no';fb.textContent='Not quite. Think about whether the new case looks like the training examples. Pick again, then check.';
+    setTimeout(()=>{skew.picked.classList.remove('cbad');},700);
+  }
+}
+
+/* ---------- 5. Next-Word Machine (P3) ---------- */
+// Each option: [word, probability%]. Probabilities sum to 100. The correct
+// (most likely) word is never the longest, and the correct position varies.
+const NW_STEMS=[
+ {stem:'The capital of France is',
+  opts:[['Paris',89],['Madrid',4],['Berlin',3],['Lyon',4]]},
+ {stem:'Once upon a',
+  opts:[['story',3],['time',91],['while',4],['place',2]]},
+ {stem:'She poured the milk into her',
+  opts:[['bowl',22],['glass',9],['cup',64],['jug',5]]},
+ {stem:'The opposite of hot is',
+  opts:[['warm',4],['cool',3],['cold',92],['mild',1]]}
+];
+let nw={};
+function initNextWord(){
+  const s=pick(NW_STEMS);
+  nw={s,opts:shuffle(s.opts),picked:null,done:false};
+  const fb=document.getElementById('nwFb');fb.textContent='';fb.className='fb';
+  const btn=document.getElementById('nwBtn');if(btn)btn.disabled=false;
+  const area=document.getElementById('nwArea');
+  let html=`<div class="nwstem">"${nw.s.stem} ___"</div>
+    <div style="font-size:12.5px;color:#6b554e;margin-bottom:6px">Which word will the model most likely output next?</div>
+    <div class="nwopts" id="nwOpts"></div>`;
+  area.innerHTML=html;
+  const wrap=document.getElementById('nwOpts');
+  nw.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='nwopt';
+    b.innerHTML=`<span>${o[0]}</span><span class="nwprob hide">${o[1]}%</span>`;
+    b.onclick=()=>{if(nw.done)return;document.querySelectorAll('#nwOpts .nwopt').forEach(c=>c.classList.remove('sel'));b.classList.add('sel');nw.picked=i;};
+    wrap.appendChild(b);
+  });
+}
+function checkNextWord(){
+  if(nw.done)return;
+  const fb=document.getElementById('nwFb');
+  if(nw.picked===null){fb.className='fb no';fb.textContent='Pick the word you think the model will output first.';return;}
+  nw.done=true;
+  document.getElementById('nwBtn').disabled=true;
+  // reveal all probabilities and mark the most likely word
+  const top=nw.opts.reduce((a,b)=>b[1]>a[1]?b:a);
+  const btns=document.querySelectorAll('#nwOpts .nwopt');
+  btns.forEach((b,i)=>{
+    b.querySelector('.nwprob').classList.remove('hide');
+    b.style.cursor='default';
+    const bar=document.createElement('div');bar.className='nwbar';bar.innerHTML=`<i style="width:${nw.opts[i][1]}%"></i>`;
+    b.after(bar);
+    if(nw.opts[i][1]===top[1])b.classList.add('cgood');
+  });
+  const pickedRight=nw.opts[nw.picked][1]===top[1];
+  const chosen=nw.opts[nw.picked][0];
+  if(pickedRight){
+    btns[nw.picked].classList.add('cgood');
+    fb.className='fb ok';
+    fb.textContent='Right ⭐ "'+top[0]+'" had the highest probability ('+top[1]+'%), so the model outputs it. The model is not looking up a fact or judging the truth: it has just learned from huge amounts of text that this word follows this stem more often than any other.';
+  } else {
+    btns[nw.picked].classList.add('cbad');
+    fb.className='fb no';
+    fb.textContent='You chose "'+chosen+'", but the model would output "'+top[0]+'" ('+top[1]+'%), its highest-probability word. A language model predicts the most likely next word from patterns in its training text, not from understanding or checking the truth.';
+  }
+  addStar();celebrate(document.getElementById('nwArea'));markDone('nextword');
+}
+
+/* ---------- INTEGRATION: Build and Test a Litter Sorter ---------- */
+const J=document.getElementById('journey');
+let sorter={};
+const RECYCLABLE=['paper','plastic','metal','glass'];
+const TRASH_MAT=['food scraps','greasy tissue','foam'];
+const MAT_EMOJI={paper:'📄',plastic:'🧴',metal:'🥫',glass:'🍾','food scraps':'🍂','greasy tissue':'🧻',foam:'🧊'};
+function startSorter(){
+  // training set: 4-6 items, mix of recyclable and trash materials
+  let recs=shuffle(RECYCLABLE).slice(0,3);
+  let trs=shuffle(TRASH_MAT).slice(0,2);
+  let train=shuffle(recs.map(m=>({mat:m,truth:'Recycle'})).concat(trs.map(m=>({mat:m,truth:'Trash'}))));
+  sorter={train,labels:train.map(()=>null),rule:null,stage:1,test:null,preds:null};
+  renderSorter();
+}
+function setLabel(i,v){sorter.labels[i]=v;renderSorter();}
+function induceRule(){
+  // a label is "consistent" if all items sharing a material got the same label,
+  // and recyclable materials were labelled Recycle, trash materials labelled Trash matching ground truth grouping.
+  const fb=document.getElementById('sFb');
+  // check the child's labels form a clean rule: same truth-group must share one label
+  const recMats=sorter.train.filter(t=>t.truth==='Recycle');
+  const trashMats=sorter.train.filter(t=>t.truth==='Trash');
+  const recLabels=sorter.train.map((t,i)=>t.truth==='Recycle'?sorter.labels[i]:null).filter(Boolean);
+  const trashLabels=sorter.train.map((t,i)=>t.truth==='Trash'?sorter.labels[i]:null).filter(Boolean);
+  const recConsistent=recLabels.length===recMats.length&&recLabels.every(x=>x===recLabels[0]);
+  const trashConsistent=trashLabels.length===trashMats.length&&trashLabels.every(x=>x===trashLabels[0]);
+  if(!recConsistent||!trashConsistent||recLabels[0]===trashLabels[0]){
+    fb.className='fb no';
+    fb.textContent='The sorter is confused: items made of the same kind of material got different labels, so no clear rule fits. Materials like paper, plastic, metal and glass should all get one label, and food scraps, greasy tissue and foam the other. Fix the labels so each material group is consistent, then learn again.';
+    return;
+  }
+  // rule learned from the child's labels
+  const recMaterials=sorter.train.filter((t,i)=>sorter.labels[i]==='Recycle').map(t=>t.mat);
+  const trashMaterials=sorter.train.filter((t,i)=>sorter.labels[i]==='Trash').map(t=>t.mat);
+  sorter.rule={recycleMats:[...new Set(recMaterials)],trashMats:[...new Set(trashMaterials)],recycleLabelGroup:recLabels[0]};
+  sorter.stage=1.5;addStar();renderSorter();
+}
+function toRule(){sorter.stage=2;renderSorter();}
+function toTest(){sorter.stage=3;renderSorter();}
+function setPred(i,v){sorter.preds[i]=v;renderSorter();}
+function runTest(){
+  const fb=document.getElementById('sFb');
+  if(sorter.preds.some(p=>p===null)){fb.className='fb no';fb.textContent='Predict the sorter output for every test item first.';return;}
+  sorter.tested=true;renderSorter();
+}
+function toResp(){sorter.stage=4;renderSorter();}
+function respChoice(ok,btn){
+  if(ok){btn.classList.add('cgood');sorter.stage=5;addStar();renderSorter();}
+  else{btn.classList.add('cbad');setTimeout(()=>btn.classList.remove('cbad'),600);}
+}
+function prog(p){return `<i id="prog" style="width:${p}%"></i>`;}
+function appliedLabel(mat){
+  // sorter applies the rule it learned from the child's labels;
+  // unseen materials generalise by material group, consistent with that learned mapping
+  if(sorter.rule.recycleMats.includes(mat))return 'Recycle';
+  if(sorter.rule.trashMats.includes(mat))return 'Trash';
+  const other=sorter.rule.recycleLabelGroup==='Recycle'?'Trash':'Recycle';
+  return RECYCLABLE.includes(mat)?sorter.rule.recycleLabelGroup:other;
+}
+function renderSorter(){
+  if(sorter.stage===1){
+    const ready=sorter.labels.every(Boolean);
+    const rows=sorter.train.map((t,i)=>`<div class="trainrow"><span class="em">${MAT_EMOJI[t.mat]||'🗑️'}</span><span style="font-size:13.5px">an item made of <b>${t.mat}</b></span><span class="moodbtns"><button class="mini ${sorter.labels[i]==='Recycle'?'selr':''}" onclick="setLabel(${i},'Recycle')">♻️ Recycle</button><button class="mini ${sorter.labels[i]==='Trash'?'selt':''}" onclick="setLabel(${i},'Trash')">🗑️ Trash</button></span></div>`).join('');
+    J.innerHTML=`<div class="step"><h3>Stage 1 · Build the dataset 🏷️</h3><p class="cprompt">The sorter knows nothing yet. It learns only from <b>your</b> labels. Look at each item's material and label it <b>Recycle</b> or <b>Trash</b>. Tip: paper, plastic, metal and glass are recyclable; food scraps, greasy tissue and foam are not.</p>${rows}<div class="fb" id="sFb"></div><button class="btn" ${ready?'':'disabled'} onclick="induceRule()">Train the sorter →</button></div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(18);
+  } else if(sorter.stage===1.5){
+    J.innerHTML=`<div class="step"><div class="robobox"><span class="rob">🎉</span><span><b>Congratulations, you trained the sorter!</b> It studied every item you labelled and worked out a rule on its own. You never typed the rule, it found the pattern hiding in your labels. Ready to see what it learned?</span></div><button class="btn" onclick="toRule()">Next →</button></div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(34);
+    const r=J.getBoundingClientRect();confetti(r.left+r.width/2,r.top+50);
+  } else if(sorter.stage===2){
+    const recM=sorter.rule.recycleMats.join(', ');
+    const trM=sorter.rule.trashMats.join(', ');
+    J.innerHTML=`<div class="step"><h3>Stage 2 · The rule it learned 🧠</h3><div class="robobox"><span class="rob">🤖</span><span>I looked at your labels and found one pattern that explains them all:<br><b>IF the material is ${recM} → Recycle.<br>IF the material is ${trM} → Trash.</b><br>I learned this only from the examples you gave me. Now let us test whether it works on items you never showed me.</span></div><button class="btn" onclick="toTest()">Test the sorter →</button></div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(52);
+  } else if(sorter.stage===3){
+    if(!sorter.test){
+      // held-out items: materials NOT in the training set where possible
+      const usedMats=sorter.train.map(t=>t.mat);
+      const recPool=RECYCLABLE.filter(m=>!usedMats.includes(m));
+      const trashPool=TRASH_MAT.filter(m=>!usedMats.includes(m));
+      let held=[];
+      if(recPool.length)held.push({mat:pick(recPool),truth:'Recycle'});else held.push({mat:pick(RECYCLABLE),truth:'Recycle'});
+      if(trashPool.length)held.push({mat:pick(trashPool),truth:'Trash'});else held.push({mat:pick(TRASH_MAT),truth:'Trash'});
+      // one extra recyclable
+      const extra=RECYCLABLE.filter(m=>m!==held[0].mat);
+      held.push({mat:pick(extra),truth:'Recycle'});
+      sorter.test=shuffle(held);
+      sorter.preds=sorter.test.map(()=>null);
+    }
+    const t=sorter.test;
+    const rows=t.map((it,i)=>{
+      let res='';
+      if(sorter.tested){
+        const out=appliedLabel(it.mat);
+        const childRight=sorter.preds[i]===out;
+        res=`<span style="font-family:'Space Mono',monospace;font-size:11px;margin-left:auto;color:${childRight?'#1f8a4c':'#d6336c'}">sorter said: ${out} ${childRight?'(you agreed ✓)':'(you said '+sorter.preds[i]+')'}</span>`;
+      }
+      return `<div class="trainrow"><span class="em">${MAT_EMOJI[it.mat]||'🗑️'}</span><span style="font-size:13.5px">new item: <b>${it.mat}</b></span>${sorter.tested?res:`<span class="moodbtns"><button class="mini ${sorter.preds[i]==='Recycle'?'selr':''}" onclick="setPred(${i},'Recycle')">♻️ Recycle</button><button class="mini ${sorter.preds[i]==='Trash'?'selt':''}" onclick="setPred(${i},'Trash')">🗑️ Trash</button></span>`}</div>`;
+    }).join('');
+    let footer;
+    if(sorter.tested){
+      const sorterCorrect=t.filter(it=>appliedLabel(it.mat)===it.truth).length;
+      const childMatch=t.filter((it,i)=>sorter.preds[i]===appliedLabel(it.mat)).length;
+      footer=`<div class="robobox"><span class="rob">🤖</span><span>I applied my learned rule to these <b>brand-new</b> items and got <b>${sorterCorrect}/${t.length}</b> right. You predicted my output correctly <b>${childMatch}/${t.length}</b> times. Notice I never saw these exact items: I <b>generalised</b> from your examples to new cases using the material pattern.</span></div><button class="btn" onclick="toResp()">One tricky item left →</button>`;
+    } else {
+      footer=`<p class="cprompt" style="margin-top:8px">Predict what the sorter will output for each new item, then press Run.</p><div class="fb" id="sFb"></div><button class="btn" onclick="runTest()">Run the sorter →</button>`;
+    }
+    J.innerHTML=`<div class="step"><h3>Stage 3 · Test on unseen items 🔮</h3><p class="cprompt">These items were <b>never in your training set</b>. The sorter must use its learned rule to handle them. Can it generalise?</p>${rows}${footer}</div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(sorter.tested?78:66);
+  } else if(sorter.stage===4){
+    const tricky=pick([
+      {em:'🔋',name:'a used battery',note:'A battery is hazardous waste. It is not plain recyclable and not ordinary trash, and the sorter never saw anything like it.'},
+      {em:'🍕',name:'a greasy pizza box',note:'It is made of cardboard (looks recyclable) but the grease and food make it non-recyclable. The rule based on material alone gets this wrong.'}
+    ]);
+    sorter.tricky=tricky;
+    J.innerHTML=`<div class="step"><h3>Stage 4 · When the rule is not enough 🛡️</h3><p class="cprompt">The sorter meets <b>${tricky.name}</b>. ${tricky.note} Its simple material rule cannot be trusted here. What is the <b>responsible</b> thing for the sorter to do?</p><div style="text-align:center;font-size:40px;margin:8px 0">${tricky.em}</div><div class="choices" id="rChoices" style="flex-direction:column"></div></div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(90);
+    const opts=shuffle([
+      ['Flag it as uncertain and set it aside for a person to check',true],
+      ['Trust the material rule and drop it in the recycle bin anyway',false],
+      ['Trust the material rule and drop it in the trash bin anyway',false]
+    ]);
+    const rc=document.getElementById('rChoices');
+    opts.forEach(o=>{const b=document.createElement('button');b.className='choice';b.style.width='100%';b.style.textAlign='left';b.style.alignItems='flex-start';b.textContent=o[0];b.onclick=()=>respChoice(o[1],b);rc.appendChild(b);});
+  } else {
+    J.innerHTML=`<div class="done"><div class="big">♻️🎉</div><h3>You built and tested a real little AI!</h3><p>You turned rubbish into <b>data</b> by labelling it, the sorter <b>learned a rule</b> from your labels, it <b>predicted</b> items it had never seen and generalised, and it knew when to <b>stop and ask a human</b> instead of trusting a rule that did not fit. Representation, learning, prediction and responsibility all worked together on one system.</p><button class="btn" onclick="startSorter()">Build another sorter</button></div>`;
+    document.getElementById('prog').parentElement.innerHTML=prog(100);
+    const r=J.getBoundingClientRect();confetti(r.left+r.width/2,r.top+60);
+  }
+}
+
+initRipe();initPrompt();initTree();initSkew();initNextWord();startSorter();updateConsol();
+</script></body></html>

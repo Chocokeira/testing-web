@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Primary · First Principles of AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--teal:#16C4C0;--tealdeep:#0a6f6c;--violet:#8E6BFF;--violetdeep:#5f3fd0;--ink:#2A1714;--cream:#FFF6F2;--line:#ffe1da;--good:#1f8a4c;--bad:#d6336c}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 22px;background:rgba(255,246,242,.9);backdrop-filter:blur(12px);border-bottom:2px solid var(--line)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--coral),var(--violet));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:999px;background:#fff;border:2px solid var(--line);color:var(--deep);white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:var(--coral);transform:translateY(-1px)}
+  .pill.solid{background:var(--coral);border-color:var(--coral);color:#fff}
+  .stars{font-family:'Space Mono',monospace;font-weight:700;background:#fff;border:2px solid var(--line);border-radius:999px;padding:8px 14px;font-size:13px;color:var(--deep);white-space:nowrap}
+  header.hero{padding:44px 22px 10px;max-width:1020px;margin:0 auto;text-align:center}
+  .kick{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--deep);background:#fff;border:2px solid var(--line);padding:6px 14px;border-radius:999px;margin-bottom:16px}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.9rem,5.4vw,3.1rem);line-height:1.05;margin:0 0 12px}
+  h1 .rainbow{background:linear-gradient(100deg,var(--coral),var(--amber) 40%,var(--teal) 70%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  .lede{font-size:clamp(.98rem,1.5vw,1.12rem);color:#6b554e;max-width:60ch;margin:0 auto 8px}
+  .mapwrap{max-width:1020px;margin:18px auto 6px;padding:0 22px}
+  .map{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;background:#fff;border:2px solid var(--line);border-radius:20px;padding:14px 16px}
+  .map a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;color:#7a5a52;background:var(--cream);border:2px solid var(--line);border-radius:999px;padding:7px 13px;transition:.15s}
+  .map a:hover{border-color:var(--coral);color:var(--deep)}
+  .map a .n{font-family:'Space Mono',monospace;font-size:10.5px;background:#fff;border-radius:999px;padding:1px 7px;border:1px solid var(--line)}
+  .map a.done{background:#e9f7ee;border-color:#9bd9b1;color:var(--good)}
+  .map a.done .n{background:var(--good);color:#fff;border-color:var(--good)}
+  main{max-width:1020px;margin:20px auto 70px;padding:0 22px}
+  section.step{background:#fff;border:2px solid var(--line);border-radius:26px;padding:24px 24px 22px;margin:0 0 26px;border-top:8px solid var(--c,var(--coral));scroll-margin-top:80px}
+  .stephead{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  .badge{flex:none;width:46px;height:46px;border-radius:14px;background:var(--c,var(--coral));color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:22px;box-shadow:0 6px 14px rgba(42,23,20,.18)}
+  .stephead h2{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.25rem,3vw,1.6rem);margin:0}
+  .stephead .idea{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c,var(--deep));background:var(--cream);border:1px dashed var(--line);padding:4px 10px;border-radius:999px;margin-left:auto}
+  .step p.ex{font-size:15px;color:#5a443d;margin:8px 0 14px;max-width:74ch}
+  .step p.ex b{color:var(--ink)}
+  .widget{background:#FFFaF8;border:2px solid var(--line);border-radius:18px;padding:16px 18px;margin:8px 0 6px}
+  .wt{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;margin:0 0 10px;color:var(--deep)}
+  .btn{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;border:none;border-radius:999px;padding:10px 16px;cursor:pointer;background:var(--coral);color:#fff;transition:.15s}
+  .btn:hover{background:var(--deep)}
+  .btn:disabled{opacity:.4;filter:grayscale(.6);pointer-events:none}
+  .btn.ghost{background:#fff;border:2px solid var(--line);color:var(--deep)}
+  .btn.teal{background:var(--teal)}.btn.teal:hover{background:var(--tealdeep)}
+  .btn.violet{background:var(--violet)}.btn.violet:hover{background:var(--violetdeep)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .fb{min-height:24px;font-size:14px;font-weight:600;margin-top:10px}
+  .fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+  .takeaway{display:flex;gap:12px;align-items:flex-start;background:#f3eeff;border:2px solid #d9c9ff;border-radius:16px;padding:12px 14px;margin:14px 0 0;font-size:14px;line-height:1.5}
+  .takeaway .rob{font-size:28px;flex:none}
+  .takeaway b{color:var(--violetdeep)}
+  .gotit{margin-top:14px;text-align:right}
+  .gotit button{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;border:2px solid var(--line);background:#fff;color:#7a5a52;border-radius:999px;padding:9px 18px;cursor:pointer;transition:.15s}
+  .gotit button:hover{border-color:var(--good);color:var(--good)}
+  .gotit button.done{background:#e9f7ee;border-color:var(--good);color:var(--good);cursor:default}
+  /* pattern game */
+  .patseq{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:30px;margin:4px 0 10px}
+  .patseq .q{width:44px;height:44px;border-radius:12px;border:2px dashed var(--coral);display:flex;align-items:center;justify-content:center;font-family:'Fredoka',sans-serif;font-size:22px;color:var(--coral);background:#fff}
+  .patops{display:flex;gap:8px;flex-wrap:wrap}
+  .patops button{font-size:26px;background:#fff;border:2px solid var(--line);border-radius:14px;width:54px;height:54px;cursor:pointer;transition:.12s}
+  .patops button:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .patops button.good{background:#e9f7ee;border-color:var(--good)}
+  .patops button.bad{background:#fdeaef;border-color:var(--bad)}
+  /* pixel painter */
+  .pixwrap{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+  .pix{display:inline-grid;grid-template-columns:repeat(5,42px);gap:5px}
+  .pix .cell{width:42px;height:42px;border-radius:9px;border:2px solid var(--line);background:#fff;cursor:pointer;transition:.1s}
+  .pix .cell.on{background:var(--ink);border-color:var(--ink)}
+  .numgrid{display:inline-grid;grid-template-columns:repeat(5,34px);gap:5px}
+  .numgrid span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;border-radius:8px;background:#FFF1ED;border:2px solid #ffd6cc;color:#c9b9b4}
+  .numgrid span.on{color:var(--deep);background:#ffe6df}
+  .pixnote{font-size:13px;color:#6b554e;max-width:30ch}
+  /* word numbers */
+  .wchips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .wchip{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;background:#fff;border:2px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;transition:.12s}
+  .wchip:hover{border-color:var(--teal)}
+  .wchip.sel{background:#e6faf9;border-color:var(--teal);color:var(--tealdeep)}
+  .wcode{font-family:'Space Mono',monospace;font-weight:700;font-size:15px;background:#FFF1ED;border:2px dashed #ffc4b9;border-radius:12px;padding:12px 14px;color:#7a3d32;min-height:46px}
+  .wcode .lit{color:var(--tealdeep)}
+  /* mixer */
+  .mixer{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .knob{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 14px}
+  .knob label{display:flex;justify-content:space-between;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;margin-bottom:6px}
+  .knob label output{font-family:'Space Mono',monospace;color:var(--deep)}
+  input[type=range]{width:100%;accent-color:var(--coral)}
+  .knob.imp input[type=range]{accent-color:var(--violet)}
+  .formula{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(12px,2.4vw,15px);text-align:center;background:#FFF1ED;border:2px dashed #ffc4b9;border-radius:12px;padding:12px;margin:14px 0 10px;color:#7a3d32}
+  .formula .f1{color:var(--tealdeep)}.formula .f2{color:var(--violetdeep)}.formula .fr{color:var(--deep);font-size:1.15em}
+  .meter{height:26px;background:#f3e4df;border-radius:999px;overflow:hidden;position:relative}
+  .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--coral));border-radius:999px;transition:width .25s}
+  .meter b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;color:var(--ink)}
+  .verdict{text-align:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:20px;margin-top:10px;min-height:28px}
+  /* gate */
+  .gate{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .lamp{width:86px;height:86px;border-radius:50%;background:#e8e0dd;border:4px solid #d9cfcb;display:flex;align-items:center;justify-content:center;font-size:40px;transition:.25s;filter:grayscale(1);opacity:.55}
+  .lamp.on{background:#fff3d6;border-color:var(--amber);box-shadow:0 0 34px rgba(255,178,62,.75);filter:none;opacity:1}
+  .gatecol{flex:1;min-width:220px}
+  .gateread{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;text-align:center;margin-top:8px;color:#7a5a52}
+  /* trainer */
+  .guessbox{display:flex;gap:14px;flex-wrap:wrap;align-items:stretch}
+  .gcard{flex:1;min-width:200px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 16px;text-align:center}
+  .gcard .t{font-family:'Fredoka',sans-serif;font-weight:600;font-size:13px;color:#7a5a52;margin-bottom:4px}
+  .gcard .v{font-family:'Space Mono',monospace;font-weight:700;font-size:26px;color:var(--deep)}
+  .gcard.target .v{color:var(--tealdeep)}
+  .errbar{height:20px;background:#f3e4df;border-radius:999px;overflow:hidden;margin:12px 0 4px}
+  .errbar i{display:block;height:100%;background:linear-gradient(90deg,var(--bad),#ff8aa8);width:100%;transition:width .35s;border-radius:999px}
+  .errlab{font-family:'Space Mono',monospace;font-size:11.5px;color:#7a5a52;text-align:center}
+  .steplog{font-family:'Space Mono',monospace;font-size:12px;color:#6b554e;background:#FFF1ED;border:1px dashed #ffc4b9;border-radius:10px;padding:8px 11px;margin-top:10px;line-height:1.8;min-height:38px}
+  /* chance */
+  .barrow{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .barrow .lab{width:92px;font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px}
+  .barrow .track2{flex:1;background:#f3e4df;border-radius:999px;height:24px;overflow:hidden}
+  .barrow .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),#5fe0db);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;transition:width .3s;min-width:34px}
+  .spinres{font-size:34px;text-align:center;min-height:46px;margin:8px 0}
+  .truths{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 4px}
+  .truth{flex:1;min-width:210px;border:2px dashed var(--line);border-radius:14px;padding:11px 14px;font-size:13.5px;background:#fff;line-height:1.5}
+  .truth b{display:block;font-family:'Fredoka',sans-serif;font-weight:600;font-size:14.5px;margin-bottom:3px}
+  .truth.one b{color:var(--deep)}
+  .truth.many b{color:var(--tealdeep)}
+  .motto{text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:var(--violetdeep);margin:10px 0 2px}
+  .tally{font-family:'Space Mono',monospace;font-size:12px;color:#6b554e;background:#FFF1ED;border:1px dashed #ffc4b9;border-radius:10px;padding:8px 11px;line-height:1.8}
+  /* sentence builder */
+  .sent{font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px 16px;min-height:54px;margin-bottom:12px}
+  .sent .cur{color:var(--violetdeep)}
+  .nexts{display:flex;gap:10px;flex-wrap:wrap}
+  .nextbtn{display:flex;flex-direction:column;gap:6px;align-items:stretch;background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px 14px;cursor:pointer;min-width:110px;transition:.12s}
+  .nextbtn:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .nextbtn .w{font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px}
+  .nextbtn .p{height:8px;background:#f3e4df;border-radius:999px;overflow:hidden}
+  .nextbtn .p i{display:block;height:100%;background:var(--violet);border-radius:999px}
+  .nextbtn .pct{font-family:'Space Mono',monospace;font-size:10.5px;color:#7a5a52}
+  /* finale */
+  .journey{background:#fff;border:2px solid var(--line);border-radius:26px;padding:24px;text-align:center}
+  .flow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:16px 0}
+  .flow .fstep{font-family:'Fredoka',sans-serif;font-weight:600;font-size:13.5px;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:10px 13px;max-width:150px}
+  .flow .fa{font-size:18px;color:var(--coral);font-weight:700}
+  .conf{position:fixed;font-size:22px;pointer-events:none;animation:rise 1.2s ease-out forwards;z-index:99}
+  @keyframes rise{to{transform:translateY(-130px) rotate(45deg);opacity:0}}
+  .pop{animation:pop .4s}
+  @keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+  footer{border-top:2px solid var(--line);padding:24px;text-align:center;font-size:13px;color:#8a6f67}
+  footer a{color:var(--deep)}
+  @media(max-width:640px){.mixer{grid-template-columns:1fr}.stephead .idea{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:var(--coral)">.</span>26</b></a>
+  <span class="stars" id="starBox">⭐ 0 / 8 big ideas</span>
+  <a class="pill" href="basicsprivisual.html">Infographic</a>
+  <a class="pill" href="basicspristory.html">Story</a>
+  <a class="pill" href="prilow-lab.html">Practice Lab</a>
+</nav>
+
+<header class="hero">
+  <div class="kick">🧠 First-Principles Foundation Series · Primary</div>
+  <h1>The Eight Little Ideas<br>Inside <span class="rainbow">Every Big AI</span></h1>
+  <p class="lede">Chatbots that write stories. Apps that draw pictures. They all run on a few small ideas you can play with right now: patterns, numbers, mixing, and clever guessing. Collect all eight ideas to see how the whole machine fits together!</p>
+</header>
+
+<div class="mapwrap">
+  <div class="map" id="ideaMap">
+    <a href="#s1" data-map="1"><span class="n">1</span>Patterns</a>
+    <a href="#s2" data-map="2"><span class="n">2</span>Pictures are numbers</a>
+    <a href="#s3" data-map="3"><span class="n">3</span>Words are numbers</a>
+    <a href="#s4" data-map="4"><span class="n">4</span>The mixing machine</a>
+    <a href="#s5" data-map="5"><span class="n">5</span>The decision lamp</a>
+    <a href="#s6" data-map="6"><span class="n">6</span>Learning from mistakes</a>
+    <a href="#s7" data-map="7"><span class="n">7</span>Chances, not certainty</a>
+    <a href="#s8" data-map="8"><span class="n">8</span>One word at a time</a>
+  </div>
+</div>
+
+<main>
+
+<!-- ================= STEP 1 ================= -->
+<section class="step" id="s1" style="--c:var(--coral)">
+  <div class="stephead">
+    <div class="badge">1</div>
+    <h2>AI is a pattern-spotting machine</h2>
+    <span class="idea">Big idea · patterns</span>
+  </div>
+  <p class="ex">Before anything else, AI is about <b>finding patterns</b>, just like you do. When you guess what comes next in a song, a dance, or a row of shapes, your brain uses the past to predict the future. That is exactly the trick every AI is built on.</p>
+  <div class="widget">
+    <p class="wt">🔍 Pattern detective · what comes next?</p>
+    <div class="patseq" id="patSeq"></div>
+    <div class="patops" id="patOps"></div>
+    <div class="fb" id="patFb"></div>
+    <div class="row" style="margin-top:8px"><button class="btn ghost" id="patNew">New pattern</button><span class="tally" id="patScore">Solved: 0</span></div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> I never "know" the answer; I spot the pattern in what I've already seen, and use it to make my best guess. Everything else I do is this trick, repeated millions of times.</span></div>
+  <div class="gotit"><button data-got="1">I collected Idea 1! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 2 ================= -->
+<section class="step" id="s2" style="--c:var(--amber)">
+  <div class="stephead">
+    <div class="badge">2</div>
+    <h2>Computers see pictures as grids of numbers</h2>
+    <span class="idea">Big idea · data</span>
+  </div>
+  <p class="ex">A computer has no eyes. A picture, to a computer, is just a <b>grid of numbers</b>: 1 where the ink is, 0 where it isn't. (Real photos use bigger numbers for brightness and colour, but the idea is the same.) Paint on the grid and watch the numbers change instantly.</p>
+  <div class="widget">
+    <p class="wt">🎨 Pixel painter · draw on the left, read the numbers on the right</p>
+    <div class="pixwrap">
+      <div class="pix" id="pixGrid"></div>
+      <div class="numgrid" id="numGrid"></div>
+      <div class="pixnote">Try drawing a letter or a smiley. The number grid <b>is</b> your drawing. That's all the computer ever sees!<br><br><button class="btn ghost" id="pixClear">Clear</button> <button class="btn teal" id="pixHeart">Show ♥</button></div>
+    </div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> When an AI "looks" at a photo, it is really reading a giant grid of numbers, millions of them. Spotting a cat means spotting a <b>pattern in the numbers</b>. Idea 1 + Idea 2 together!</span></div>
+  <div class="gotit"><button data-got="2">I collected Idea 2! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 3 ================= -->
+<section class="step" id="s3" style="--c:var(--teal)">
+  <div class="stephead">
+    <div class="badge">3</div>
+    <h2>Words become numbers too</h2>
+    <span class="idea">Big idea · data</span>
+  </div>
+  <p class="ex">Chatbots can't read letters either! Every word gets swapped for numbers before the AI sees it. A simple code like A=1, B=2 works for letters; real AIs give each word a whole <b>list of numbers</b> that describes its meaning, so similar words get similar lists.</p>
+  <div class="widget">
+    <p class="wt">🔤 Word encoder · tap a word to see its secret number list</p>
+    <div class="wchips" id="wChips"></div>
+    <div class="wcode" id="wCode">Tap a word above…</div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> Notice how <b>cat</b> and <b>dog</b> get similar lists, but <b>banana</b> gets a very different one? That's how I know which words are "friends": their numbers sit close together. Pictures, words, sounds… <b>everything becomes numbers first</b>.</span></div>
+  <div class="gotit"><button data-got="3">I collected Idea 3! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 4 ================= -->
+<section class="step" id="s4" style="--c:var(--violet)">
+  <div class="stephead">
+    <div class="badge">4</div>
+    <h2>The mixing machine: multiply, then add</h2>
+    <span class="idea">Big idea · weighted sums</span>
+  </div>
+  <p class="ex">Here is the single most important sum in all of AI: <b>multiply each number by how much it matters, then add everything up</b>. Cooks do it when balancing flavours; judges do it when scoring a contest. Inside an AI, this little "mixing machine" is called a <b>neuron</b>, and big AIs stack up billions of them.</p>
+  <div class="widget">
+    <p class="wt">🥤 The smoothie judge · will Robo like your smoothie?</p>
+    <div class="mixer">
+      <div class="knob"><label>🍓 Sweetness <output id="oSweet">5</output></label><input type="range" id="rSweet" min="0" max="10" value="5"></div>
+      <div class="knob"><label>🥦 Crunchiness <output id="oCrunch">5</output></label><input type="range" id="rCrunch" min="0" max="10" value="5"></div>
+      <div class="knob imp"><label>💜 How much Robo cares about sweet <output id="oWSweet">2</output></label><input type="range" id="rWSweet" min="-3" max="3" value="2"></div>
+      <div class="knob imp"><label>💜 How much Robo cares about crunch <output id="oWCrunch">-1</output></label><input type="range" id="rWCrunch" min="-3" max="3" value="-1"></div>
+    </div>
+    <div class="formula" id="mixFormula"></div>
+    <div class="meter"><i id="mixFill"></i><b id="mixVal"></b></div>
+    <div class="verdict" id="mixVerdict"></div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> The purple sliders are my <b>weights</b>: they decide what matters to me. A negative weight means "the more of this, the worse!". Learning, as you'll see in Idea 6, is just <b>finding the right weights</b>.</span></div>
+  <div class="gotit"><button data-got="4">I collected Idea 4! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 5 ================= -->
+<section class="step" id="s5" style="--c:var(--coral)">
+  <div class="stephead">
+    <div class="badge">5</div>
+    <h2>The decision lamp: only strong signals pass</h2>
+    <span class="idea">Big idea · activation</span>
+  </div>
+  <p class="ex">After mixing, a neuron makes a small decision: <b>is the score big enough to bother telling the next neuron?</b> If yes, the signal passes; if not, it stays quiet. This on/off gate is what lets a pile of simple sums make genuinely clever choices.</p>
+  <div class="widget">
+    <p class="wt">💡 Signal gate · move the sliders and watch the lamp</p>
+    <div class="gate">
+      <div class="gatecol">
+        <div class="knob"><label>Mixed score from the machine <output id="oSig">4</output></label><input type="range" id="rSig" min="0" max="10" value="4"></div>
+        <div class="knob" style="margin-top:10px"><label>The gate opens at… <output id="oThr">6</output></label><input type="range" id="rThr" min="0" max="10" value="6"></div>
+        <div class="gateread" id="gateRead"></div>
+      </div>
+      <div class="lamp" id="lamp">💡</div>
+    </div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> Scientists call this an <b>activation function</b>. My favourite one is beautifully lazy: "if the score is negative, say 0; otherwise pass it along." Simple gates + simple sums, stacked in layers = me!</span></div>
+  <div class="gotit"><button data-got="5">I collected Idea 5! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 6 ================= -->
+<section class="step" id="s6" style="--c:var(--amber)">
+  <div class="stephead">
+    <div class="badge">6</div>
+    <h2>Learning = shrinking your mistakes</h2>
+    <span class="idea">Big idea · training</span>
+  </div>
+  <p class="ex">Nobody types the right weights into an AI: it <b>finds them itself</b>, the same way you learn darts: throw, see how far off you were, adjust a little, throw again. Every wrong answer tells the machine <b>which way to nudge</b> its weights. Watch it happen live.</p>
+  <div class="widget">
+    <p class="wt">🎯 Teach the machine the secret rule (it's <em>answer = input × secret number</em>)</p>
+    <div class="guessbox">
+      <div class="gcard"><div class="t">Machine's weight</div><div class="v" id="gW">1.0</div></div>
+      <div class="gcard"><div class="t">Machine's answer for input 3</div><div class="v" id="gGuess">3.0</div></div>
+      <div class="gcard target"><div class="t">Correct answer</div><div class="v">12</div></div>
+    </div>
+    <div class="errbar"><i id="errFill"></i></div>
+    <div class="errlab" id="errLab"></div>
+    <div class="row" style="margin-top:12px;justify-content:center">
+      <button class="btn" id="learnStep">Learn a little 👣</button>
+      <button class="btn violet" id="learnAuto">Keep learning ▶</button>
+      <button class="btn ghost" id="learnReset">Start over</button>
+    </div>
+    <div class="steplog" id="learnLog">Press "Learn a little". The machine checks its mistake and nudges its weight the smart way, a bit at a time.</div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> Grown-ups call this <b>gradient descent</b>: "roll downhill on the mistake mountain". Big AIs do exactly what you just watched, but with billions of weights and trillions of examples. That's the whole secret of "training".</span></div>
+  <div class="gotit"><button data-got="6">I collected Idea 6! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 7 ================= -->
+<section class="step" id="s7" style="--c:var(--teal)">
+  <div class="stephead">
+    <div class="badge">7</div>
+    <h2>AI answers with chances, not certainty</h2>
+    <span class="idea">Big idea · probability</span>
+  </div>
+  <p class="ex">An AI never says "the answer IS cat." It says "80% cat, 15% fox, 5% dog", a <b>list of chances</b>. Then it picks. Usually it picks the most likely one, but not always: a little randomness is what makes chatbots say something new each time.</p>
+  <div class="widget">
+    <p class="wt">🎡 The chance spinner · spin many times and study the tally</p>
+    <div class="barrow"><span class="lab">🍎 apple</span><div class="track2"><div class="fill" style="width:60%">60%</div></div></div>
+    <div class="barrow"><span class="lab">🍌 banana</span><div class="track2"><div class="fill" style="width:30%;background:linear-gradient(90deg,var(--amber),#ffd28a)">30%</div></div></div>
+    <div class="barrow"><span class="lab">🥝 kiwi</span><div class="track2"><div class="fill" style="width:10%;background:linear-gradient(90deg,var(--violet),#c3b2ff)">10%</div></div></div>
+    <div class="spinres" id="spinRes"></div>
+    <div class="truths">
+      <div class="truth one"><b>🎡 Spin once = a surprise</b>Nobody can tell you which fruit comes next. Not you, not the machine. Even the favourite loses sometimes!</div>
+      <div class="truth many"><b>⚡ Spin lots = a pattern</b>Keep spinning and apple wins about 6 out of every 10 times. The surprises average out, and the pattern always comes back.</div>
+    </div>
+    <div class="row" style="justify-content:center"><button class="btn teal" id="spin1">Spin once 🎡</button><button class="btn violet" id="spin20">Spin ×20 ⚡</button><button class="btn ghost" id="spinReset">Reset tally</button></div>
+    <div class="tally" id="spinTally" style="margin-top:10px">No spins yet.</div>
+    <div class="motto">One spin is a surprise. Many spins make a pattern. 🎯</div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> Did apple win <em>every</em> time? No, but it won <em>most</em> of the time, close to its 60%. My answers work the same way. That's why I can be confident, surprising… and sometimes wrong. Always check important answers!</span></div>
+  <div class="gotit"><button data-got="7">I collected Idea 7! ⭐</button></div>
+</section>
+
+<!-- ================= STEP 8 ================= -->
+<section class="step" id="s8" style="--c:var(--violet)">
+  <div class="stephead">
+    <div class="badge">8</div>
+    <h2>Chatbots write one word at a time</h2>
+    <span class="idea">Big idea · generation</span>
+  </div>
+  <p class="ex">Now stack every idea together. A chatbot reads your words (as numbers), mixes them through millions of neurons, and produces <b>chances for the next word</b>. It picks one, adds it to the sentence, and repeats, one word at a time, until the story is done. <b>You be the chatbot:</b> build a sentence by picking from the machine's suggestions.</p>
+  <div class="widget">
+    <p class="wt">✍️ Sentence builder · the bars show how likely the machine thinks each word is</p>
+    <div class="sent" id="sentBox"></div>
+    <div class="nexts" id="nextBox"></div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost" id="sentReset">Start again</button><button class="btn violet" id="sentAuto">Let the machine finish 🤖</button></div>
+  </div>
+  <div class="takeaway"><span class="rob">🤖</span><span><b>Robo says:</b> That's genuinely how I write: predict the next word, pick, repeat. My "brain" is Ideas 1–7: numbers in, mixing machines, gates, chances out. Learned, never programmed, from mountains of examples.</span></div>
+  <div class="gotit"><button data-got="8">I collected Idea 8! ⭐</button></div>
+</section>
+
+<!-- ================= FINALE ================= -->
+<section class="journey" id="finale">
+  <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 6px">🏆 You've seen inside the machine!</h2>
+  <p style="color:#6b554e;font-size:14.5px;max-width:64ch;margin:0 auto">Every generative AI (chatbots, picture-makers, music-writers) is these eight ideas, repeated at enormous scale:</p>
+  <div class="flow">
+    <div class="fstep">1·2·3<br>Turn everything into numbers</div><span class="fa">→</span>
+    <div class="fstep">4·5<br>Mix &amp; gate through layers of neurons</div><span class="fa">→</span>
+    <div class="fstep">6<br>Practise: shrink mistakes, tune weights</div><span class="fa">→</span>
+    <div class="fstep">7·8<br>Predict chances, pick, repeat</div>
+  </div>
+  <p id="finaleMsg" style="font-family:'Fredoka',sans-serif;font-weight:600;color:var(--deep);min-height:24px"></p>
+  <div class="row" style="justify-content:center;margin-top:8px">
+    <a class="pill" href="prilow-lab.html">More games in the Practice Lab</a>
+  </div>
+</section>
+
+</main>
+
+<footer>IJAIO 2026 · First-Principles Foundation Series · Primary<br><a href="overview.html">Back to overview</a></footer>
+
+<script>
+/* ============ shared: stars & confetti ============ */
+var got = {};
+function confetti(x,y){
+  var ems=['🎉','⭐','✨','🎈','💫'];
+  for(var i=0;i<7;i++){
+    var s=document.createElement('span');s.className='conf';s.textContent=ems[i%ems.length];
+    s.style.left=(x+(Math.random()*120-60))+'px';s.style.top=(y+(Math.random()*40-20))+'px';
+    document.body.appendChild(s);(function(el){setTimeout(function(){el.remove();},1200);})(s);
+  }
+}
+function updateStars(){
+  var n=Object.keys(got).length;
+  var box=document.getElementById('starBox');
+  box.textContent='⭐ '+n+' / 8 big ideas';box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop');
+  var msg=document.getElementById('finaleMsg');
+  if(n===8){msg.textContent='⭐ ALL EIGHT IDEAS COLLECTED: you officially know how AI works from first principles! ⭐';}
+  else if(n>0){msg.textContent=n+' of 8 ideas collected. Keep going!';}
+}
+Array.prototype.forEach.call(document.querySelectorAll('[data-got]'),function(btn){
+  btn.addEventListener('click',function(e){
+    var k=btn.getAttribute('data-got');
+    if(got[k])return;
+    got[k]=true;btn.classList.add('done');btn.textContent='Idea '+k+' collected! ⭐';
+    var m=document.querySelector('[data-map="'+k+'"]');if(m)m.classList.add('done');
+    var r=btn.getBoundingClientRect();confetti(r.left+r.width/2,r.top);
+    updateStars();
+  });
+});
+
+/* ============ Step 1: pattern game ============ */
+(function(){
+  var patterns=[
+    {seq:['🔴','🔵','🔴','🔵','🔴'],ans:'🔵',opts:['🔵','🔴','🟡']},
+    {seq:['🐟','🐟','🐙','🐟','🐟'],ans:'🐙',opts:['🐟','🐙','🦀']},
+    {seq:['⬛','⬜','⬜','⬛','⬜'],ans:'⬜',opts:['⬛','⬜','🟥']},
+    {seq:['🌑','🌓','🌕','🌑','🌓'],ans:'🌕',opts:['🌑','🌕','🌓']},
+    {seq:['1','2','4','8'],ans:'16',opts:['16','12','10']},
+    {seq:['🍎','🍎','🍌','🍎','🍎'],ans:'🍌',opts:['🍎','🍌','🥝']},
+    {seq:['⭐','💫','💫','⭐','💫'],ans:'💫',opts:['⭐','💫','✨']}
+  ];
+  var cur=0,solved=0,seqEl=document.getElementById('patSeq'),opsEl=document.getElementById('patOps'),
+      fb=document.getElementById('patFb'),score=document.getElementById('patScore');
+  function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function render(){
+    var p=patterns[cur];
+    seqEl.innerHTML='';fb.textContent='';fb.className='fb';
+    p.seq.forEach(function(e){var s=document.createElement('span');s.textContent=e;seqEl.appendChild(s);});
+    var q=document.createElement('span');q.className='q';q.textContent='?';seqEl.appendChild(q);
+    opsEl.innerHTML='';
+    shuffle(p.opts.slice()).forEach(function(o){
+      var b=document.createElement('button');b.textContent=o;
+      b.addEventListener('click',function(){
+        if(o===p.ans){b.classList.add('good');fb.textContent='✅ Yes! You used the past to predict the future, exactly what AI does.';fb.className='fb ok';solved++;score.textContent='Solved: '+solved;q.textContent=o;}
+        else{b.classList.add('bad');fb.textContent='🤔 Not quite. Look again at what repeats.';fb.className='fb no';}
+      });
+      opsEl.appendChild(b);
+    });
+  }
+  document.getElementById('patNew').addEventListener('click',function(){cur=(cur+1)%patterns.length;render();});
+  render();
+})();
+
+/* ============ Step 2: pixel painter ============ */
+(function(){
+  var N=5,grid=document.getElementById('pixGrid'),nums=document.getElementById('numGrid'),cells=[],labels=[];
+  for(var i=0;i<N*N;i++){
+    var c=document.createElement('div');c.className='cell';grid.appendChild(c);cells.push(c);
+    var s=document.createElement('span');s.textContent='0';nums.appendChild(s);labels.push(s);
+    (function(idx){cells[idx].addEventListener('click',function(){toggle(idx);});})(i);
+  }
+  function toggle(i){cells[i].classList.toggle('on');sync(i);}
+  function sync(i){var on=cells[i].classList.contains('on');labels[i].textContent=on?'1':'0';labels[i].className=on?'on':'';}
+  document.getElementById('pixClear').addEventListener('click',function(){cells.forEach(function(c,i){c.classList.remove('on');sync(i);});});
+  document.getElementById('pixHeart').addEventListener('click',function(){
+    var heart=[0,1,0,1,0, 1,1,1,1,1, 1,1,1,1,1, 0,1,1,1,0, 0,0,1,0,0];
+    cells.forEach(function(c,i){c.classList.toggle('on',heart[i]===1);sync(i);});
+  });
+})();
+
+/* ============ Step 3: word encoder ============ */
+(function(){
+  var words=[
+    {w:'cat 🐱',v:[8,7,2],hint:'furry pet: high "animal", high "cuddly"'},
+    {w:'dog 🐶',v:[8,8,2],hint:'furry pet, numbers close to cat!'},
+    {w:'tiger 🐯',v:[9,3,2],hint:'animal but not cuddly. See the middle number drop'},
+    {w:'banana 🍌',v:[1,2,9],hint:'not an animal at all, totally different list'},
+    {w:'apple 🍎',v:[1,1,9],hint:'fruit, numbers close to banana!'}
+  ];
+  var chips=document.getElementById('wChips'),code=document.getElementById('wCode');
+  words.forEach(function(o){
+    var b=document.createElement('button');b.className='wchip';b.textContent=o.w;
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(chips.children,function(x){x.classList.remove('sel');});
+      b.classList.add('sel');
+      code.innerHTML=o.w+' → <span class="lit">[ '+o.v.join(', ')+' ]</span><br><small style="font-weight:400">'+o.hint+'</small>';
+    });
+    chips.appendChild(b);
+  });
+})();
+
+/* ============ Step 4: mixing machine ============ */
+(function(){
+  var ids=['Sweet','Crunch','WSweet','WCrunch'];
+  function val(id){return parseFloat(document.getElementById('r'+id).value);}
+  function upd(){
+    ids.forEach(function(id){document.getElementById('o'+id).textContent=document.getElementById('r'+id).value;});
+    var s=val('Sweet'),c=val('Crunch'),ws=val('WSweet'),wc=val('WCrunch');
+    var score=s*ws+c*wc;
+    document.getElementById('mixFormula').innerHTML=
+      '<span class="f1">'+s+'</span> × <span class="f2">'+ws+'</span> + <span class="f1">'+c+'</span> × <span class="f2">'+wc+'</span> = <span class="fr">'+score+'</span>';
+    var pct=Math.max(0,Math.min(100,(score+30)/60*100));
+    document.getElementById('mixFill').style.width=pct+'%';
+    document.getElementById('mixVal').textContent='yum score: '+score;
+    var v=document.getElementById('mixVerdict');
+    if(score>=15){v.textContent='😍 Robo LOVES it!';}
+    else if(score>=5){v.textContent='😋 Robo likes it.';}
+    else if(score>=-5){v.textContent='😐 Robo shrugs.';}
+    else{v.textContent='🤢 Robo says no thanks!';}
+  }
+  ids.forEach(function(id){document.getElementById('r'+id).addEventListener('input',upd);});
+  upd();
+})();
+
+/* ============ Step 5: gate ============ */
+(function(){
+  function upd(){
+    var s=parseFloat(document.getElementById('rSig').value),t=parseFloat(document.getElementById('rThr').value);
+    document.getElementById('oSig').textContent=s;document.getElementById('oThr').textContent=t;
+    var on=s>=t,lamp=document.getElementById('lamp');
+    lamp.classList.toggle('on',on);
+    document.getElementById('gateRead').textContent= on ? ('score '+s+' ≥ gate '+t+' → signal PASSES ✅') : ('score '+s+' < gate '+t+' → signal blocked 🚫');
+  }
+  document.getElementById('rSig').addEventListener('input',upd);
+  document.getElementById('rThr').addEventListener('input',upd);
+  upd();
+})();
+
+/* ============ Step 6: learner ============ */
+(function(){
+  var w=1.0,x=3,target=12,timer=null,steps=0;
+  var gW=document.getElementById('gW'),gG=document.getElementById('gGuess'),
+      fill=document.getElementById('errFill'),lab=document.getElementById('errLab'),log=document.getElementById('learnLog');
+  function render(msg){
+    var guess=w*x,err=target-guess;
+    gW.textContent=w.toFixed(2);gG.textContent=guess.toFixed(1);
+    var pct=Math.min(100,Math.abs(err)/9*100);
+    fill.style.width=pct+'%';
+    lab.textContent='mistake size: '+Math.abs(err).toFixed(2)+(Math.abs(err)<0.05?' · PERFECT! 🎉':'');
+    if(msg)log.innerHTML=msg;
+  }
+  function step(){
+    var guess=w*x,err=target-guess;
+    if(Math.abs(err)<0.05){render('🎉 Learned it! The secret number was <b>4</b>, found in '+steps+' nudges, never told the answer.');stop();return;}
+    var nudge=0.1*err*x/3; /* gentle learning rate */
+    w+=nudge;steps++;
+    render('Step '+steps+': guess was '+guess.toFixed(1)+', answer is 12 → mistake '+err.toFixed(1)+' → nudge weight by '+(nudge>=0?'+':'')+nudge.toFixed(2));
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null;document.getElementById('learnAuto').textContent='Keep learning ▶';}}
+  document.getElementById('learnStep').addEventListener('click',function(){stop();step();});
+  document.getElementById('learnAuto').addEventListener('click',function(){
+    if(timer){stop();return;}
+    this.textContent='Pause ⏸';var self=this;
+    timer=setInterval(function(){step();},550);
+  });
+  document.getElementById('learnReset').addEventListener('click',function(){stop();w=1;steps=0;render('Reset! Press "Learn a little" to start nudging.');});
+  render();
+})();
+
+/* ============ Step 7: chance spinner ============ */
+(function(){
+  var tally={apple:0,banana:0,kiwi:0},total=0;
+  var res=document.getElementById('spinRes'),tal=document.getElementById('spinTally');
+  function spin(){
+    var r=Math.random(),pick= r<0.6?'apple': r<0.9?'banana':'kiwi';
+    tally[pick]++;total++;
+    return pick==='apple'?'🍎':pick==='banana'?'🍌':'🥝';
+  }
+  function show(){
+    if(total===0){tal.textContent='No spins yet.';return;}
+    function line(k,e){var pct=Math.round(tally[k]/total*100);return e+' '+k+': '+tally[k]+' ('+pct+'%)';}
+    var note;
+    if(total<15){note='only '+total+' spin'+(total===1?'':'s')+' so far: still surprise territory, anything can happen!';}
+    else if(total<60){note=total+' spins: squint and you can start to see the 60 / 30 / 10 pattern forming…';}
+    else{note=total+' spins: look how close the tally sits to 60 / 30 / 10. The pattern showed up, just like it always does!';}
+    tal.innerHTML=line('apple','🍎')+' · '+line('banana','🍌')+' · '+line('kiwi','🥝')+'<br>'+note;
+  }
+  document.getElementById('spin1').addEventListener('click',function(){res.textContent=spin();res.classList.remove('pop');void res.offsetWidth;res.classList.add('pop');show();});
+  document.getElementById('spin20').addEventListener('click',function(){var out='';for(var i=0;i<20;i++)out+=spin();res.textContent=out.slice(0,40);show();});
+  document.getElementById('spinReset').addEventListener('click',function(){tally={apple:0,banana:0,kiwi:0};total=0;res.textContent='';show();});
+})();
+
+/* ============ Step 8: sentence builder ============ */
+(function(){
+  var model={
+    'START':[['The',60],['A',30],['My',10]],
+    'The':[['robot',50],['dragon',30],['cat',20]],
+    'A':[['robot',40],['dragon',35],['cat',25]],
+    'My':[['robot',45],['cat',35],['dragon',20]],
+    'robot':[['danced',40],['sang',35],['slept',25]],
+    'dragon':[['flew',50],['sang',30],['slept',20]],
+    'cat':[['slept',55],['danced',25],['sang',20]],
+    'danced':[['happily.',60],['all day.',40]],
+    'sang':[['loudly.',55],['all day.',45]],
+    'flew':[['to the moon.',65],['happily.',35]],
+    'slept':[['all day.',70],['happily.',30]]
+  };
+  var sent=[],box=document.getElementById('sentBox'),nb=document.getElementById('nextBox');
+  function lastKey(){return sent.length===0?'START':sent[sent.length-1];}
+  function done(){var l=lastKey();return l!=='START' && !model[l];}
+  function render(){
+    box.innerHTML= sent.length===0 ? '<span style="color:#b9a8a2">…press a word below to begin</span>'
+      : sent.map(function(w,i){return i===sent.length-1?'<span class="cur">'+w+'</span>':w;}).join(' ');
+    nb.innerHTML='';
+    document.getElementById('sentAuto').disabled=done();
+    if(done()){
+      var d=document.createElement('div');d.style.cssText='font-family:Fredoka,sans-serif;font-weight:600;color:var(--good)';
+      d.textContent='🎉 Sentence complete! You just generated text exactly the way a chatbot does.';nb.appendChild(d);return;
+    }
+    (model[lastKey()]||[]).forEach(function(pair){
+      var b=document.createElement('button');b.className='nextbtn';
+      b.innerHTML='<span class="w">'+pair[0]+'</span><span class="p"><i style="width:'+pair[1]+'%"></i></span><span class="pct">'+pair[1]+'% likely</span>';
+      b.addEventListener('click',function(){sent.push(pair[0]);render();});
+      nb.appendChild(b);
+    });
+  }
+  function sample(opts){
+    var r=Math.random()*100,acc=0;
+    for(var i=0;i<opts.length;i++){acc+=opts[i][1];if(r<=acc)return opts[i][0];}
+    return opts[opts.length-1][0];
+  }
+  document.getElementById('sentReset').addEventListener('click',function(){sent=[];render();});
+  document.getElementById('sentAuto').addEventListener('click',function(){
+    var guard=0;
+    (function tick(){
+      if(done()||guard++>10){render();return;}
+      sent.push(sample(model[lastKey()]));render();setTimeout(tick,420);
+    })();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

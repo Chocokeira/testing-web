@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0}
+  ::selection{background:#FF6A5A;color:#fff}
+  @keyframes spBob{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+</style>
+<script src="problem-set-a-data.js"></script>
+</helmet>
+<div ref="{{ setRoot }}" style="font-family:'Spline Sans',system-ui,sans-serif;background:#FFF6F2;color:#2A1714;line-height:1.6;overflow-x:hidden">
+
+  <div style="height:7px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF)"></div>
+
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;padding:12px 26px;background:rgba(255,246,242,.9);backdrop-filter:blur(14px);border-bottom:2px solid #ffd9d1">
+    <a href="overview.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#2A1714">
+      <span style="width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:12px">AI</span>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px">IJAIO<span style="color:#FF6A5A">.</span>26</span>
+    </a>
+    <a href="prilow-problem-set-b.html" style="margin-left:auto;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:999px;background:transparent;border:2px solid #FF6A5A;color:#C23F33" style-hover="background:#FFE7E3">Gen-AI version →</a>
+    <a href="overview.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:999px;background:#fff;border:2px solid #ffd9d1;color:#C23F33" style-hover="background:#FFE7E3">← Syllabus</a>
+  </nav>
+
+  <header style="position:relative;padding:clamp(38px,5vw,60px) 26px clamp(30px,4vw,44px);overflow:hidden">
+    <div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#C23F33;background:#FFE7E3;border:2px solid #ffcfc7;padding:6px 13px;border-radius:999px;margin-bottom:16px">★ Problem Set A · Standard</div>
+        <h1 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1;margin:0 0 10px">Lower Primary</h1>
+        <div style="font-size:15px;color:#6b554e;margin-bottom:14px">Grades 1–3 · 45 minutes · Total 100 marks (full paper)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:#fff;border:2px solid #ffe1da;color:#C23F33">Section A · 20 MCQ [60]</span>
+          <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:#fff;border:2px solid #ffe1da;color:#C23F33">Section B · 2 Structured [40]</span>
+          <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:#fff;border:2px solid #ffe1da;color:#C23F33">Mostly unplugged</span>
+        </div>
+      </div>
+      <div style="flex:none">
+        <div data-anim style="animation:spBob 4s ease-in-out infinite">
+          <div style="position:relative;width:104px;height:104px;border-radius:30px;background:#FF6A5A;box-shadow:0 18px 34px rgba(255,106,90,.4);border:3px solid #fff">
+            <div style="position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:4px;height:14px;background:#FFB23E;border-radius:2px"></div>
+            <div style="position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;background:#FFB23E"></div>
+            <div style="position:absolute;top:36px;left:24px;width:17px;height:21px;border-radius:9px;background:#fff"></div>
+            <div style="position:absolute;top:36px;right:24px;width:17px;height:21px;border-radius:9px;background:#fff"></div>
+            <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);width:34px;height:16px;border:3px solid #fff;border-top:none;border-radius:0 0 22px 22px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1080px;margin:0 auto;padding:0 26px 60px">
+
+    <div style="position:sticky;top:60px;z-index:30;display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:#2A1714;color:#fff;border-radius:20px;padding:16px 22px;box-shadow:0 16px 34px rgba(42,23,20,.18)">
+      <b style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px">Your practice score</b>
+      <span style="font-family:'Space Mono',monospace;font-weight:700;font-size:18px;color:#FF8577">{{ scoreTxt }}</span>
+      <div style="flex:1;min-width:120px;height:10px;border-radius:999px;background:rgba(255,255,255,.14);overflow:hidden"><span style="display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#FF6A5A,#FFB23E);transition:width .5s ease;width:{{ scorePct }}%"></span></div>
+      <button onClick="{{ reset }}" style="font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer" style-hover="background:rgba(255,255,255,.22)">Start again</button>
+    </div>
+
+    <div style="margin-top:20px;background:#fff;border:2px solid #ffe1da;border-radius:20px;padding:18px 22px;font-size:14px;color:#5a443d">
+      <b style="color:#C23F33;font-family:'Fredoka',sans-serif">How to use this problem set.</b> Section A questions are interactive - tap an answer to check it and read a short reason. Section B shows the kind of longer task you would write or draw; tap <b>“Show model answer”</b> to see the suggested marking points and a marker's rationale. Practice freely!
+    </div>
+
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+      <sc-for list="{{ legend }}" as="t" hint-placeholder-count="4">
+        <span style="{{ t.style }}">{{ t.label }}</span>
+      </sc-for>
+    </div>
+
+        <!-- TEACHER TOGGLE -->
+    <div style="margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <button onClick="{{ teacherBtn }}" style="{{ teacherBtnStyle }}">{{ teacherLabel }}</button>
+      <span style="font-size:12.5px;color:#9a857d">Maps each question to its syllabus learning outcome.</span>
+    </div>
+
+    <h2 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2.1rem);margin:clamp(34px,5vw,54px) 0 6px">Section A · Multiple Choice</h2>
+    <p style="font-size:14px;color:#6b554e;margin:0 0 20px">Choose the one best answer. There is no penalty for a wrong try.</p>
+    <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:40px;text-align:center;font-family:'Space Mono',monospace;color:#9a857d">Loading problem set…</div>
+    </sc-if>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+        <div style="background:#fff;border:2px solid #ffe1da;border-radius:24px;padding:22px 24px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;color:#C23F33">Q{{ q.num }}</span><sc-for list="{{ q.tags }}" as="tg" hint-placeholder-count="1"><span style="{{ tg.style }}">{{ tg.label }}</span></sc-for></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="{{ q.loStyle }}"><sc-for list="{{ q.lo }}" as="l" hint-placeholder-count="1"><span style="{{ l.style }}">{{ l.id }}</span></sc-for></span><span style="font-family:'Space Mono',monospace;font-size:11.5px;color:#9a857d">{{ q.marksTxt }}</span></div>
+          </div>
+          <div style="font-size:16px;font-weight:500;margin-bottom:8px">{{ q.qHtml }}</div>
+          <sc-if value="{{ q.hasByhand }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:22px;text-align:center;background:#FFF1ED;border:2px dashed #ffc4b9;border-radius:14px;padding:14px;margin-bottom:12px">{{ q.byhandHtml }}</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.click }}" style="{{ o.style }}">
+                <span style="{{ o.badgeStyle }}">{{ o.label }}</span>
+                <span style="flex:1">{{ o.text }}</span>
+                <span style="font-weight:700;font-size:15px;color:{{ o.markColor }}">{{ o.mark }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="{{ q.explainStyle }}">
+            <div style="margin-top:12px;background:#FFF1ED;border-left:4px solid #FF6A5A;border-radius:0 12px 12px 0;padding:12px 16px;font-size:14px;color:#7a3d32"><b style="color:#C23F33">Why:</b> {{ q.explainHtml }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <h2 style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2.1rem);margin:clamp(34px,5vw,54px) 0 6px">Section B · Structured Tasks</h2>
+    <p style="font-size:14px;color:#6b554e;margin:0 0 20px">Write, draw or describe your answer, then reveal the suggested marking points.</p>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="2">
+        <div style="background:#fff;border:2px solid #ffe1da;border-radius:24px;padding:24px 26px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+            <h3 style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin:0">{{ t.title }}</h3>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="{{ t.loStyle }}"><sc-for list="{{ t.lo }}" as="tl" hint-placeholder-count="1"><span style="{{ tl.style }}">{{ tl.id }}</span></sc-for></span>
+              <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#fff;background:#FF6A5A;padding:5px 11px;border-radius:999px;white-space:nowrap">{{ t.marksTxt }}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+            <sc-for list="{{ t.tags }}" as="tg" hint-placeholder-count="2">
+              <span style="{{ tg.style }}">{{ tg.label }}</span>
+            </sc-for>
+          </div>
+          <div style="font-size:14.5px;color:#3a2a25;background:#FFFaF8;border:1px solid #ffe1da;border-radius:14px;padding:15px 18px;margin-bottom:14px">{{ t.scenarioHtml }}</div>
+          <ol style="margin:0 0 16px;padding-left:4px;list-style:none;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ t.parts }}" as="p" hint-placeholder-count="3">
+              <li style="display:flex;gap:10px;font-size:14.5px;color:#3a2a25"><span style="font-family:'Space Mono',monospace;font-weight:700;color:#FF6A5A;min-width:26px">{{ p.label }}</span><span style="{{ p.loStyle }}"><sc-for list="{{ p.lo }}" as="l" hint-placeholder-count="1"><span style="{{ l.style }}">{{ l.id }}</span></sc-for></span><span style="flex:1">{{ p.html }}</span></li>
+            </sc-for>
+          </ol>
+          <textarea placeholder="Write, draw or describe your answer here…" style="width:100%;min-height:80px;font-family:'Spline Sans',sans-serif;font-size:14px;padding:14px;border:2px solid #ffe1da;border-radius:14px;resize:vertical;background:#FFFaF8;color:#2A1714"></textarea>
+          <div style="margin-top:14px">
+            <button onClick="{{ t.toggle }}" style="font-family:'Space Mono',monospace;font-weight:700;font-size:13px;padding:11px 18px;border-radius:999px;background:#FF6A5A;color:#fff;border:none;cursor:pointer" style-hover="background:#C23F33">{{ t.btnLabel }}</button>
+          </div>
+          <div style="{{ t.modelStyle }}">
+            <div style="margin-top:16px;border:2px solid #ffe1da;border-radius:18px;overflow:hidden">
+              <div style="background:#2A1714;color:#fff;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:11px 18px">Suggested marking points & rationale - {{ t.marksTxt }}</div>
+              <div style="padding:18px;display:flex;flex-direction:column;gap:14px">
+                <sc-for list="{{ t.points }}" as="mp" hint-placeholder-count="3">
+                  <div style="border-left:3px solid #FF6A5A;padding-left:14px">
+                    <div style="font-size:14px;color:#3a2a25"><b style="font-family:'Space Mono',monospace;font-size:12px;color:#C23F33">{{ mp.pts }}</b> - {{ mp.textHtml }}</div>
+                    <div style="margin-top:5px;font-size:13px;color:#7a3d32;font-style:italic">Marker's rationale: {{ mp.rationaleHtml }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ t.hasNote }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:#FFF1ED;border-radius:12px;padding:12px 16px;font-size:13.5px;color:#7a3d32">{{ t.noteHtml }}</div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap">
+      <a href="overview.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#fff;border:2px solid #ffd9d1;color:#C23F33" style-hover="background:#FFE7E3">← Syllabus</a>
+      <a href="prilow-problem-set-b.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#fff;border:2px solid #ffe1da;color:#C23F33" style-hover="background:#FFE7E3">Problem Set B (Generative-AI) →</a>
+    </div>
+  </main>
+
+  <footer style="border-top:2px solid #ffe1da;padding:28px 26px;text-align:center;font-size:13px;color:#9a857d">IJAIO 2026 Problem Set A · Lower Primary · Standard · For practice and illustration only.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  band = 'prilower';
+  theme = { accent: '#FF6A5A', deep: '#C23F33', line: '#ffe1da' };
+  state = { data: null, answers: {}, revealed: {}, teacher: false };
+  setRoot = (el) => { this._root = el; };
+
+  componentDidMount() {
+    const init = () => {
+      const S = (typeof window !== 'undefined') && window.SPECIMENS_STD;
+      if (S && S[this.band]) { this.setState({ data: S[this.band] }); }
+      else { this._t = setTimeout(init, 60); }
+    };
+    init();
+  }
+  componentWillUnmount() { if (this._t) clearTimeout(this._t); }
+
+  choose(i, j) { this.setState(s => (s.answers[i] !== undefined ? null : { answers: { ...s.answers, [i]: j } })); }
+  toggle(i) { this.setState(s => ({ revealed: { ...s.revealed, [i]: !s.revealed[i] } })); }
+  toggleTeacher() { this.setState(s => ({ teacher: !s.teacher })); }
+  reset() { this.setState({ answers: {}, revealed: {} }); window.scrollTo({ top: 0 }); }
+
+  tagInfo(cls) {
+    const m = {
+      't-genai': ['#8E6BFF', '#efeaff'], 't-fp': ['#0a8f8b', '#e0f4f3'], 't-agent': ['#9a6402', '#fdeccb'],
+      't-ethics': ['#a01a5b', '#fde7f0'], 't-code': ['#2952b8', '#e7eefe'],
+    };
+    return m[cls] || ['#5d6275', '#eee'];
+  }
+  chip(label, cls) {
+    const [c, bg] = this.tagInfo(cls);
+    return { label, style: `font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:4px 9px;border-radius:999px;background:${bg};color:${c}` };
+  }
+  legacyTag(key) {
+    const m = { genai: ['Generative AI', 't-genai'], agent: ['AI Agent', 't-agent'], byhand: ['First Principles', 't-fp'], ethics: ['AI Ethics', 't-ethics'], code: ['Python', 't-code'], fp: ['First Principles', 't-fp'] };
+    const t = m[key] || [key, 't-fp'];
+    return this.chip(t[0], t[1]);
+  }
+  loChip(id) { const bc = ({prilower:'LP',priupper:'UP',seclower:'LS',secupper:'US'})[this.band]; const m = String(id).match(/^([A-Z]{2})\.P(\d+)\.(\d+)$/); const label = m ? (m[1] === bc ? (m[2] + '.' + m[3]) : (m[1] + ' ' + m[2] + '.' + m[3])) : id; const style = `font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.02em;padding:2px 6px;border-radius:6px;background:#efeaff;color:#5A3CC7;border:1px solid #d8d0f5;white-space:nowrap`; return { id: label, style }; }
+  H(html, tag) { return React.createElement(tag || 'span', { dangerouslySetInnerHTML: { __html: String(html == null ? '' : html) } }); }
+
+  renderVals() {
+    const d = this.state.data;
+    const teacher = this.state.teacher;
+    const tLabel = teacher ? '👁  Outcome tags: ON (teacher view)' : '🏫  Show outcome tags (teacher)';
+    const tBtnStyle = `font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 16px;border-radius:999px;cursor:pointer;border:2px solid ${teacher?'#5A3CC7':'#d8d4ee'};background:${teacher?'#5A3CC7':'#fff'};color:${teacher?'#fff':'#5A3CC7'}`;
+    const LABELS = ['A', 'B', 'C', 'D', 'E'];
+    const legend = [['Generative AI', 't-genai'], ['AI Agent', 't-agent'], ['First Principles', 't-fp'], ['AI Ethics', 't-ethics']].map(([l, c]) => this.chip(l, c));
+    if (!d) return { loading: true, questions: [], tasks: [], legend, scoreTxt: '0 / 0', scorePct: 0, reset: () => this.reset(), teacher, teacherLabel: tLabel, teacherBtnStyle: tBtnStyle, teacherBtn: () => this.toggleTeacher() };
+
+    const marks = d.marks;
+    const max = d.mcqs.length * marks;
+    let earned = 0;
+    const questions = d.mcqs.map((m, i) => {
+      const chosen = this.state.answers[i];
+      const answered = chosen !== undefined;
+      if (answered && chosen === m.a) earned += marks;
+      const options = m.o.map((text, j) => {
+        let bg = '#fff', bc = this.theme.line, col = '#2A1714', badgeBg = '#FFE7E3', badgeCol = this.theme.deep, mark = '', markColor = 'transparent';
+        if (answered) {
+          if (j === m.a) { bg = '#e9f7ee'; bc = '#1f8a4c'; badgeBg = '#1f8a4c'; badgeCol = '#fff'; mark = '✓'; markColor = '#1f8a4c'; }
+          else if (j === chosen) { bg = '#fdeaef'; bc = '#d6336c'; badgeBg = '#d6336c'; badgeCol = '#fff'; mark = '✕'; markColor = '#d6336c'; }
+          else { bg = '#faf7f5'; col = '#9a857d'; badgeBg = '#eee'; badgeCol = '#aaa'; }
+        }
+        const style = `display:flex;align-items:center;gap:12px;width:100%;text-align:left;font-family:'Spline Sans',sans-serif;font-size:14.5px;padding:13px 15px;border-radius:14px;background:${bg};border:2px solid ${bc};color:${col};cursor:${answered ? 'default' : 'pointer'}`;
+        const badgeStyle = `flex:none;width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:${badgeBg};color:${badgeCol}`;
+        return { label: LABELS[j], text, style, badgeStyle, mark, markColor, click: answered ? (() => {}) : (() => this.choose(i, j)) };
+      });
+      return {
+        num: i + 1, marksTxt: marks + (marks === 1 ? ' mark' : ' marks'),
+        tags: m.tag ? [this.legacyTag(m.tag)] : [],
+        qHtml: this.H(m.q), hasByhand: !!m.byhand, byhandHtml: this.H(m.byhand),
+        options, explainHtml: this.H(m.e),
+        explainStyle: answered ? 'display:block' : 'display:none',
+        lo: (m.lo || []).map(id => this.loChip(id)), loStyle: (teacher ? 'display:inline-flex' : 'display:none') + ';gap:4px;align-items:center',
+      };
+    });
+    const tasks = d.structured.map((t, i) => {
+      const open = !!this.state.revealed[i];
+      return {
+        title: t.title, marksTxt: t.marks + ' marks',
+        lo: [...new Set((t.partLo || []).flat())].map(id => this.loChip(id)),
+        loStyle: (teacher ? 'display:inline-flex' : 'display:none') + ';gap:4px;align-items:center;flex-wrap:wrap',
+        tags: (t.tags || []).map(k => this.legacyTag(k)),
+        scenarioHtml: this.H(t.scenario),
+        parts: (t.parts || []).map((p, k) => ({ label: String.fromCharCode(97 + k) + ')', html: this.H(p), lo: (((t.partLo || [])[k]) || []).map(id => this.loChip(id)), loStyle: (teacher ? 'display:inline-flex' : 'display:none') + ';gap:4px;align-items:center;flex-wrap:wrap' })),
+        points: (t.model || []).map(mp => ({ pts: mp.pts, textHtml: this.H(mp.text), rationaleHtml: this.H(mp.rationale) })),
+        hasNote: !!t.totalNote, noteHtml: this.H(t.totalNote),
+        btnLabel: open ? 'Hide model answer' : 'Show model answer & marks',
+        modelStyle: open ? 'display:block' : 'display:none',
+        toggle: () => this.toggle(i),
+      };
+    });
+    return { loading: false, legend, questions, tasks, scoreTxt: earned + ' / ' + max, scorePct: max ? Math.round(earned / max * 100) : 0, reset: () => this.reset(), teacher, teacherLabel: tLabel, teacherBtnStyle: tBtnStyle, teacherBtn: () => this.toggleTeacher() };
+  }
+}
+</script>
+</body>
+</html>

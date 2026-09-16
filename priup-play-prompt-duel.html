@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · Prompt Duel · Upper Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--amber:#E8920C;--deep:#9a6402;--coral:#FF6A5A;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1F0E;--cream:#FFFAF0;--line:#fdeccb}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:860px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7c6134;margin-top:4px;max-width:62ch;margin-left:auto;margin-right:auto}
+  main{max-width:860px;margin:12px auto 60px;padding:0 18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:16px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0 0 6px}
+  .scores{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .pscore{border:2px solid var(--line);border-radius:16px;padding:10px 20px;text-align:center;min-width:130px}
+  .pscore.turn{border-color:var(--violet);background:#f4efff}
+  .pscore .nm{font-family:'Fredoka',sans-serif;font-weight:700;font-size:16px}
+  .pscore .pt{font-family:'Space Mono',monospace;font-weight:700;font-size:22px;color:var(--deep)}
+  .sentence{text-align:center;font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(17px,3vw,23px);background:#FFFaF3;border:2px dashed var(--line);border-radius:16px;padding:14px 18px;margin:14px 0;min-height:56px}
+  .sentence .cursor{color:var(--violet)}
+  .turnmsg{text-align:center;font-weight:600;font-size:15px;min-height:24px;margin-bottom:8px}
+  .cands{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .cand{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px;cursor:pointer;text-align:center}
+  .cand:hover{border-color:var(--violet)}
+  .cand.p1{border-color:var(--coral);background:#fff0ee;cursor:default}
+  .cand.p2{border-color:var(--teal);background:#e6fbfa;cursor:default}
+  .cand .w{font-family:'Fredoka',sans-serif;font-weight:700;font-size:18px}
+  .cand .tag{font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;min-height:14px;margin-top:2px}
+  .cand .track{background:#f6ead2;border-radius:999px;height:16px;overflow:hidden;margin-top:8px}
+  .cand .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--amber),var(--coral));color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;width:0;transition:width .7s ease}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:11px 22px;cursor:pointer;color:#fff;background:var(--violet)}
+  .btn:hover{filter:brightness(.95)}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4DE;border:1px dashed #f0cf92;border-radius:12px;padding:10px 14px;color:#7c5a12;font-weight:500}
+  footer{max-width:860px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🗣️ Prompt Duel</h1>
+  <div class="sub">A two-player, one-screen game. A language model picks its next word by <b>counting how often words followed each other in its training stories</b>. Can you predict its pick before the counts are revealed?</div>
+</header>
+<main>
+
+  <div class="card" style="border-top:6px solid var(--violet)">
+    <div class="scores">
+      <div class="pscore" id="ps0"><div class="nm">🔴 Player 1</div><div class="pt" id="pt0">0</div></div>
+      <div class="pscore" id="ps1"><div class="nm">🔵 Player 2</div><div class="pt" id="pt1">0</div></div>
+    </div>
+    <div class="sentence" id="sentence"></div>
+    <div class="turnmsg" id="turnmsg"></div>
+    <div class="cands" id="cands"></div>
+    <div class="row" id="controls"></div>
+    <div class="note" id="lesson">The bars are word counts from the model's "training stories". They stay hidden until both players have picked. Just like a model, you must predict from what feels most likely!</div>
+  </div>
+
+  <div class="card" style="border-top:6px solid var(--amber)">
+    <h2>📏 How to play</h2>
+    <p style="font-size:14.5px;margin:0">Each turn, both players pick a different candidate word. Then the counts are revealed: <b>you score that word's count</b>, and the sentence continues with the model's top pick. After the sentence ends, swap who goes first. Highest total wins, and the winner is usually whoever thinks most like the data!</p>
+  </div>
+
+</main>
+<footer>
+  <a class="link" href="priup-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="priup-play-doodle-classifier.html">✏️ Doodle Classifier</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+/* Each step: candidate words with counts "from the training stories". Top count continues the sentence. */
+const ROUNDS=[
+  { start:'The hungry dragon', steps:[
+    {cands:[['ate',48],['flew',31],['sang',6],['slept',15]]},
+    {cands:[['a mountain of',12],['ten crunchy',26],['the whole',41],['one tiny',21]]},
+    {cands:[['tacos.',19],['knights.',9],['birthday cake.',52],['homework.',20]]},
+  ]},
+  { start:'My robot teacher', steps:[
+    {cands:[['explains',44],['forgets',12],['dances',9],['repeats',35]]},
+    {cands:[['every lesson',47],['the answers',28],['my name',17],['a joke',8]]},
+    {cands:[['twice.',36],['backwards.',14],['very slowly.',42],['in song.',8]]},
+  ]},
+  { start:'On the moon, astronauts', steps:[
+    {cands:[['float',51],['bounce',33],['nap',7],['race',9]]},
+    {cands:[['above the',38],['around the',30],['inside the',22],['under the',10]]},
+    {cands:[['crater.',45],['flag.',25],['spaceship.',24],['cheese.',6]]},
+  ]},
+];
+let round=0, step=0, scores=[0,0], first=0, picks=[null,null], picking=0, sentenceWords=[];
+function startRound(){
+  step=0; sentenceWords=[ROUNDS[round].start];
+  nextStep();
+}
+function nextStep(){
+  picks=[null,null]; picking=first;
+  renderSentence(true); renderCands(); renderTurn();
+  document.getElementById('controls').innerHTML='';
+}
+function renderSentence(cursor){
+  document.getElementById('sentence').innerHTML=sentenceWords.join(' ')+(cursor?' <span class="cursor">▮</span>':'');
+}
+function renderTurn(){
+  document.getElementById('ps0').classList.toggle('turn',picking===0&&picks[0]===null);
+  document.getElementById('ps1').classList.toggle('turn',picking===1&&picks[1]===null);
+  const msg= picks[first]===null? (first===0?'🔴 Player 1':'🔵 Player 2')+' picks first: which word did the model see most often?'
+    : (first===0?'🔵 Player 2':'🔴 Player 1')+', your turn: pick a DIFFERENT word.';
+  document.getElementById('turnmsg').textContent=msg;
+}
+function renderCands(revealed){
+  const cs=ROUNDS[round].steps[step].cands;
+  const max=Math.max(...cs.map(c=>c[1]));
+  document.getElementById('cands').innerHTML=cs.map((c,i)=>{
+    const pickedBy = picks[0]===i? 0 : (picks[1]===i? 1 : null);
+    const cls='cand'+(pickedBy===0?' p1':pickedBy===1?' p2':'');
+    const tag= pickedBy===null? '' : (pickedBy===0?'🔴 P1':'🔵 P2');
+    const w=revealed? Math.round(c[1]/max*100) : 0;
+    return '<div class="'+cls+'" onclick="pick('+i+')"><div class="w">'+c[0]+'</div><div class="tag">'+tag+'</div>'+
+      '<div class="track"><div class="fill" style="width:'+w+'%">'+(revealed?c[1]:'')+'</div></div></div>';
+  }).join('');
+}
+function pick(i){
+  if(picks[picking]!==null) return;              /* both picked already */
+  if(picks[0]===i||picks[1]===i) return;         /* word taken */
+  picks[picking]=i;
+  const other=1-picking;
+  if(picks[other]===null){ picking=other; renderCands(); renderTurn(); }
+  else reveal();
+}
+function reveal(){
+  const cs=ROUNDS[round].steps[step].cands;
+  renderCands(true);
+  scores[0]+= picks[0]!==null? cs[picks[0]][1] : 0;
+  scores[1]+= picks[1]!==null? cs[picks[1]][1] : 0;
+  updScores();
+  const top=cs.reduce((a,b)=>a[1]>=b[1]?a:b);
+  sentenceWords.push(top[0]);
+  renderSentence(false);
+  const p0=cs[picks[0]][1], p1=cs[picks[1]][1];
+  document.getElementById('turnmsg').textContent =
+    p0===p1? 'A tie this turn: both words were equally common!' :
+    (p0>p1?'🔴 Player 1':'🔵 Player 2')+' matched the data better! The model continues with “'+top[0]+'”.';
+  const lastStep = step>=ROUNDS[round].steps.length-1;
+  document.getElementById('controls').innerHTML='<button class="btn" onclick="'+(lastStep?'endRound()':'advance()')+'">'+(lastStep?'Finish sentence 🏁':'Next word ➜')+'</button>';
+  document.getElementById('ps0').classList.remove('turn'); document.getElementById('ps1').classList.remove('turn');
+}
+function advance(){ step++; nextStep(); }
+function endRound(){
+  first=1-first; round++;
+  if(round>=ROUNDS.length){
+    const w= scores[0]===scores[1]? 'It’s a tie!' : (scores[0]>scores[1]?'🔴 Player 1 wins!':'🔵 Player 2 wins!');
+    document.getElementById('turnmsg').textContent='🏆 '+w;
+    document.getElementById('cands').innerHTML='';
+    document.getElementById('lesson').innerHTML='🧠 <b>What just happened:</b> you were both doing exactly what a language model does: predicting the next word from counts in training data. The model never chooses what is <i>true</i> or <i>best</i>, only what is <i>frequent</i>. That is why its stories sound familiar… and why it can confidently repeat mistakes from its data!';
+    document.getElementById('controls').innerHTML='<button class="btn" onclick="restart()">🔁 Rematch</button>';
+    return;
+  }
+  document.getElementById('lesson').textContent='New sentence! '+(first===0?'Player 1':'Player 2')+' picks first this time.';
+  startRound();
+}
+function restart(){ round=0; scores=[0,0]; first=0; updScores(); startRound(); }
+function updScores(){ document.getElementById('pt0').textContent=scores[0]; document.getElementById('pt1').textContent=scores[1]; }
+startRound();
+</script>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IJAIO 2026 · Secondary · First Principles of AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--amberdeep:#b57508;--teal:#16C4C0;--tealdeep:#0a6f6c;--violet:#8E6BFF;--violetdeep:#5f3fd0;--ink:#14161d;--paper:#f6f4ee;--line:rgba(20,22,29,.1);--mut:#5d6275;--good:#1f8a4c;--bad:#d6336c;--xl:#1a7f43;--xlbg:#e8f6ee;--xlline:#bfe4cd;--py:#2b5b84;--pybg:#e9f1f8;--pyline:#c3d8ea}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.62}
+  ::selection{background:#8E6BFF;color:#fff}
+  .bar{height:6px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  nav.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 26px;background:rgba(246,244,238,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav.top .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);margin-right:auto}
+  nav.top .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--coral),var(--violet));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px}
+  nav.top .brand b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .pill{text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;padding:8px 14px;border-radius:999px;background:#fff;border:1px solid rgba(20,22,29,.14);color:var(--ink);white-space:nowrap;transition:.15s}
+  .pill:hover{border-color:var(--violet);color:var(--violetdeep);transform:translateY(-1px)}
+  .pill.solid{background:var(--ink);border-color:var(--ink);color:#fff}
+  .pill.solid:hover{background:var(--violet);border-color:var(--violet);color:#fff}
+  header.hero{position:relative;background:var(--ink);color:var(--paper);padding:clamp(48px,7vw,84px) 26px clamp(46px,6vw,70px);overflow:hidden}
+  header.hero .glow1{position:absolute;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(142,107,255,.45),transparent 68%);filter:blur(42px);top:-160px;right:-80px;pointer-events:none}
+  header.hero .glow2{position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(255,106,90,.4),transparent 68%);filter:blur(42px);bottom:-190px;left:-90px;pointer-events:none}
+  header.hero .inner{position:relative;z-index:2;max-width:1020px;margin:0 auto}
+  .kicker{display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#c3b2ff;border:1px solid rgba(142,107,255,.45);padding:6px 14px;border-radius:999px;margin-bottom:20px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+  header.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5.2vw,3.6rem);line-height:1.02;letter-spacing:-.03em;margin:0 0 16px;max-width:22ch}
+  header.hero h1 .gr{background:linear-gradient(100deg,var(--coral),var(--amber) 38%,var(--teal) 66%,var(--violet));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+  header.hero p.lede{font-size:clamp(.98rem,1.35vw,1.14rem);color:#c7cad6;max-width:66ch;margin:0 0 10px}
+  header.hero p.mono{font-family:'Space Mono',monospace;font-size:12.5px;color:#8a8fa3;margin:0}
+  .tocwrap{max-width:1020px;margin:-26px auto 0;padding:0 26px;position:relative;z-index:5}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 15px;box-shadow:0 16px 40px rgba(20,22,29,.08)}
+  .toc a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:11.5px;color:var(--mut);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:7px 12px;transition:.15s}
+  .toc a:hover{border-color:var(--violet);color:var(--violetdeep)}
+  .toc a .n{background:var(--ink);color:#fff;border-radius:999px;padding:1px 7px;font-size:10px}
+  main{max-width:1020px;margin:30px auto 70px;padding:0 26px}
+  .primer{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px 26px;margin-bottom:30px}
+  .primer h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.3rem;margin:0 0 8px;letter-spacing:-.01em}
+  .primer p{margin:0 0 8px;color:#3a3d49;font-size:15px;max-width:80ch}
+  .primer p:last-child{margin:0}
+  section.stage{background:#fff;border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3vw,32px);margin:0 0 30px;scroll-margin-top:80px;border-top:6px solid var(--c,var(--violet))}
+  .chip{display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--c,var(--violet));border-radius:999px;padding:5px 13px;margin-bottom:12px}
+  section.stage h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.35rem,2.6vw,1.85rem);letter-spacing:-.02em;margin:0 0 10px}
+  section.stage p.ex{margin:0 0 16px;font-size:15px;color:#3a3d49;max-width:78ch}
+  section.stage p.ex b{color:var(--ink)}
+  section.stage code{font-family:'Space Mono',monospace;font-size:.86em;background:#efece4;border:1px solid #ddd8ca;border-radius:6px;padding:1px 6px}
+  .widget{background:#fafaf7;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:6px 0 16px}
+  .wt{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;margin:0 0 12px;color:var(--ink)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;border:none;border-radius:999px;padding:9px 16px;cursor:pointer;background:var(--ink);color:#fff;transition:.15s}
+  .btn:hover{background:var(--violet)}
+  .btn.ghost{background:#fff;border:1px solid rgba(20,22,29,.2);color:var(--ink)}
+  .btn.ghost:hover{border-color:var(--violet);color:var(--violetdeep);background:#fff}
+  .sld{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;flex:1;min-width:190px}
+  .sld label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:4px}
+  .sld label output{font-family:'Space Mono',monospace;color:var(--violetdeep)}
+  input[type=range]{width:100%;accent-color:var(--violet)}
+  .readout{font-family:'Space Mono',monospace;font-weight:700;font-size:13.5px;background:#efece4;border:1px dashed #cfc8b4;border-radius:10px;padding:10px 14px;margin-top:12px;line-height:1.8;color:#3d3a2f}
+  .readout .hi{color:var(--violetdeep)}
+  .readout .hi2{color:var(--tealdeep)}
+  .readout .hi3{color:var(--deep)}
+  svg text{font-family:'Space Mono',monospace}
+  /* matrix widgets */
+  .mat{display:inline-grid;gap:6px;vertical-align:middle}
+  .mat input{width:52px;height:46px;text-align:center;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;border:1.5px solid rgba(20,22,29,.2);border-radius:10px;background:#fff}
+  .mat input:focus{outline:2px solid var(--violet)}
+  .mat .cellr{width:52px;height:46px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:16px;border-radius:10px;background:#efe9ff;border:1.5px solid #d9c9ff;color:var(--violetdeep);cursor:pointer;transition:.12s}
+  .mat .cellr:hover{transform:scale(1.06)}
+  .mat .cellr.hl{background:var(--violet);color:#fff}
+  .mat input.hlA{background:#e6faf9;border-color:var(--teal)}
+  .mat input.hlB{background:#fff3e0;border-color:var(--amber)}
+  .mateq{display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px}
+  .matlab{font-family:'Space Mono',monospace;font-size:11px;color:var(--mut);text-align:center;margin-top:6px}
+  /* net */
+  .net-node{transition:.2s}
+  /* excel / python details */
+  details.bridge{border-radius:14px;margin:10px 0 0;overflow:hidden;border:1px solid}
+  details.bridge.xl{background:var(--xlbg);border-color:var(--xlline)}
+  details.bridge.py{background:var(--pybg);border-color:var(--pyline)}
+  details.bridge summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:13px 18px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14.5px}
+  details.bridge summary::-webkit-details-marker{display:none}
+  details.bridge.xl summary{color:var(--xl)}
+  details.bridge.py summary{color:var(--py)}
+  details.bridge summary .tag{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:3px 9px;margin-left:auto}
+  details.bridge.xl summary .tag{background:#fff;border:1px solid var(--xlline);color:var(--xl)}
+  details.bridge.py summary .tag{background:#fff;border:1px solid var(--pyline);color:var(--py)}
+  details.bridge summary .arr{transition:.2s;font-size:12px}
+  details.bridge[open] summary .arr{transform:rotate(90deg)}
+  details.bridge .inner{padding:2px 18px 16px}
+  details.bridge .inner p{margin:0 0 10px;font-size:13.5px;color:#31413a;max-width:76ch}
+  details.bridge.py .inner p{color:#2f3e4c}
+  details.bridge pre{margin:0 0 10px;padding:14px 16px;border-radius:10px;font-family:'Space Mono',monospace;font-size:12.3px;line-height:1.66;overflow-x:auto;white-space:pre}
+  details.bridge.xl pre{background:#0f2b1c;color:#c9f2d8}
+  details.bridge.py pre{background:#0e1c2b;color:#cfe6f8}
+  details.bridge pre b{color:#8affc1;font-weight:700}
+  details.bridge.py pre b{color:#8ecbff}
+  details.bridge pre i{color:#7fae92;font-style:normal}
+  details.bridge.py pre i{color:#7d9cb8;font-style:normal}
+  .cellref{font-family:'Space Mono',monospace;font-size:.85em;background:#fff;border:1px solid var(--xlline);border-radius:5px;padding:0 5px;color:var(--xl)}
+  /* attention */
+  .tok{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;background:#fff;border:1.5px solid rgba(20,22,29,.16);border-radius:10px;padding:8px 13px;cursor:pointer;transition:.13s}
+  .tok:hover{border-color:var(--violet);transform:translateY(-2px)}
+  .tok.q{background:var(--violet);border-color:var(--violet);color:#fff}
+  .abar{display:flex;align-items:center;gap:10px;margin:6px 0}
+  .abar .lab{width:78px;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;text-align:right}
+  .abar .track{flex:1;background:#eceada;border-radius:999px;height:22px;overflow:hidden}
+  .abar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--violet),#b9a4ff);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10.5px;transition:width .3s;min-width:30px}
+  /* generation */
+  .genout{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 18px;min-height:56px;margin-bottom:12px}
+  .genout .new{color:var(--violetdeep)}
+  .lbar{display:flex;align-items:center;gap:10px;margin:5px 0}
+  .lbar .lab{width:70px;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px}
+  .lbar .track{flex:1;background:#eceada;border-radius:999px;height:20px;overflow:hidden}
+  .lbar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),#5fe0db);display:flex;align-items:center;justify-content:flex-end;padding-right:7px;color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;transition:width .25s;min-width:26px}
+  /* pipeline */
+  .pipe{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch;justify-content:center;margin-bottom:14px}
+  .pstage{flex:1;min-width:130px;max-width:180px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px 13px;text-align:center;transition:.25s;opacity:.55}
+  .pstage .pico{font-size:24px}
+  .pstage b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:13.5px;margin:4px 0 2px}
+  .pstage span{font-size:11.5px;color:var(--mut);line-height:1.4;display:block}
+  .pstage.lit{opacity:1;border-color:var(--violet);box-shadow:0 10px 26px rgba(142,107,255,.22);transform:translateY(-3px)}
+  .parr{align-self:center;font-weight:800;color:var(--mut)}
+  .pipemsg{font-size:14px;background:#efe9ff;border:1px solid #d9c9ff;border-radius:12px;padding:12px 16px;min-height:46px;color:#3a2d6e}
+  .pipemsg b{color:var(--violetdeep)}
+  /* recap + footer */
+  .recap{background:var(--ink);color:var(--paper);border-radius:22px;padding:clamp(24px,3vw,36px);text-align:center}
+  .recap h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);margin:0 0 10px;letter-spacing:-.02em}
+  .recap p{color:#c7cad6;font-size:15px;max-width:70ch;margin:0 auto 16px}
+  .recap .chain{font-family:'Space Mono',monospace;font-size:12.5px;color:#c3b2ff;line-height:2}
+  footer{border-top:1px solid var(--line);padding:26px;text-align:center;font-size:13px;color:var(--mut)}
+  footer a{color:var(--violetdeep)}
+  .fb{min-height:20px;font-size:13.5px;font-weight:600;margin-top:8px}
+  .fb.ok{color:var(--good)}.fb.no{color:var(--bad)}
+  @media(max-width:640px){.mateq{font-size:16px}.mat input,.mat .cellr{width:40px;height:38px;font-size:13px}}
+
+  /* ===== live mini-spreadsheet ===== */
+  .fbar{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+  .fbar .cn{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:#fff;border:1px solid var(--xlline);border-radius:8px;padding:7px 10px;min-width:44px;text-align:center;color:var(--xl)}
+  .fbar input{flex:1;font-family:'Space Mono',monospace;font-size:12.5px;border:1px solid var(--xlline);border-radius:8px;padding:7px 10px;background:#fff;color:#143a24}
+  .fbar input:focus{outline:2px solid var(--xl)}
+  .sheetwrap{overflow-x:auto;border:1px solid var(--xlline);border-radius:10px;background:#fff}
+  table.sheet{border-collapse:collapse;font-family:'Space Mono',monospace;font-size:12.5px}
+  .sheet th{background:#d9efe2;color:#1a5c34;font-weight:700;font-size:10.5px;padding:4px 7px;border:1px solid #bfe4cd;min-width:30px}
+  .sheet td{border:1px solid #d9ece0;padding:0}
+  .sheet input{width:88px;height:31px;border:none;font:inherit;font-size:12.5px;padding:2px 7px;background:transparent;text-align:right;color:#14301f}
+  .sheet input:focus{outline:2px solid var(--xl);background:#fff;text-align:left}
+  .sheet input.fx{background:#fff6df}
+  .sheet input.txt{text-align:left;color:#6f8479;font-size:11.5px}
+  .sheet input.err{color:#C23F33;font-weight:700}
+  .sheetbtns{display:flex;gap:8px;align-items:center;margin:10px 0 0;flex-wrap:wrap}
+  .sheetbtns .legend{font-size:11.5px;color:#557a63;margin-left:auto}
+  .sheetbtns .legend i{display:inline-block;width:11px;height:11px;background:#fff6df;border:1px solid #d9ece0;border-radius:3px;vertical-align:-1px;margin-right:4px;font-style:normal}
+  .btn.xlbtn{background:var(--xl)}
+  .btn.xlbtn:hover{background:#135e32}
+  .minichart{display:flex;align-items:flex-end;gap:3px;height:58px;margin:10px 2px 0;padding:6px 8px;background:#fff;border:1px dashed var(--xlline);border-radius:10px}
+  .minichart i{flex:1;max-width:16px;background:linear-gradient(180deg,#FF6A5A,#C23F33);border-radius:3px 3px 0 0;min-height:2px;transition:height .25s}
+  .minichart .mclab{font-size:10.5px;color:#557a63;align-self:flex-start;margin-right:6px;font-family:'Space Mono',monospace}
+  .trybox{margin:12px 0 0;font-size:13.5px;background:#fff;border:1px dashed;border-radius:10px;padding:10px 14px;line-height:1.55}
+  details.xl .trybox{border-color:var(--xl);color:#1d4a30}
+  details.py .trybox{border-color:var(--py);color:#243f56}
+  .trybox b{font-family:'Bricolage Grotesque',sans-serif}
+  .trybox ul{margin:4px 0 0 18px;padding:0}
+  .trybox li{margin:3px 0}
+  /* ===== runnable python cells ===== */
+  .pycell{border:1px solid #16304b;border-radius:12px;overflow:hidden;background:#0e1c2b}
+  .pybar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#122539;border-bottom:1px solid #1d3a58}
+  .pyst{font-family:'Space Mono',monospace;font-size:11px;color:#7d9cb8;margin-right:auto}
+  .pyst.ready{color:#7fdc9a}.pyst.err{color:#ff9d90}.pyst.busy{color:#ffd28a}
+  .btn.pyrun{background:var(--py);padding:7px 15px}
+  .btn.pyrun:hover{background:#3d6f9c}
+  .btn.pyrun:disabled{opacity:.45;pointer-events:none}
+  textarea.pycode{display:block;width:100%;border:none;outline:none;resize:vertical;background:#0e1c2b;color:#cfe6f8;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.6;padding:12px 14px;caret-color:#8ecbff;min-height:60px}
+  textarea.pycode:focus{background:#102135}
+  pre.pyout{margin:0;padding:11px 14px;background:#F4FaFd;border-top:2px solid var(--py);font-family:'Space Mono',monospace;font-size:12.3px;line-height:1.55;color:#1d3a4c;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow:auto}
+  pre.pyout.errout{color:#C23F33}
+
+</style>
+</head>
+<body>
+<div class="bar"></div>
+
+<nav class="top">
+  <a class="brand" href="overview.html"><span class="logo">AI</span><b>IJAIO<span style="color:var(--violet)">.</span>26</b></a>
+  <a class="pill" href="basicssecvisual.html">Infographic</a>
+  <a class="pill" href="basicssecstory.html">Story</a>
+  <a class="pill" href="seclow-notebook.html">Python Notebook</a>
+  <a class="pill solid" href="seclow-lab.html">Practice Lab →</a>
+</nav>
+
+<header class="hero">
+  <div class="glow1"></div><div class="glow2"></div>
+  <div class="inner">
+    <div class="kicker"><span class="dot"></span>First-Principles Foundation Series · Secondary</div>
+    <h1>Nine steps from a <span class="gr">humble multiplication</span> to a machine that writes</h1>
+    <p class="lede">Strip away the jargon and modern generative AI is a short chain of ideas you already have the maths for: lists of numbers, multiply-and-add, a squashing function, and an error you shrink step by step. This page builds the chain one link at a time. Every stage is interactive, and every stage ends with a <b style="color:#8affc1">live spreadsheet</b> you can edit and <b style="color:#8ecbff">Python that really runs</b>, right here in the page.</p>
+    <p class="mono">vectors → matrices → neurons → layers → learning → meaning → attention → transformers → generation</p>
+  </div>
+</header>
+
+<div class="tocwrap">
+  <div class="toc">
+    <a href="#g1"><span class="n">1</span>Vectors</a>
+    <a href="#g2"><span class="n">2</span>Matrix ×</a>
+    <a href="#g3"><span class="n">3</span>Neuron</a>
+    <a href="#g4"><span class="n">4</span>Layers</a>
+    <a href="#g5"><span class="n">5</span>Learning</a>
+    <a href="#g6"><span class="n">6</span>Meaning</a>
+    <a href="#g7"><span class="n">7</span>Attention</a>
+    <a href="#g8"><span class="n">8</span>Transformer</a>
+    <a href="#g9"><span class="n">9</span>Generation</a>
+  </div>
+</div>
+
+<main>
+
+<div class="primer">
+  <h2>How to use this series</h2>
+  <p><b>Work top to bottom</b>; each stage uses only the stages before it. Play with the widget until the idea feels obvious, then open the green <b>Excel</b> panel and the blue <b>Python</b> panel. These are not instructions to read: the green panel is a <b>working mini-spreadsheet</b> (click any shaded cell to see its formula, edit any number, everything recalculates), and the blue panel is <b>real Python</b> that runs in your browser when you press ▶ Run. Change the code. Break it. Fix it. That is the point.</p>
+  <p>By Stage 9 you will have every ingredient of a real large language model, not a cartoon of one. Real systems differ from this page in only two boring ways: <b>more numbers</b> (billions of weights instead of a handful) and <b>more repetitions</b> (dozens of identical layers instead of one).</p>
+  </div>
+
+<!-- ============ STAGE 1 · VECTORS ============ -->
+<section class="stage" id="g1" style="--c:var(--coral)">
+  <span class="chip">Stage 1 · Data</span>
+  <h2>Everything the machine knows is a vector</h2>
+  <p class="ex">A <b>vector</b> is just an ordered list of numbers, like <code>[3, 2]</code>. Its superpower: one list can describe anything: a point, a pixel patch, a word, a song. And one tiny operation compares two of them: the <b>dot product</b>. Multiply matching entries, add the results. Big dot product ⇒ the vectors point the same way ⇒ the things they describe are <i>similar</i>. This single operation is the heartbeat of every stage below.</p>
+  <div class="widget">
+    <p class="wt">🧭 Steer vector <span style="color:var(--deep)">a</span> and watch its dot product with <span style="color:var(--tealdeep)">b = [3, 1]</span></p>
+    <div class="row">
+      <svg id="vecSvg" viewBox="0 0 260 260" width="250" height="250" style="background:#fff;border:1px solid var(--line);border-radius:14px;flex:none">
+        <line x1="10" y1="130" x2="250" y2="130" stroke="#ddd8ca"/>
+        <line x1="130" y1="10" x2="130" y2="250" stroke="#ddd8ca"/>
+        <line id="vecB" x1="130" y1="130" x2="205" y2="105" stroke="#0a6f6c" stroke-width="3.5" marker-end="url(#arrT)"/>
+        <line id="vecA" x1="130" y1="130" x2="205" y2="80" stroke="#C23F33" stroke-width="3.5" marker-end="url(#arrC)"/>
+        <text id="vecALab" x="208" y="74" fill="#C23F33" font-size="12" font-weight="bold">a</text>
+        <text x="208" y="122" fill="#0a6f6c" font-size="12" font-weight="bold">b</text>
+        <defs>
+          <marker id="arrC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#C23F33"/></marker>
+          <marker id="arrT" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0a6f6c"/></marker>
+        </defs>
+      </svg>
+      <div style="flex:1;min-width:230px">
+        <div class="sld"><label>a₁ (across) <output id="oAx">3</output></label><input type="range" id="rAx" min="-4" max="4" step="0.5" value="3"></div>
+        <div class="sld" style="margin-top:10px"><label>a₂ (up) <output id="oAy">2</output></label><input type="range" id="rAy" min="-4" max="4" step="0.5" value="2"></div>
+        <div class="readout" id="vecRead"></div>
+      </div>
+    </div>
+    <div class="fb" id="vecFb"></div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · the dot product is one function<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>A real (tiny) spreadsheet. Vector <b>a</b> lives in row 1, vector <b>b</b> in row 2. The shaded cells hold live formulas; click one and read it in the formula bar, then edit the white cells and watch everything recalculate.</p><div class="msheet" data-sheet="vec"></div><div class="trybox"><b>Try:</b><ul><li>Edit a’s numbers (A1, B1) until the dot product in D1 goes <b>negative</b>: opposite directions.</li><li>Harder: make it exactly <b>0</b>. You just built perpendicular vectors.</li><li>Click D1: the whole dot product is one <code>SUMPRODUCT</code>.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · lists first, then NumPy<span class="tag">runs here</span></summary>
+    <div class="inner"><p>Real Python, in your browser. First with plain lists so nothing is hidden, then with <b>NumPy</b>, the library real AI frameworks are built on. Edit anything and press Run again.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">a = [3, 2]
+b = [3, 1]
+dot = sum(x*y for x, y in zip(a, b))
+print(&quot;plain python:&quot;, dot)
+
+import numpy as np
+print(&quot;numpy @ :&quot;, np.array(a) @ np.array(b))</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Change b so the dot product comes out negative, then exactly 0.</li><li>Make the vectors 5 numbers long. Nothing else changes; that’s why AI can use 12,288 dimensions.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 2 · MATMUL ============ -->
+<section class="stage" id="g2" style="--c:var(--amber)">
+  <span class="chip">Stage 2 · The engine</span>
+  <h2>Matrix multiplication: many dot products at once</h2>
+  <p class="ex">A <b>matrix</b> is a stack of vectors. Multiplying matrices sounds scary but is nothing new: <b>every cell of the answer is one dot product</b>: a row of the first matrix with a column of the second. That's it. When you read that an AI chip does "trillions of operations per second", this is the operation. <b>Tap any purple answer cell</b> to see exactly which row and column made it.</p>
+  <div class="widget">
+    <p class="wt">🔢 Edit the white cells, then tap each purple cell to reveal its recipe</p>
+    <div class="mateq">
+      <div>
+        <div class="mat" id="matA" style="grid-template-columns:repeat(2,52px)"></div>
+        <div class="matlab">A (2×2)</div>
+      </div>
+      <div>×</div>
+      <div>
+        <div class="mat" id="matB" style="grid-template-columns:repeat(2,52px)"></div>
+        <div class="matlab">B (2×2)</div>
+      </div>
+      <div>=</div>
+      <div>
+        <div class="mat" id="matC" style="grid-template-columns:repeat(2,52px)"></div>
+        <div class="matlab">A × B · tap a cell!</div>
+      </div>
+    </div>
+    <div class="readout" id="matRead">Tap a purple answer cell to see its dot-product recipe.</div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · one formula multiplies whole matrices<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>Matrix A sits in A1:B2, matrix B in D1:E2, and the four shaded answer cells each compute one <b>row × column</b> dot product, written out in full so you can see the recipe. (Full Excel collapses all four into one <code>=MMULT(A1:B2,D1:E2)</code> array formula.)</p><div class="msheet" data-sheet="mat"></div><div class="trybox"><b>Try:</b><ul><li>Change B1 and watch which answer cells react. Only row 1 of the answer: a row of A only feeds its own row.</li><li>Click G2 and read its formula: row 2 of A · column 1 of B, exactly Stage 1.</li><li>Make B the identity matrix (2,0 → 1,0 and 1,2 → 0,1). The answer becomes A itself!</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · @ does everything<span class="tag">runs here</span></summary>
+    <div class="inner"><p>The <code>@</code> operator multiplies whole matrices at once. Run it, then prove one answer cell yourself.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+A = np.array([[1, 2],
+              [3, 4]])
+B = np.array([[2, 0],
+              [1, 2]])
+C = A @ B
+print(C)
+print(&quot;check top-left:&quot;, A[0] @ B[:, 0])</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Replace B with the identity matrix [[1,0],[0,1]] and predict C before you run.</li><li>Try A @ B versus B @ A: matrix multiplication is not symmetric!</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 3 · NEURON ============ -->
+<section class="stage" id="g3" style="--c:var(--teal)">
+  <span class="chip">Stage 3 · The unit</span>
+  <h2>The neuron: weight, add, squash</h2>
+  <p class="ex">Take a dot product, add a nudge called the <b>bias</b>, then pass the result through a simple <b>activation function</b> that decides how much signal flows on. That three-step unit is a <b>neuron</b>, and it's the only "brain cell" AI has. The most popular activation, <b>ReLU</b>, could not be simpler: <i>negative in, zero out; positive in, unchanged out</i>. That tiny kink is what lets stacked layers bend straight lines into any shape.</p>
+  <div class="widget">
+    <p class="wt">⚙️ One live neuron: output = activation(w·x + b)</p>
+    <div class="row">
+      <div style="flex:1;min-width:230px">
+        <div class="sld"><label>input x <output id="oNx">2</output></label><input type="range" id="rNx" min="-5" max="5" step="0.5" value="2"></div>
+        <div class="sld" style="margin-top:10px"><label>weight w <output id="oNw">1.5</output></label><input type="range" id="rNw" min="-3" max="3" step="0.5" value="1.5"></div>
+        <div class="sld" style="margin-top:10px"><label>bias b <output id="oNb">-1</output></label><input type="range" id="rNb" min="-5" max="5" step="0.5" value="-1"></div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn actbtn" data-act="relu">ReLU</button>
+          <button class="btn ghost actbtn" data-act="sigmoid">Sigmoid</button>
+          <button class="btn ghost actbtn" data-act="tanh">Tanh</button>
+        </div>
+        <div class="readout" id="neuRead"></div>
+      </div>
+      <svg id="neuSvg" viewBox="0 0 300 240" width="290" height="235" style="background:#fff;border:1px solid var(--line);border-radius:14px;flex:none">
+        <line x1="20" y1="120" x2="290" y2="120" stroke="#ddd8ca"/>
+        <line x1="150" y1="10" x2="150" y2="230" stroke="#ddd8ca"/>
+        <path id="neuCurve" d="" fill="none" stroke="#0a6f6c" stroke-width="3"/>
+        <circle id="neuDot" cx="150" cy="120" r="7" fill="#C23F33" stroke="#fff" stroke-width="2"/>
+        <text x="262" y="114" fill="#8a8474" font-size="10">z in</text>
+        <text x="156" y="20" fill="#8a8474" font-size="10">out</text>
+      </svg>
+    </div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · a working neuron in one cell<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>One working neuron: inputs in row 1, weights in row 2, bias in D2. Cell F1 computes z, and F2 / F3 push the same z through two different activations, so you can compare them side by side.</p><div class="msheet" data-sheet="neu"></div><div class="trybox"><b>Try:</b><ul><li>Make z negative (try bias D2 = -8): ReLU snaps to 0 while sigmoid still whispers a small probability.</li><li>Zero out a weight: its input now has no vote at all.</li><li>Click F3: the sigmoid is built from nothing but EXP and arithmetic.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · the same neuron as a function<span class="tag">runs here</span></summary>
+    <div class="inner"><p>The same neuron as the widget, as a function you can call. Swap the activation and re-run: same experiment as the buttons above.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+
+def relu(z):    return np.maximum(0, z)
+def sigmoid(z): return 1 / (1 + np.exp(-z))
+
+def neuron(x, w, b, act=relu):
+    z = w @ x + b
+    return act(z)
+
+x = np.array([2, 1, 3])
+w = np.array([1.5, -1, 0.5])
+print(&quot;relu   :&quot;, neuron(x, w, b=-1))
+print(&quot;sigmoid:&quot;, neuron(x, w, b=-1, act=sigmoid))</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Lower the bias until relu outputs 0 but sigmoid still gives a small number: the two personalities of a neuron.</li><li>Add a fourth input and a fourth weight. The function doesn’t care.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 4 · LAYERS ============ -->
+<section class="stage" id="g4" style="--c:var(--violet)">
+  <span class="chip">Stage 4 · Depth</span>
+  <h2>Layers: neurons stacked into a network</h2>
+  <p class="ex">One neuron draws one straight boundary: useful, but weak. Put neurons side by side (a <b>layer</b>) and feed each layer's outputs into the next, and the network can bend and combine those boundaries into any pattern at all. Data flowing left-to-right through the stack is called the <b>forward pass</b>, and each layer is just Stage 2 + Stage 3: <b>multiply by a weight matrix, add biases, apply ReLU</b>. Below is a genuine 2-3-2 network; every number on it is computed live.</p>
+  <div class="widget">
+    <p class="wt">🕸️ Feed the network · slide the two inputs and watch values ripple through</p>
+    <div class="row">
+      <div style="flex:1;min-width:220px">
+        <div class="sld"><label>input x₁ <output id="oL1">2</output></label><input type="range" id="rL1" min="-3" max="3" step="0.5" value="2"></div>
+        <div class="sld" style="margin-top:10px"><label>input x₂ <output id="oL2">1</output></label><input type="range" id="rL2" min="-3" max="3" step="0.5" value="1"></div>
+        <div class="readout" id="netRead"></div>
+      </div>
+      <svg id="netSvg" viewBox="0 0 340 240" width="330" height="235" style="background:#fff;border:1px solid var(--line);border-radius:14px;flex:none"></svg>
+    </div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · a two-layer network in two formulas<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>A full two-layer network in one sheet: inputs in column A, layer-1 weights in C:D, the three hidden ReLU neurons in column F, layer-2 weights in H:J, outputs in column L. Every shaded cell is a Stage-3 neuron.</p><div class="msheet" data-sheet="net"></div><div class="trybox"><b>Try:</b><ul><li>Change input A1 and watch the ripple: C–D don’t move (weights are fixed), but F and L recalculate.</li><li>Set A1 = -3: which hidden neurons in column F switch off (hit 0)?</li><li>This is the exact computation of the widget above, just laid flat in cells.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · forward pass in four lines<span class="tag">runs here</span></summary>
+    <div class="inner"><p>The forward pass in four lines. GPT-class models run this same idea with layers repeated ~100 times and matrices millions of entries wide.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+W1 = np.array([[1., -1.], [0.5, 1.], [-1., 2.]])
+W2 = np.array([[1., 1., -1.], [0., 2., 1.]])
+
+def forward(x):
+    h = np.maximum(0, W1 @ x)
+    print(&quot;hidden:&quot;, h)
+    return W2 @ h
+
+print(&quot;output:&quot;, forward(np.array([2., 1.])))</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Feed [-3, 1]. Which hidden neurons go silent (0)?</li><li>Compare with the sheet in the green panel: same numbers, cell by cell.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 5 · LEARNING ============ -->
+<section class="stage" id="g5" style="--c:var(--coral)">
+  <span class="chip">Stage 5 · Training</span>
+  <h2>Learning: roll downhill on the error</h2>
+  <p class="ex">Where do the weights come from? Nobody writes them. The network starts random, measures how wrong it is with a single number (the <b>loss</b>), then nudges every weight in whichever direction shrinks that loss. The slope that tells it which way is downhill is the <b>gradient</b>; repeatedly stepping down the slope is <b>gradient descent</b>. The step size (<b>learning rate</b>) is the only knob: too small crawls, too big explodes. Feel both below.</p>
+  <div class="widget">
+    <p class="wt">⛰️ Roll the ball to the bottom of the loss valley · loss(w) = (w − 3)² + 1</p>
+    <div class="row">
+      <svg id="gdSvg" viewBox="0 0 340 220" width="330" height="215" style="background:#fff;border:1px solid var(--line);border-radius:14px;flex:none">
+        <path id="gdCurve" d="" fill="none" stroke="#C23F33" stroke-width="3"/>
+        <line x1="15" y1="195" x2="330" y2="195" stroke="#ddd8ca"/>
+        <circle id="gdBall" cx="60" cy="60" r="9" fill="#8E6BFF" stroke="#fff" stroke-width="2.5"/>
+        <text x="300" y="210" fill="#8a8474" font-size="10">w</text>
+        <text x="18" y="20" fill="#8a8474" font-size="10">loss</text>
+      </svg>
+      <div style="flex:1;min-width:230px">
+        <div class="sld"><label>learning rate <output id="oLr">0.15</output></label><input type="range" id="rLr" min="0.02" max="1.1" step="0.01" value="0.15"></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn" id="gdStep">Take one step 👣</button>
+          <button class="btn ghost" id="gdRun">Auto-run ▶</button>
+          <button class="btn ghost" id="gdReset">Reset</button>
+        </div>
+        <div class="readout" id="gdRead"></div>
+      </div>
+    </div>
+    <div class="fb" id="gdFb">Try learning rate ≈ 0.15 first. Then push it past 1.0 and watch the ball bounce out of the valley: this is what "training diverged" means.</div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · training as a fill-down table<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>Training as a table: each row is one step of gradient descent. Row 2 starts at w = 8; every later row steps downhill from the row above using the learning rate in E1. The bars chart column B (the loss) so you can watch it dive.</p><div class="msheet" data-sheet="gd"></div><div class="trybox"><b>Try:</b><ul><li>Read the bars: the loss falls to 1, the valley floor, as w → 3.</li><li>Set E1 = <b>1.05</b>: every step overshoots worse. That’s divergence, in a spreadsheet.</li><li>Set E1 = <b>0.02</b>: still falling, but crawling. Learning rate is a real dial, feel both ends.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · gradient descent is a for-loop<span class="tag">runs here</span></summary>
+    <div class="inner"><p>Gradient descent is a for-loop. This is, honestly, the entire secret of "training". Watch w walk to 3 and the loss walk to 1.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">w, lr = 8.0, 0.15
+for step in range(1, 16):
+    loss = (w - 3)**2 + 1
+    grad = 2 * (w - 3)
+    w = w - lr * grad
+    print(f&quot;step {step:2d}: w={w:7.3f}  loss={loss:8.3f}&quot;)</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Set lr = 1.05 and run: watch it explode step by step.</li><li>Set lr = 0.02: safe but slow. Find the lr that gets loss under 1.001 fastest.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 6 · MEANING ============ -->
+<section class="stage" id="g6" style="--c:var(--amber)">
+  <span class="chip">Stage 6 · Meaning</span>
+  <h2>Embeddings: where meaning becomes geometry</h2>
+  <p class="ex">To feed words into all that matrix machinery, each word is assigned its own learned vector: an <b>embedding</b>. Training pushes words that appear in similar places towards similar vectors, so <i>meaning turns into distance</i>: near = related. We measure "near" with <b>cosine similarity</b>, the dot product (Stage 1 again!) scaled to ignore length: +1 same direction, 0 unrelated, −1 opposite. <b>Pick any two words</b> on the map.</p>
+  <div class="widget">
+    <p class="wt">🗺️ A tiny 2-D meaning map · tap two words to compare them</p>
+    <div class="row">
+      <svg id="embSvg" viewBox="0 0 360 280" width="350" height="272" style="background:#fff;border:1px solid var(--line);border-radius:14px;flex:none"></svg>
+      <div style="flex:1;min-width:220px">
+        <div class="readout" id="embRead">Tap a first word…</div>
+        <div class="fb" id="embFb"></div>
+      </div>
+    </div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · cosine similarity from parts you know<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>Three word-vectors (cat, dog, banana) and two live cosine similarities. The formula in F1 is long but made of parts you already used: SUMPRODUCT on top, the two lengths underneath.</p><div class="msheet" data-sheet="cos"></div><div class="trybox"><b>Try:</b><ul><li>cat·dog ≈ 0.99, cat·banana ≈ 0.16: meaning as geometry.</li><li>Edit banana’s row until cat·banana <b>beats</b> cat·dog. (Hint: make banana an animal.)</li><li>Double every number in dog’s row: the cosine doesn’t budge. Length cancels; only direction matters.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · a mini semantic search engine<span class="tag">runs here</span></summary>
+    <div class="inner"><p>A mini semantic search engine: score every word against the query and sort. This is the core of a vector database and every "chat with your documents" feature.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+E = {&quot;cat&quot;:    np.array([8, 7, 1, 0.]),
+     &quot;dog&quot;:    np.array([8, 8, 1, 0.]),
+     &quot;tiger&quot;:  np.array([9, 2, 1, 0.]),
+     &quot;banana&quot;: np.array([0, 1, 9, 4.])}
+
+def cosine(a, b):
+    return (a @ b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+query = E[&quot;cat&quot;]
+for word, vec in sorted(E.items(), key=lambda kv: -cosine(query, kv[1])):
+    print(f&quot;{word:7s} {cosine(query, vec):.3f}&quot;)</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Add "kitten" with a vector you invent. Can you make it beat dog?</li><li>Change the query to E["banana"] and re-rank the world from a fruit’s point of view.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 7 · ATTENTION ============ -->
+<section class="stage" id="g7" style="--c:var(--teal)">
+  <span class="chip">Stage 7 · Context</span>
+  <h2>Attention: every word looks at every other word</h2>
+  <p class="ex">Embeddings give each word a meaning, but meaning depends on <i>context</i>. In "the crane ate a fish", <i>crane</i> is a bird; next to <i>construction site</i> it's a machine. <b>Attention</b> fixes this: each word scores its relevance to every other word (dot products of their vectors), the scores are squashed into percentages by <b>softmax</b>, and each word rebuilds itself as a <b>weighted mix of the words it attends to</b>. Tap a word below to see where its attention flows.</p>
+  <div class="widget">
+    <p class="wt">👀 “<em>the robot ate the red apple because it was hungry</em>” · tap any word to make it the focus</p>
+    <div class="row" id="attToks" style="margin-bottom:12px"></div>
+    <div id="attBars"></div>
+    <div class="sld" style="margin-top:12px;max-width:340px"><label>softmax sharpness <output id="oSharp">1.0</output></label><input type="range" id="rSharp" min="0.2" max="3" step="0.1" value="1"></div>
+    <div class="fb" id="attFb">Tap <b>it</b>. Notice how attention resolves what "it" refers to. Then drag sharpness low (attention spreads out) and high (attention locks on).</div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · softmax turns scores into percentages<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>Softmax live: five relevance scores in column A become five percentages in column B, and D1 proves they always total exactly 1.</p><div class="msheet" data-sheet="soft"></div><div class="trybox"><b>Try:</b><ul><li>Add 10 to <b>every</b> score: the weights don’t move. Softmax only cares about the <b>gaps</b> between scores.</li><li>Double every score instead: the leader’s share grows. You just turned the sharpness dial from the widget above.</li><li>Click any B cell: EXP the score, divide by the sum of all the EXPs. That’s the whole trick.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · attention in five lines<span class="tag">runs here</span></summary>
+    <div class="inner"><p>Attention in five lines: every word scores every word, softmax turns scores into mixing weights, and each word rebuilds itself as a weighted blend.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+def softmax(s):
+    e = np.exp(s - s.max())
+    return e / e.sum()
+
+np.random.seed(4)
+X = np.random.rand(5, 4)          # 5 word vectors, 4 dims
+scores  = X @ X.T                 # every word scores every word
+weights = np.apply_along_axis(softmax, 1, scores)
+print(np.round(weights, 2))
+print(&quot;row sums:&quot;, weights.sum(axis=1))</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Multiply scores by 5 before the softmax: attention locks on (the sharpness slider above).</li><li>Every row sums to 1: each word’s attention is a full budget, spent across the sentence.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 8 · TRANSFORMER ============ -->
+<section class="stage" id="g8" style="--c:var(--violet)">
+  <span class="chip">Stage 8 · Assembly</span>
+  <h2>The transformer: your seven ideas, bolted together</h2>
+  <p class="ex">There is no new mathematics in this stage. That's the punchline. A <b>transformer block</b> is attention (Stage 7) followed by a small two-layer network (Stage 4), with the input added back on so information never gets lost. A large language model is: embeddings in → the <i>same block repeated dozens of times</i> → one final layer that scores every word in the vocabulary. All of it trained end-to-end by gradient descent (Stage 5). <b>Step through the journey of one prompt:</b></p>
+  <div class="widget">
+    <p class="wt">🏗️ Follow the prompt “<em>the cat sat on the</em>” through the machine</p>
+    <div class="pipe" id="pipeRow">
+      <div class="pstage" data-p="0"><div class="pico">🔤</div><b>Tokenise</b><span>split text into pieces, give each an ID</span></div>
+      <div class="parr">→</div>
+      <div class="pstage" data-p="1"><div class="pico">📊</div><b>Embed</b><span>look up each token's vector (Stage 6)</span></div>
+      <div class="parr">→</div>
+      <div class="pstage" data-p="2"><div class="pico">👀</div><b>Attend</b><span>words exchange context (Stage 7)</span></div>
+      <div class="parr">→</div>
+      <div class="pstage" data-p="3"><div class="pico">🕸️</div><b>Think</b><span>small network per word (Stages 3–4)</span></div>
+      <div class="parr">→</div>
+      <div class="pstage" data-p="4"><div class="pico">🔁</div><b>Repeat ×N</b><span>same block, stacked deep</span></div>
+      <div class="parr">→</div>
+      <div class="pstage" data-p="5"><div class="pico">🎲</div><b>Score</b><span>a number for every word in the vocabulary</span></div>
+    </div>
+    <div class="pipemsg" id="pipeMsg"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="pipeNext">Next step →</button>
+      <button class="btn ghost" id="pipeReset">Restart</button>
+    </div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · you already built every column<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>The last layer of a language model, live: the model’s final hidden vector h sits in A1:B1, each vocabulary word has its own row of weights in E:F, column G scores every word (one dot product each) and column H softmaxes the scores into next-word probabilities.</p><div class="msheet" data-sheet="score"></div><div class="trybox"><b>Try:</b><ul><li>Nudge h (A1 or B1) and watch the favourite word change in column H.</li><li>Find an h that makes <b>roared</b> the favourite.</li><li>Stage 9 will sample from column H. You are one RAND() away from a machine that writes.</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · a one-block transformer skeleton<span class="tag">runs here</span></summary>
+    <div class="inner"><p>A one-block transformer skeleton, runnable. Untrained, so the numbers are noise, but the architecture is honest: attention, residual, tiny MLP, repeat.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+def softmax(s):
+    e = np.exp(s - s.max(axis=-1, keepdims=True))
+    return e / e.sum(axis=-1, keepdims=True)
+
+def block(X, W1, W2):
+    A = softmax(X @ X.T) @ X          # attend  (Stage 7)
+    X = X + A                         # residual
+    F = np.maximum(0, X @ W1) @ W2    # think   (Stage 4)
+    return X + F
+
+np.random.seed(1)
+X = np.random.rand(6, 8)              # 6 tokens, 8 dims
+W1, W2 = np.random.rand(8, 16), np.random.rand(16, 8)
+print(&quot;before:&quot;, np.round(X[0, :4], 2))
+for _ in range(4):                    # repeat x N
+    X = block(X, W1, W2)
+print(&quot;after :&quot;, np.round(X[0, :4], 2), &quot; shape:&quot;, X.shape)</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Stack 8 blocks instead of 4: the shape never changes, only the processing deepens.</li><li>Print X.shape inside the loop to prove tokens flow through unchanged in size.</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ STAGE 9 · GENERATION ============ -->
+<section class="stage" id="g9" style="--c:var(--coral)">
+  <span class="chip">Stage 9 · Creation</span>
+  <h2>Generation: pick a word, repeat forever</h2>
+  <p class="ex">The transformer ends with a score for every word it knows. Softmax turns scores into probabilities; the model <b>samples</b> one word, appends it, and runs again, one word per lap, until the reply is done. One dial shapes its personality: <b>temperature</b> divides the scores before softmax. Low temperature → the favourite dominates (safe, repetitive). High → probabilities flatten (creative, risky). This is the actual dial behind every chatbot's "creativity" setting.</p>
+  <div class="widget">
+    <p class="wt">🌡️ Next word after “<em>the dragon</em>…” · reshape the odds, then generate</p>
+    <div id="genBars"></div>
+    <div class="sld" style="margin-top:12px;max-width:340px"><label>temperature <output id="oTemp">1.0</output></label><input type="range" id="rTemp" min="0.2" max="3" step="0.1" value="1"></div>
+    <div class="genout" id="genOut"></div>
+    <div class="row">
+      <button class="btn" id="genOne">Sample one word 🎲</button>
+      <button class="btn ghost" id="genTen">Sample ×10</button>
+      <button class="btn ghost" id="genClear">Clear</button>
+    </div>
+    <div class="fb" id="genFb">At temperature 0.2, "flew" nearly always wins. At 3.0, even "sneezed" gets its moment. Same model, different personality.</div>
+  </div>
+  <details class="bridge xl">
+    <summary><span class="arr">▶</span>🟩 Try it in Excel · a spreadsheet that writes<span class="tag">live sheet</span></summary>
+    <div class="inner"><p>A spreadsheet that writes. Column C is temperature-scaled softmax (dial in E1), column D gives each word its start line on a 0-to-1 ruler, and G1 throws a random dart at that ruler to pick a word. Every Re-roll is one word of generation.</p><div class="msheet" data-sheet="sample"></div><div class="trybox"><b>Try:</b><ul><li>Press <b>Re-roll 🎲</b> ten times. Keep a tally: does it match column C?</li><li>Set E1 = 0.2 and re-roll: the favourite almost always wins (cold, safe, repetitive).</li><li>Set E1 = 3 and re-roll: even <em>sneezed</em> gets its moment (hot, creative, risky).</li></ul></div></div>
+  </details>
+  <details class="bridge py">
+    <summary><span class="arr">▶</span>🐍 Try it in Python · the generation loop itself<span class="tag">runs here</span></summary>
+    <div class="inner"><p>The generation loop itself. In a real LLM the scores come from Stage 8’s transformer and the chosen word is fed straight back in. Prediction, sampling, repetition: that is text generation.</p><div class="pycell"><div class="pybar"><span class="pyst">Python: idle · press Run (first run downloads ~10 MB, once)</span><button class="btn pyrun">▶ Run</button></div><textarea class="pycode" spellcheck="false">import numpy as np
+vocab  = [&quot;flew&quot;, &quot;slept&quot;, &quot;roared&quot;, &quot;sang&quot;, &quot;sneezed&quot;]
+scores = np.array([3.0, 2.2, 1.8, 1.0, 0.2])
+
+def sample(T):
+    p = np.exp(scores / T); p /= p.sum()
+    return np.random.choice(vocab, p=p)
+
+print(&quot;cold (T=0.2):&quot;, [sample(0.2) for _ in range(8)])
+print(&quot;hot  (T=3.0):&quot;, [sample(3.0) for _ in range(8)])</textarea><pre class="pyout" hidden></pre></div><div class="trybox"><b>Try:</b><ul><li>Try T = 0.05: does anything but "flew" ever appear?</li><li>Write a loop that samples 1000 words at T=1 and counts them: do the counts match the softmax?</li></ul></div></div>
+  </details>
+</section>
+
+<!-- ============ RECAP ============ -->
+<section class="recap">
+  <h2>That's the whole machine.</h2>
+  <p>Nine stages, no hand-waving: every modern generative model (chatbots, image makers, music models) is built from the chain you just walked. Scale it up (billions of weights, oceans of data, weeks of gradient descent) and it writes essays. The mathematics stays exactly this.</p>
+  <div class="chain">vectors → dot products → matrices → neurons → layers →<br>loss ↘ gradients ↘ learning → embeddings → attention → transformer → sample → repeat</div>
+  <div class="row" style="justify-content:center;margin-top:18px">
+    <a class="pill" style="background:#fff" href="seclow-notebook.html">Run these ideas in real Python →</a>
+    <a class="pill" style="background:#fff" href="seclow-lab.html">Test yourself in the Practice Lab</a>
+  </div>
+</section>
+<script>
+/* ---------- Stage 1: vectors ---------- */
+(function(){
+  var B={x:3,y:1};
+  function upd(){
+    var ax=parseFloat(document.getElementById('rAx').value),ay=parseFloat(document.getElementById('rAy').value);
+    document.getElementById('oAx').textContent=ax;document.getElementById('oAy').textContent=ay;
+    var cx=130,cy=130,s=25;
+    var la=document.getElementById('vecA');
+    la.setAttribute('x2',cx+ax*s);la.setAttribute('y2',cy-ay*s);
+    var lab=document.getElementById('vecALab');
+    lab.setAttribute('x',cx+ax*s+6);lab.setAttribute('y',cy-ay*s-6);
+    var dot=ax*B.x+ay*B.y;
+    var mag=Math.sqrt(ax*ax+ay*ay).toFixed(2);
+    document.getElementById('vecRead').innerHTML=
+      'a = [<span class="hi">'+ax+'</span>, <span class="hi">'+ay+'</span>] &nbsp; |a| = '+mag+
+      '<br>a·b = '+ax+'×3 + '+ay+'×1 = <span class="hi3">'+dot.toFixed(1)+'</span>';
+    var fb=document.getElementById('vecFb');
+    if(dot>6){fb.textContent='Large positive dot product; a and b point the same way: “similar”.';fb.className='fb ok';}
+    else if(dot<-2){fb.textContent='Negative dot product; they point opposite ways: “opposites”.';fb.className='fb no';}
+    else{fb.textContent='Near zero: the vectors are unrelated (roughly perpendicular).';fb.className='fb';}
+  }
+  document.getElementById('rAx').addEventListener('input',upd);
+  document.getElementById('rAy').addEventListener('input',upd);
+  upd();
+})();
+
+/* ---------- Stage 2: matmul explorer ---------- */
+(function(){
+  var A=[[1,2],[3,4]],Bm=[[2,0],[1,2]];
+  var elA=document.getElementById('matA'),elB=document.getElementById('matB'),elC=document.getElementById('matC');
+  var inA=[],inB=[],outC=[];
+  function mkInputs(el,M,store,cls){
+    for(var r=0;r<2;r++)for(var c=0;c<2;c++){
+      var inp=document.createElement('input');inp.type='number';inp.value=M[r][c];inp.dataset.r=r;inp.dataset.c=c;
+      inp.addEventListener('input',recalc);el.appendChild(inp);store.push(inp);
+    }
+  }
+  mkInputs(elA,A,inA);mkInputs(elB,Bm,inB);
+  for(var i=0;i<4;i++){
+    var d=document.createElement('div');d.className='cellr';d.dataset.i=i;
+    d.addEventListener('click',function(){explain(parseInt(this.dataset.i,10));});
+    elC.appendChild(d);outC.push(d);
+  }
+  function val(store,r,c){return parseFloat(store[r*2+c].value)||0;}
+  function recalc(){
+    for(var r=0;r<2;r++)for(var c=0;c<2;c++){
+      var v=val(inA,r,0)*val(inB,0,c)+val(inA,r,1)*val(inB,1,c);
+      outC[r*2+c].textContent=v;
+    }
+  }
+  function explain(i){
+    var r=Math.floor(i/2),c=i%2;
+    inA.forEach(function(x){x.classList.remove('hlA');});
+    inB.forEach(function(x){x.classList.remove('hlB');});
+    outC.forEach(function(x){x.classList.remove('hl');});
+    outC[i].classList.add('hl');
+    inA[r*2].classList.add('hlA');inA[r*2+1].classList.add('hlA');
+    inB[c].classList.add('hlB');inB[2+c].classList.add('hlB');
+    var a1=val(inA,r,0),a2=val(inA,r,1),b1=val(inB,0,c),b2=val(inB,1,c);
+    document.getElementById('matRead').innerHTML=
+      'Answer row '+(r+1)+', column '+(c+1)+' = (<span class="hi2">row '+(r+1)+' of A</span>) · (<span class="hi3">column '+(c+1)+' of B</span>)'+
+      '<br>= '+a1+'×'+b1+' + '+a2+'×'+b2+' = <span class="hi">'+(a1*b1+a2*b2)+'</span>: one dot product, exactly Stage 1.';
+  }
+  recalc();
+})();
+
+/* ---------- Stage 3: neuron ---------- */
+(function(){
+  var act='relu';
+  var fns={
+    relu:function(z){return Math.max(0,z);},
+    sigmoid:function(z){return 1/(1+Math.exp(-z));},
+    tanh:function(z){return Math.tanh(z);}
+  };
+  var names={relu:'ReLU',sigmoid:'Sigmoid',tanh:'Tanh'};
+  function scaleY(y){ // map function output to svg y; range shown -1.5..3
+    return 120-y*55;
+  }
+  function draw(){
+    var x=parseFloat(document.getElementById('rNx').value),
+        w=parseFloat(document.getElementById('rNw').value),
+        b=parseFloat(document.getElementById('rNb').value);
+    document.getElementById('oNx').textContent=x;
+    document.getElementById('oNw').textContent=w;
+    document.getElementById('oNb').textContent=b;
+    var f=fns[act],d='';
+    for(var px=20;px<=290;px+=3){
+      var z=(px-150)/28; // -4.6..5
+      var y=scaleY(f(z));
+      d+=(px===20?'M':'L')+px+','+Math.max(10,Math.min(230,y));
+    }
+    document.getElementById('neuCurve').setAttribute('d',d);
+    var z=w*x+b,out=f(z);
+    var dotX=Math.max(20,Math.min(290,150+z*28));
+    var dot=document.getElementById('neuDot');
+    dot.setAttribute('cx',dotX);dot.setAttribute('cy',Math.max(10,Math.min(230,scaleY(out))));
+    document.getElementById('neuRead').innerHTML=
+      'z = w·x + b = '+w+'×'+x+' + '+b+' = <span class="hi">'+z.toFixed(2)+'</span>'+
+      '<br>output = '+names[act]+'(z) = <span class="hi2">'+out.toFixed(3)+'</span>';
+  }
+  ['rNx','rNw','rNb'].forEach(function(id){document.getElementById(id).addEventListener('input',draw);});
+  Array.prototype.forEach.call(document.querySelectorAll('.actbtn'),function(b){
+    b.addEventListener('click',function(){
+      act=b.dataset.act;
+      Array.prototype.forEach.call(document.querySelectorAll('.actbtn'),function(x){x.classList.add('ghost');});
+      b.classList.remove('ghost');
+      draw();
+    });
+  });
+  draw();
+})();
+
+/* ---------- Stage 4: forward pass ---------- */
+(function(){
+  var W1=[[1,-1],[0.5,1],[-1,2]],W2=[[1,1,-1],[0,2,1]];
+  var svg=document.getElementById('netSvg');
+  var pos={in:[[45,80],[45,160]],hid:[[170,50],[170,120],[170,190]],out:[[295,85],[295,155]]};
+  var lines=[],nodes={in:[],hid:[],out:[]},texts={in:[],hid:[],out:[]};
+  function mk(tag,attrs){var e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(var k in attrs)e.setAttribute(k,attrs[k]);svg.appendChild(e);return e;}
+  // edges
+  pos.in.forEach(function(p1,i){pos.hid.forEach(function(p2,j){lines.push(mk('line',{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],stroke:'#e3dfd2','stroke-width':1.5}));});});
+  pos.hid.forEach(function(p1,j){pos.out.forEach(function(p2,k){lines.push(mk('line',{x1:p1[0],y1:p1[1],x2:p2[0],y2:p2[1],stroke:'#e3dfd2','stroke-width':1.5}));});});
+  function mkNodes(key,color){
+    pos[key].forEach(function(p){
+      nodes[key].push(mk('circle',{cx:p[0],cy:p[1],r:20,fill:'#fff',stroke:color,'stroke-width':2.5,class:'net-node'}));
+      texts[key].push(mk('text',{x:p[0],y:p[1]+4,'text-anchor':'middle','font-size':'11','font-weight':'bold',fill:'#14161d'}));
+    });
+  }
+  mkNodes('in','#C23F33');mkNodes('hid','#0a6f6c');mkNodes('out','#5f3fd0');
+  mk('text',{x:45,y:225,'text-anchor':'middle','font-size':'10',fill:'#8a8474'}).textContent='inputs';
+  mk('text',{x:170,y:225,'text-anchor':'middle','font-size':'10',fill:'#8a8474'}).textContent='hidden (ReLU)';
+  mk('text',{x:295,y:225,'text-anchor':'middle','font-size':'10',fill:'#8a8474'}).textContent='outputs';
+  function upd(){
+    var x=[parseFloat(document.getElementById('rL1').value),parseFloat(document.getElementById('rL2').value)];
+    document.getElementById('oL1').textContent=x[0];document.getElementById('oL2').textContent=x[1];
+    var h=W1.map(function(row){return Math.max(0,row[0]*x[0]+row[1]*x[1]);});
+    var y=W2.map(function(row){return row[0]*h[0]+row[1]*h[1]+row[2]*h[2];});
+    texts.in.forEach(function(t,i){t.textContent=x[i];});
+    texts.hid.forEach(function(t,i){t.textContent=h[i].toFixed(1);});
+    texts.out.forEach(function(t,i){t.textContent=y[i].toFixed(1);});
+    nodes.hid.forEach(function(n,i){n.setAttribute('fill',h[i]>0?'#e6faf9':'#f3f1ea');});
+    document.getElementById('netRead').innerHTML=
+      'hidden = ReLU(W₁·x) = [<span class="hi2">'+h.map(function(v){return v.toFixed(1);}).join(', ')+'</span>]'+
+      '<br>output = W₂·hidden = [<span class="hi">'+y.map(function(v){return v.toFixed(1);}).join(', ')+'</span>]'+
+      '<br>Grey hidden nodes are “off”: ReLU blocked them.';
+  }
+  document.getElementById('rL1').addEventListener('input',upd);
+  document.getElementById('rL2').addEventListener('input',upd);
+  upd();
+})();
+
+/* ---------- Stage 5: gradient descent ---------- */
+(function(){
+  var w=8,timer=null,steps=0;
+  function loss(w){return (w-3)*(w-3)+1;}
+  function px(w){return 30+ (w+1)/9*290;}      // w in [-1,8] → x 30..320
+  function py(l){return 195-(l/28)*175;}        // loss 0..28 → y
+  var d='';
+  for(var wi=-1;wi<=8.01;wi+=0.15){d+=(d===''?'M':'L')+px(wi).toFixed(1)+','+py(loss(wi)).toFixed(1);}
+  document.getElementById('gdCurve').setAttribute('d',d);
+  function render(msg){
+    var b=document.getElementById('gdBall');
+    var cw=Math.max(-1,Math.min(8,w));
+    b.setAttribute('cx',px(cw));b.setAttribute('cy',py(Math.min(28,loss(w))));
+    document.getElementById('gdRead').innerHTML=
+      'w = <span class="hi">'+w.toFixed(3)+'</span> &nbsp; loss = <span class="hi3">'+loss(w).toFixed(3)+'</span> &nbsp; steps: '+steps+
+      (msg?'<br>'+msg:'');
+  }
+  function step(){
+    var lr=parseFloat(document.getElementById('rLr').value);
+    var grad=2*(w-3);
+    var nw=w-lr*grad;steps++;
+    var msg='gradient = 2(w−3) = '+grad.toFixed(2)+' → step '+(lr*grad>=0?'−':'+')+Math.abs(lr*grad).toFixed(2);
+    w=nw;
+    if(Math.abs(w)>50){msg='💥 Diverged! The steps were bigger than the valley. Lower the learning rate and reset.';stop();w=8;steps=0;}
+    if(Math.abs(w-3)<0.005){msg='🎉 Converged: w ≈ 3, the bottom of the valley, found in '+steps+' steps.';stop();}
+    render(msg);
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null;document.getElementById('gdRun').textContent='Auto-run ▶';}}
+  document.getElementById('rLr').addEventListener('input',function(){document.getElementById('oLr').textContent=this.value;});
+  document.getElementById('gdStep').addEventListener('click',function(){stop();step();});
+  document.getElementById('gdRun').addEventListener('click',function(){
+    if(timer){stop();return;}
+    this.textContent='Pause ⏸';timer=setInterval(step,450);
+  });
+  document.getElementById('gdReset').addEventListener('click',function(){stop();w=8;steps=0;render('Reset.');});
+  render();
+})();
+
+/* ---------- Stage 6: embeddings map ---------- */
+(function(){
+  var words=[
+    {w:'cat',x:70,y:70,v:[8,7,1,0]},{w:'dog',x:105,y:55,v:[8,8,1,0]},{w:'tiger',x:60,y:120,v:[9,2,1,0]},
+    {w:'puppy',x:130,y:80,v:[7,9,1,0]},
+    {w:'apple',x:265,y:70,v:[0,1,9,3]},{w:'banana',x:295,y:100,v:[0,1,9,4]},{w:'mango',x:250,y:115,v:[0,1,8,5]},
+    {w:'run',x:120,y:215,v:[2,3,0,9]},{w:'jump',x:80,y:230,v:[2,2,0,9]},{w:'eat',x:185,y:200,v:[3,2,4,8]},
+    {w:'happy',x:290,y:210,v:[1,6,2,6]},{w:'sad',x:320,y:235,v:[1,5,2,5]}
+  ];
+  var svg=document.getElementById('embSvg'),sel=[];
+  var lineEl=document.createElementNS('http://www.w3.org/2000/svg','line');
+  lineEl.setAttribute('stroke','#8E6BFF');lineEl.setAttribute('stroke-width','2');lineEl.setAttribute('stroke-dasharray','5 4');lineEl.setAttribute('opacity','0');
+  svg.appendChild(lineEl);
+  words.forEach(function(o,i){
+    var g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.style.cursor='pointer';
+    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',o.x);c.setAttribute('cy',o.y);c.setAttribute('r',7);
+    c.setAttribute('fill','#16C4C0');c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','2');
+    var t=document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',o.x);t.setAttribute('y',o.y-13);t.setAttribute('text-anchor','middle');
+    t.setAttribute('font-size','12');t.setAttribute('font-weight','bold');t.setAttribute('fill','#14161d');
+    t.textContent=o.w;
+    g.appendChild(c);g.appendChild(t);svg.appendChild(g);
+    g.addEventListener('click',function(){pick(i,c);});
+    o.circle=c;
+  });
+  function cosine(a,b){
+    var dot=0,ma=0,mb=0;
+    for(var i=0;i<a.length;i++){dot+=a[i]*b[i];ma+=a[i]*a[i];mb+=b[i]*b[i];}
+    return dot/(Math.sqrt(ma)*Math.sqrt(mb));
+  }
+  function pick(i,c){
+    if(sel.length===2){sel.forEach(function(s){words[s].circle.setAttribute('fill','#16C4C0');words[s].circle.setAttribute('r',7);});sel=[];lineEl.setAttribute('opacity','0');}
+    sel.push(i);
+    c.setAttribute('fill','#8E6BFF');c.setAttribute('r',9);
+    var read=document.getElementById('embRead'),fb=document.getElementById('embFb');
+    if(sel.length===1){read.innerHTML='First word: <span class="hi">'+words[i].w+'</span> = ['+words[i].v.join(', ')+']<br>now tap a second word…';fb.textContent='';}
+    else{
+      var a=words[sel[0]],b=words[sel[1]];
+      lineEl.setAttribute('x1',a.x);lineEl.setAttribute('y1',a.y);lineEl.setAttribute('x2',b.x);lineEl.setAttribute('y2',b.y);lineEl.setAttribute('opacity','1');
+      var cs=cosine(a.v,b.v);
+      read.innerHTML='<span class="hi">'+a.w+'</span> = ['+a.v.join(', ')+']<br><span class="hi">'+b.w+'</span> = ['+b.v.join(', ')+']<br>cosine similarity = <span class="hi3">'+cs.toFixed(3)+'</span>';
+      fb.className='fb '+(cs>0.8?'ok':'');
+      fb.textContent= cs>0.85 ? 'Very similar: the model treats these as near-synonyms in this space.' :
+                      cs>0.5  ? 'Somewhat related, sharing some meaning dimensions.' :
+                                'Distant: these live in different parts of meaning-space.';
+    }
+  }
+})();
+
+/* ---------- Stage 7: attention ---------- */
+(function(){
+  var toks=['the','robot','ate','the','red','apple','because','it','was','hungry'];
+  /* toy 3-d vectors chosen so 'it' attends to robot/apple, colours to nouns etc. */
+  var V={
+    'the':[1,0,0],'robot':[6,2,1],'ate':[2,5,1],'red':[1,1,6],'apple':[5,1,5],
+    'because':[1,2,0],'it':[6,2,2],'was':[1,3,0],'hungry':[3,6,1]
+  };
+  var row=document.getElementById('attToks'),bars=document.getElementById('attBars');
+  var focus=7;
+  toks.forEach(function(w,i){
+    var b=document.createElement('button');b.className='tok';b.textContent=w;b.dataset.i=i;
+    b.addEventListener('click',function(){focus=i;render();});
+    row.appendChild(b);
+  });
+  document.getElementById('rSharp').addEventListener('input',function(){document.getElementById('oSharp').textContent=parseFloat(this.value).toFixed(1);render();});
+  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  function render(){
+    var sharp=parseFloat(document.getElementById('rSharp').value);
+    Array.prototype.forEach.call(row.children,function(b,i){b.classList.toggle('q',i===focus);});
+    var q=V[toks[focus]];
+    var scores=toks.map(function(w,i){return i===focus?-1e9:dot(q,V[w])/6*sharp;});
+    var mx=Math.max.apply(null,scores);
+    var exps=scores.map(function(s){return Math.exp(s-mx);});
+    var sum=exps.reduce(function(a,b){return a+b;},0);
+    var ws=exps.map(function(e){return e/sum;});
+    /* build bars for top 6 */
+    var order=toks.map(function(w,i){return i;}).filter(function(i){return i!==focus;})
+      .sort(function(a,b){return ws[b]-ws[a];}).slice(0,6);
+    bars.innerHTML='';
+    order.forEach(function(i){
+      var pct=(ws[i]*100);
+      var div=document.createElement('div');div.className='abar';
+      div.innerHTML='<span class="lab">'+toks[i]+'</span><div class="track"><div class="fill" style="width:'+Math.max(6,pct)+'%">'+pct.toFixed(0)+'%</div></div>';
+      bars.appendChild(div);
+    });
+    document.getElementById('attFb').innerHTML='Focus word: <b>'+toks[focus]+'</b>. The bars show how much of each other word it mixes into its new, context-aware self.';
+  }
+  render();
+})();
+
+/* ---------- Stage 8: pipeline ---------- */
+(function(){
+  var msgs=[
+    '<b>Tokenise.</b> “the cat sat on the” → pieces: [the] [cat] [sat] [on] [the] → IDs: [11, 302, 87, 45, 11]. Just a dictionary lookup, no maths yet.',
+    '<b>Embed.</b> Each ID grabs its learned vector from a giant table (Stage 6). Our prompt is now a 5-row matrix of numbers, food for Stage 2.',
+    '<b>Attend.</b> Every token scores every other token and rebuilds itself as a weighted mix (Stage 7). “sat” now knows its subject is “cat”.',
+    '<b>Think.</b> Each enriched vector runs through a small two-layer network with ReLU (Stages 3–4): the block\'s pattern-crunching muscle.',
+    '<b>Repeat ×N.</b> Attend→Think is one block. Real models stack 30–100 identical blocks; each pass deepens what every token “understands”.',
+    '<b>Score.</b> One final matrix turns the last token\'s vector into a score for every word in the vocabulary. Softmax → probabilities → Stage 9 samples “mat” … and the loop restarts.'
+  ];
+  var cur=-1;
+  var stages=document.querySelectorAll('.pstage');
+  function render(){
+    Array.prototype.forEach.call(stages,function(s,i){s.classList.toggle('lit',i<=cur);});
+    document.getElementById('pipeMsg').innerHTML= cur<0 ? 'Press <b>Next step</b> to push the prompt through the machine.' : msgs[cur];
+    document.getElementById('pipeNext').textContent= cur>=msgs.length-1 ? 'Done. Restart?' : 'Next step →';
+  }
+  document.getElementById('pipeNext').addEventListener('click',function(){cur= cur>=msgs.length-1 ? -1 : cur+1;render();});
+  document.getElementById('pipeReset').addEventListener('click',function(){cur=-1;render();});
+  render();
+})();
+
+/* ---------- Stage 9: generation ---------- */
+(function(){
+  var vocab=['flew','slept','roared','sang','sneezed'];
+  var scores=[3.0,2.2,1.8,1.0,0.2];
+  var barsEl=document.getElementById('genBars'),out=document.getElementById('genOut');
+  var story=[];
+  function probs(){
+    var T=parseFloat(document.getElementById('rTemp').value);
+    var mx=Math.max.apply(null,scores);
+    var e=scores.map(function(s){return Math.exp((s-mx)/T);});
+    var sum=e.reduce(function(a,b){return a+b;},0);
+    return e.map(function(x){return x/sum;});
+  }
+  function render(){
+    document.getElementById('oTemp').textContent=parseFloat(document.getElementById('rTemp').value).toFixed(1);
+    var p=probs();
+    barsEl.innerHTML='';
+    vocab.forEach(function(w,i){
+      var div=document.createElement('div');div.className='lbar';
+      div.innerHTML='<span class="lab">'+w+'</span><div class="track"><div class="fill" style="width:'+Math.max(5,p[i]*100)+'%">'+(p[i]*100).toFixed(0)+'%</div></div>';
+      barsEl.appendChild(div);
+    });
+    out.innerHTML= story.length===0 ? '<span style="color:#9aa0ae">the dragon …</span>'
+      : 'the dragon '+story.map(function(w,i){return i===story.length-1?'<span class="new">'+w+'</span>':w;}).join(', ');
+  }
+  function sample(){
+    var p=probs(),r=Math.random(),acc=0;
+    for(var i=0;i<p.length;i++){acc+=p[i];if(r<=acc)return vocab[i];}
+    return vocab[vocab.length-1];
+  }
+  document.getElementById('rTemp').addEventListener('input',render);
+  document.getElementById('genOne').addEventListener('click',function(){story.push(sample());render();});
+  document.getElementById('genTen').addEventListener('click',function(){for(var i=0;i<10;i++)story.push(sample());render();});
+  document.getElementById('genClear').addEventListener('click',function(){story=[];render();});
+  render();
+})();
+</script>
+
+</main>
+<footer>IJAIO 2026 · First-Principles Foundation Series · Secondary<br><a href="overview.html">Back to overview</a> · <a href="seclow-notebook.html">Run real Python in the Notebook</a></footer>
+<script>
+/* ================= live mini-spreadsheet engine ================= */
+(function(){
+  /* ---- formula evaluator: numbers, refs, ranges, + - * / ^, functions ---- */
+  function colNum(letters){var n=0;for(var i=0;i<letters.length;i++)n=n*26+(letters.charCodeAt(i)-64);return n;}
+  function colName(n){var sfx='';while(n>0){var r=(n-1)%26;sfx=String.fromCharCode(65+r)+sfx;n=Math.floor((n-1)/26);}return sfx;}
+  function Engine(getRaw){this.getRaw=getRaw;this.memo={};this.busy={};}
+  Engine.prototype.value=function(ref){
+    if(this.memo.hasOwnProperty(ref))return this.memo[ref];
+    if(this.busy[ref])throw new Error('circular');
+    this.busy[ref]=true;
+    var raw=this.getRaw(ref),v;
+    if(raw===undefined||raw===null||raw===''){v=0;}
+    else if(typeof raw==='string'&&raw.charAt(0)==='='){v=this.evalExpr(raw.slice(1));}
+    else if(typeof raw==='string'&&raw.trim()!==''&&isFinite(Number(raw))){v=Number(raw);}
+    else{v=raw;}
+    delete this.busy[ref];this.memo[ref]=v;return v;
+  };
+  Engine.prototype.range=function(a,b){
+    var m1=/^([A-Z]+)([0-9]+)$/.exec(a),m2=/^([A-Z]+)([0-9]+)$/.exec(b);
+    var c1=colNum(m1[1]),r1=+m1[2],c2=colNum(m2[1]),r2=+m2[2];
+    var out=[];
+    for(var r=Math.min(r1,r2);r<=Math.max(r1,r2);r++)
+      for(var c=Math.min(c1,c2);c<=Math.max(c1,c2);c++)
+        out.push(this.value(colName(c)+r));
+    return out;
+  };
+  Engine.prototype.evalExpr=function(src){
+    var eng=this,pos=0;
+    function peek(){return src.charAt(pos);}
+    function skip(){while(peek()===' ')pos++;}
+    function num(v){if(typeof v!=='number')throw new Error('text in maths');return v;}
+    function bin(a,b,f){
+      if(Array.isArray(a)&&Array.isArray(b)){if(a.length!==b.length)throw new Error('size');return a.map(function(x,i){return f(num(x),num(b[i]));});}
+      if(Array.isArray(a))return a.map(function(x){return f(num(x),num(b));});
+      if(Array.isArray(b))return b.map(function(x){return f(num(a),num(x));});
+      return f(num(a),num(b));
+    }
+    function flat(args){var o=[];args.forEach(function(a){Array.isArray(a)?a.forEach(function(x){o.push(x);}):o.push(a);});return o.filter(function(x){return typeof x==='number';});}
+    var FN={
+      SUM:function(a){return flat(a).reduce(function(x,y){return x+y;},0);},
+      SUMSQ:function(a){return flat(a).reduce(function(x,y){return x+y*y;},0);},
+      SUMPRODUCT:function(a){var arrs=a.map(function(x){return Array.isArray(x)?x:[x];});var n=arrs[0].length,sm=0;
+        arrs.forEach(function(ar){if(ar.length!==n)throw new Error('size');});
+        for(var i=0;i<n;i++){var p=1;for(var j=0;j<arrs.length;j++)p*=num(arrs[j][i]);sm+=p;}return sm;},
+      SQRT:function(a){return Array.isArray(a[0])?a[0].map(function(x){return Math.sqrt(num(x));}):Math.sqrt(num(a[0]));},
+      EXP:function(a){return Array.isArray(a[0])?a[0].map(function(x){return Math.exp(num(x));}):Math.exp(num(a[0]));},
+      ABS:function(a){return Math.abs(num(a[0]));},
+      MAX:function(a){return Math.max.apply(null,flat(a));},
+      MIN:function(a){return Math.min.apply(null,flat(a));},
+      RAND:function(){return Math.random();},
+      INDEX:function(a){var arr=a[0],n=num(a[1]);if(!Array.isArray(arr))throw new Error('INDEX needs a range');
+        if(n<1||n>arr.length)throw new Error('#REF');return arr[n-1];},
+      MATCH:function(a){var look=num(a[0]),arr=a[1],type=a.length>2?num(a[2]):1;
+        if(!Array.isArray(arr))throw new Error('MATCH needs a range');
+        if(type===0){for(var i=0;i<arr.length;i++)if(arr[i]===look)return i+1;throw new Error('#N/A');}
+        var best=-1;for(var j=0;j<arr.length;j++)if(num(arr[j])<=look)best=j;
+        if(best<0)throw new Error('#N/A');return best+1;}
+    };
+    function atom(){
+      skip();
+      if(peek()==='('){pos++;var v=expr();skip();if(peek()!==')')throw new Error('missing )');pos++;return v;}
+      if(peek()==='-'){pos++;return bin(0,atom(),function(a,b){return a-b;});}
+      var m=/^([A-Z]+)\(/.exec(src.slice(pos));
+      if(m){var name=m[1];pos+=name.length+1;var args=[];skip();
+        if(peek()!==')'){args.push(expr());skip();while(peek()===','){pos++;args.push(expr());skip();}}
+        if(peek()!==')')throw new Error('missing )');pos++;
+        if(!FN[name])throw new Error('unknown fn '+name);return FN[name](args);}
+      var r=/^\$?([A-Z]+)\$?([0-9]+)/.exec(src.slice(pos));
+      if(r){pos+=r[0].length;var ref1=r[1]+r[2];skip();
+        if(peek()===':'){pos++;skip();var r2=/^\$?([A-Z]+)\$?([0-9]+)/.exec(src.slice(pos));
+          if(!r2)throw new Error('bad range');pos+=r2[0].length;return eng.range(ref1,r2[1]+r2[2]);}
+        return eng.value(ref1);}
+      var n=/^[0-9]*\.?[0-9]+/.exec(src.slice(pos));
+      if(n){pos+=n[0].length;return Number(n[0]);}
+      throw new Error('cannot parse');
+    }
+    function power(){var v=atom();skip();
+      while(peek()==='^'){pos++;v=bin(v,atom(),function(a,b){return Math.pow(a,b);});skip();}return v;}
+    function term(){var v=power();skip();
+      while(peek()==='*'||peek()==='/'){var op=peek();pos++;
+        v=bin(v,power(),op==='*'?function(a,b){return a*b;}:function(a,b){return a/b;});skip();}return v;}
+    function expr(){var v=term();skip();
+      while(peek()==='+'||peek()==='-'){var op=peek();pos++;
+        v=bin(v,term(),op==='+'?function(a,b){return a+b;}:function(a,b){return a-b;});skip();}return v;}
+    var out=expr();skip();
+    if(pos<src.length)throw new Error('cannot parse tail');
+    return out;
+  };
+
+  /* ---- sheet configs ---- */
+  function gdRows(){
+    var cells={A1:'w',B1:'loss',C1:'gradient',D1:'lr →',E1:'0.15',A2:'8',B2:'=(A2-3)^2+1',C2:'=2*(A2-3)'};
+    for(var r=3;r<=13;r++){
+      cells['A'+r]='=A'+(r-1)+'-$E$1*C'+(r-1);
+      cells['B'+r]='=(A'+r+'-3)^2+1';
+      cells['C'+r]='=2*(A'+r+'-3)';
+    }
+    return cells;
+  }
+  var SHEETS={
+    vec:{cols:5,rows:2,cells:{A1:'3',B1:'2',D1:'=SUMPRODUCT(A1:B1,A2:B2)',E1:'← a·b',A2:'3',B2:'1',D2:'=SQRT(SUMSQ(A1:B1))',E2:'← length of a'}},
+    mat:{cols:8,rows:2,cells:{A1:'1',B1:'2',D1:'2',E1:'0',G1:'=A1*D1+B1*D2',H1:'=A1*E1+B1*E2',A2:'3',B2:'4',D2:'1',E2:'2',G2:'=A2*D1+B2*D2',H2:'=A2*E1+B2*E2'}},
+    neu:{cols:7,rows:3,cells:{A1:'2',B1:'1',C1:'3',F1:'=SUMPRODUCT(A1:C1,A2:C2)+D2',G1:'← z = w·x + b',A2:'1.5',B2:'-1',C2:'0.5',D2:'-1',F2:'=MAX(0,F1)',G2:'← ReLU neuron',F3:'=1/(1+EXP(-F1))',G3:'← sigmoid neuron'}},
+    net:{cols:12,rows:3,cells:{A1:'2',C1:'1',D1:'-1',F1:'=MAX(0,C1*$A$1+D1*$A$2)',H1:'1',I1:'1',J1:'-1',L1:'=H1*$F$1+I1*$F$2+J1*$F$3',A2:'1',C2:'0.5',D2:'1',F2:'=MAX(0,C2*$A$1+D2*$A$2)',H2:'0',I2:'2',J2:'1',L2:'=H2*$F$1+I2*$F$2+J2*$F$3',C3:'-1',D3:'2',F3:'=MAX(0,C3*$A$1+D3*$A$2)'}},
+    gd:{cols:5,rows:13,cells:gdRows(),chart:{col:'B',from:2,to:13,label:'loss'}},
+    cos:{cols:7,rows:3,cells:{A1:'8',B1:'7',C1:'1',D1:'0',F1:'=SUMPRODUCT(A1:D1,A2:D2)/(SQRT(SUMSQ(A1:D1))*SQRT(SUMSQ(A2:D2)))',G1:'← cat·dog',A2:'8',B2:'8',C2:'1',D2:'0',F2:'=SUMPRODUCT(A1:D1,A3:D3)/(SQRT(SUMSQ(A1:D1))*SQRT(SUMSQ(A3:D3)))',G2:'← cat·banana',A3:'0',B3:'1',C3:'9',D3:'4'}},
+    soft:{cols:5,rows:5,cells:{A1:'2',B1:'=EXP(A1)/SUM(EXP($A$1:$A$5))',A2:'4',B2:'=EXP(A2)/SUM(EXP($A$1:$A$5))',A3:'1',B3:'=EXP(A3)/SUM(EXP($A$1:$A$5))',A4:'0',B4:'=EXP(A4)/SUM(EXP($A$1:$A$5))',A5:'3',B5:'=EXP(A5)/SUM(EXP($A$1:$A$5))',D1:'=SUM(B1:B5)',E1:'← always 1'}},
+    score:{cols:8,rows:5,cells:{A1:'1.2',B1:'0.4',C1:'← h',D1:'flew',E1:'2',F1:'1',G1:'=E1*$A$1+F1*$B$1',H1:'=EXP(G1)/SUM(EXP($G$1:$G$5))',D2:'slept',E2:'1.5',F2:'-0.5',G2:'=E2*$A$1+F2*$B$1',H2:'=EXP(G2)/SUM(EXP($G$1:$G$5))',D3:'roared',E3:'1',F3:'2',G3:'=E3*$A$1+F3*$B$1',H3:'=EXP(G3)/SUM(EXP($G$1:$G$5))',D4:'sang',E4:'0.5',F4:'0',G4:'=E4*$A$1+F4*$B$1',H4:'=EXP(G4)/SUM(EXP($G$1:$G$5))',D5:'sneezed',E5:'-1',F5:'-1',G5:'=E5*$A$1+F5*$B$1',H5:'=EXP(G5)/SUM(EXP($G$1:$G$5))'}},
+    sample:{cols:7,rows:5,rand:true,cells:{A1:'flew',B1:'3',C1:'=EXP(B1/$E$1)/SUM(EXP($B$1:$B$5/$E$1))',D1:'=SUM($C$1:C1)-C1',E1:'1',F1:'← T',G1:'=INDEX($A$1:$A$5,MATCH(RAND(),$D$1:$D$5,1))',A2:'slept',B2:'2.2',C2:'=EXP(B2/$E$1)/SUM(EXP($B$1:$B$5/$E$1))',D2:'=SUM($C$1:C2)-C2',G2:'← sampled word!',A3:'roared',B3:'1.8',C3:'=EXP(B3/$E$1)/SUM(EXP($B$1:$B$5/$E$1))',D3:'=SUM($C$1:C3)-C3',A4:'sang',B4:'1',C4:'=EXP(B4/$E$1)/SUM(EXP($B$1:$B$5/$E$1))',D4:'=SUM($C$1:C4)-C4',A5:'sneezed',B5:'0.2',C5:'=EXP(B5/$E$1)/SUM(EXP($B$1:$B$5/$E$1))',D5:'=SUM($C$1:C5)-C5'}}
+  };
+
+  /* ---- sheet UI ---- */
+  function fmt(v){
+    if(typeof v!=='number')return v;
+    if(!isFinite(v))return '#NUM';
+    var a=Math.abs(v);
+    if(a>=100000)return v.toExponential(2);
+    return String(Math.round(v*10000)/10000);
+  }
+  function MiniSheet(mount,cfg){
+    var init=JSON.parse(JSON.stringify(cfg.cells)),raw={};
+    Object.keys(init).forEach(function(k){raw[k]=init[k];});
+    var inputs={},sel='A1';
+    var fbar=document.createElement('div');fbar.className='fbar';
+    fbar.innerHTML='<span class="cn">A1</span><input spellcheck="false" placeholder="click a cell, then edit its value or =formula here">';
+    var cn=fbar.firstChild,fin=fbar.lastChild;
+    var wrap=document.createElement('div');wrap.className='sheetwrap';
+    var tbl=document.createElement('table');tbl.className='sheet';
+    var bodyHtml='<tr><th></th>';
+    for(var c=1;c<=cfg.cols;c++)bodyHtml+='<th>'+colName(c)+'</th>';
+    bodyHtml+='</tr>';
+    for(var r=1;r<=cfg.rows;r++){
+      bodyHtml+='<tr><th>'+r+'</th>';
+      for(var c2=1;c2<=cfg.cols;c2++)bodyHtml+='<td><input data-ref="'+colName(c2)+r+'" spellcheck="false"></td>';
+      bodyHtml+='</tr>';
+    }
+    tbl.innerHTML=bodyHtml;wrap.appendChild(tbl);
+    var btns=document.createElement('div');btns.className='sheetbtns';
+    btns.innerHTML=(cfg.rand?'<button class="btn xlbtn brand">Re-roll 🎲</button>':'')+
+      '<button class="btn ghost breset">Reset sheet</button>'+
+      '<span class="legend"><i></i>shaded = live formula · click any cell, edit anything</span>';
+    mount.appendChild(fbar);mount.appendChild(wrap);mount.appendChild(btns);
+    var chart=null;
+    if(cfg.chart){chart=document.createElement('div');chart.className='minichart';
+      chart.innerHTML='<span class="mclab">'+cfg.chart.label+'</span>';
+      for(var i=cfg.chart.from;i<=cfg.chart.to;i++){var bar=document.createElement('i');bar.dataset.ref=cfg.chart.col+i;chart.appendChild(bar);}
+      mount.appendChild(chart);}
+    Array.prototype.forEach.call(tbl.querySelectorAll('input'),function(inp){
+      var ref=inp.dataset.ref;inputs[ref]=inp;
+      inp.addEventListener('focus',function(){sel=ref;cn.textContent=ref;
+        inp.value=raw[ref]!==undefined?raw[ref]:'';fin.value=inp.value;});
+      inp.addEventListener('blur',function(){commit(ref,inp.value);});
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();inp.blur();}});
+    });
+    fin.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();commit(sel,fin.value);}});
+    btns.querySelector('.breset').addEventListener('click',function(){
+      raw={};Object.keys(init).forEach(function(k){raw[k]=init[k];});recalc();});
+    if(cfg.rand)btns.querySelector('.brand').addEventListener('click',recalc);
+    function commit(ref,val){
+      val=(val||'').trim();
+      if(val==='')delete raw[ref];else raw[ref]=val;
+      recalc();
+    }
+    function recalc(){
+      var eng=new Engine(function(ref){return raw[ref];});
+      Object.keys(inputs).forEach(function(ref){
+        var inp=inputs[ref];if(document.activeElement===inp)return;
+        var rv=raw[ref];
+        inp.classList.remove('fx','txt','err');inp.title='';
+        if(rv===undefined){inp.value='';return;}
+        var isF=typeof rv==='string'&&rv.charAt(0)==='=';
+        if(isF){inp.classList.add('fx');inp.title=rv;}
+        try{
+          var v=eng.value(ref);
+          if(typeof v==='string')inp.classList.add('txt');
+          inp.value=fmt(v);
+        }catch(e){inp.value='#ERR';inp.classList.add('err');inp.title=e.message;}
+      });
+      if(raw[sel]!==undefined&&document.activeElement!==fin)fin.value=raw[sel];
+      if(chart){
+        var bars=chart.querySelectorAll('i'),vals=[];
+        Array.prototype.forEach.call(bars,function(bar){
+          try{var v=eng.value(bar.dataset.ref);vals.push(typeof v==='number'&&isFinite(v)?v:0);}catch(e){vals.push(0);}
+        });
+        var mx=Math.max.apply(null,vals.map(Math.abs).concat([1]));
+        Array.prototype.forEach.call(bars,function(bar,i){
+          bar.style.height=(Math.max(0.06,Math.abs(vals[i])/mx)*44)+'px';
+          bar.title=fmt(vals[i]);
+        });
+      }
+    }
+    recalc();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.msheet'),function(m){
+    var cfg=SHEETS[m.dataset.sheet];
+    if(cfg)MiniSheet(m,cfg);
+  });
+
+  /* ================= runnable python cells (pyodide) ================= */
+  var statusEls=[],pyPromise=null;
+  function setStatus(txt,cls){statusEls.forEach(function(el){el.textContent='Python: '+txt;el.className='pyst'+(cls?' '+cls:'');});}
+  function loadScriptOnce(url){
+    return new Promise(function(res,rej){
+      var sc=document.createElement('script');sc.src=url;
+      sc.onload=res;sc.onerror=function(){rej(new Error('download failed'));};
+      document.head.appendChild(sc);
+    });
+  }
+  function ensurePy(){
+    if(pyPromise)return pyPromise;
+    pyPromise=loadScriptOnce('https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js')
+      .then(function(){setStatus('starting runtime… (~10 MB, first time only)','busy');
+        return loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});})
+      .then(function(py){setStatus('loading NumPy…','busy');
+        return py.loadPackage('numpy').then(function(){
+          setStatus('ready ✓ · cells share one memory, like a notebook','ready');return py;});})
+      .catch(function(e){
+        pyPromise=null;
+        setStatus('offline · could not download the runtime. Check your connection and press Run again.','err');
+        throw e;
+      });
+    setStatus('downloading runtime… (~10 MB, first time only)','busy');
+    return pyPromise;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.pycell'),function(cell){
+    var st=cell.querySelector('.pyst'),btn=cell.querySelector('.pyrun'),
+        code=cell.querySelector('.pycode'),out=cell.querySelector('.pyout');
+    statusEls.push(st);
+    function size(){code.style.height='auto';code.style.height=(code.scrollHeight+4)+'px';}
+    code.addEventListener('input',size);setTimeout(size,50);
+    var det=cell.closest('details');
+    if(det)det.addEventListener('toggle',function(){if(det.open)size();});
+    btn.addEventListener('click',function(){
+      btn.disabled=true;
+      ensurePy().then(function(py){
+        setStatus('running…','busy');
+        var buf='';
+        py.setStdout({batched:function(t){buf+=t+'\n';}});
+        py.setStderr({batched:function(t){buf+=t+'\n';}});
+        return py.runPythonAsync(code.value).then(function(ret){
+          var text=buf;
+          if(ret!==undefined&&ret!==null){text+=String(ret)+'\n';}
+          out.hidden=false;out.classList.remove('errout');
+          out.textContent=text.trim()||'(no output · add a print!)';
+          setStatus('ready ✓ · edit the code and run again','ready');
+        }).catch(function(err){
+          var msg=String(err.message||err).split('\n');
+          out.hidden=false;out.classList.add('errout');
+          out.textContent=msg.slice(-7).join('\n').trim();
+          setStatus('error in your code · read the message, fix, run again','err');
+        });
+      }).catch(function(){}).then(function(){btn.disabled=false;});
+    });
+  });
+})();
+</script>
+</body>
+</html>

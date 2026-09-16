@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amp · Upper Secondary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f7fb; --panel:#ffffff; --ink:#1b2130; --muted:#5b647a; --line:#e6e8f0;
+    --violet:#6d4bff; --violetSoft:#efeaff; --teal:#0fb5ad; --tealSoft:#e0f7f5;
+    --coral:#ff5d73; --amber:#e8920c; --code:#0e1424; --codeInk:#e7ecff; --ok:#17b26a; --bad:#ef4d5a;
+    --shadow:0 1px 2px rgba(20,25,50,.06), 0 12px 30px rgba(30,30,80,.07);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;color:var(--ink);line-height:1.65;
+    background:
+      linear-gradient(rgba(109,75,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+      linear-gradient(90deg,rgba(109,75,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+      var(--bg)}
+  .rpbar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--violet),var(--teal));z-index:60}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:11px 18px;
+    background:rgba(246,247,251,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .bt{font-weight:800;letter-spacing:-.02em;font-size:16px;margin-right:auto;display:flex;gap:8px;align-items:center}
+  .topbar .bt .dot{width:9px;height:9px;border-radius:50%;background:var(--violet);box-shadow:0 0 0 4px var(--violetSoft)}
+  .menu{border:none;background:var(--violet);color:#fff;font-weight:600;font-size:13px;border-radius:10px;padding:8px 13px;cursor:pointer;font-family:inherit;text-decoration:none}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px 90px}
+
+  h1{font-weight:800;letter-spacing:-.03em;font-size:clamp(32px,6vw,50px);line-height:1.02;margin:0 0 8px}
+  h2{font-weight:800;letter-spacing:-.02em;font-size:27px;margin:8px 0 4px}
+  h3{font-weight:700;font-size:18px;margin:24px 0 4px}
+  p{margin:12px 0}
+  .lead{font-size:19px;color:#39415a}
+  .muted{color:var(--muted)}
+  b,strong{font-weight:700}
+  code.inline{font-family:'JetBrains Mono';background:#eef0f8;color:#4a34c7;padding:1px 6px;border-radius:6px;font-size:.9em}
+
+  .cover{padding:44px 4px 6px}
+  .kicker{font-family:'JetBrains Mono';font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--violet)}
+  .cover .lead{max-width:60ch}
+  .metastrip{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+  .tag{font-family:'JetBrains Mono';font-size:12px;font-weight:500;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 11px;color:#3a445e}
+  .startbtn{display:inline-block;margin-top:14px;font-weight:700;font-size:16px;color:#fff;background:var(--ink);border-radius:12px;padding:12px 22px;text-decoration:none}
+
+  .toc{display:grid;gap:10px;margin:16px 0}
+  .tocitem{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow);text-decoration:none;color:inherit}
+  .tocitem:hover{border-color:var(--violet)}
+  .tocitem .cn{flex:none;width:36px;height:36px;border-radius:9px;background:var(--violetSoft);color:var(--violet);font-family:'JetBrains Mono';font-weight:700;display:flex;align-items:center;justify-content:center}
+  .tocitem h4{margin:0;font-size:16px;font-weight:700} .tocitem .th{color:var(--muted);font-size:13.5px}
+
+  .module{border-top:1px solid var(--line);margin-top:46px;padding-top:14px}
+  .mhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .mhead .mno{font-family:'JetBrains Mono';font-size:12px;font-weight:700;color:var(--violet);letter-spacing:.1em}
+  .mhead .th{color:var(--muted);font-size:14px}
+  .scene{background:linear-gradient(180deg,#fbfaff,#fff);border-left:3px solid var(--violet);border-radius:0 14px 14px 0;padding:4px 18px;margin:16px 0;font-size:16px}
+  .scene .who{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+
+  .lab{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:20px 0;box-shadow:var(--shadow)}
+  .labhead{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .labhead:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .warnlab .labhead{color:var(--coral)} .warnlab .labhead:before{background:var(--coral)}
+  .labnote{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .num{font-family:'JetBrains Mono';font-weight:700;color:var(--violet)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .btn{font-family:inherit;font-weight:600;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+  .btn:hover{border-color:var(--violet)}
+  .fb{display:block;margin-top:10px;font-size:14.5px;font-weight:600;min-height:1em}
+  .fb.good{color:var(--ok)} .fb.bad{color:var(--bad)}
+  .evtable{width:100%;border-collapse:collapse;font-family:'JetBrains Mono';font-size:13px;margin:10px 0}
+  .evtable th{text-align:left;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;padding:6px 10px;border-bottom:1px solid var(--line)}
+  .evtable td{padding:8px 10px;border-bottom:1px solid var(--line)}
+  .evtable tr:last-child td{border-bottom:none}
+  .clue{font-family:'JetBrains Mono';font-size:13px;background:#faf9ff;border:1px dashed #d9d2ff;border-radius:12px;padding:12px 16px;margin:12px 0}
+  .metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .metric{background:var(--violetSoft);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600;color:#4a34c7}
+  .metric b{font-family:'JetBrains Mono';font-size:16px;display:block;color:var(--violet)}
+
+  .codewrap{margin:18px 0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #0b1220}
+  .codebar{display:flex;align-items:center;justify-content:space-between;background:#0a1020;color:#9db2ff;font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:8px 14px}
+  .codebar .acts{display:flex;gap:8px}
+  .codebar button{background:#1a2340;color:#c7d2ff;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono';font-size:11px}
+  pre{margin:0;background:var(--code);color:var(--codeInk);padding:14px 16px;overflow:auto;font-family:'JetBrains Mono';font-size:13px;line-height:1.6}
+  pre .c{color:#7488c7} pre .k{color:#ff9d7a} pre .s{color:#8fe6b0} pre .n{color:#8fb8ff}
+
+  .take{background:linear-gradient(180deg,#f3f0ff,#fff);border:1px solid var(--violetSoft);border-radius:16px;padding:14px 18px;margin:22px 0}
+  .take h3{margin:0 0 8px;color:var(--violet)}
+  .take ul{margin:0;padding-left:18px} .take li{margin:5px 0;font-size:15px}
+  .take li b{color:var(--ink)}
+  .choicebox{background:linear-gradient(180deg,#fffdf5,#fff);border:1px solid #f0e2c0;border-radius:16px;padding:14px 18px;margin:20px 0;box-shadow:var(--shadow)}
+  .choicebox .labhead{color:var(--amber)} .choicebox .labhead:before{background:var(--amber)}
+  .choiceout{display:none;margin-top:10px;font-size:15px;border-top:1px dashed #f0e2c0;padding-top:10px}
+  .finish{text-align:center;background:linear-gradient(90deg,#efeaff,#e0f7f5);border-radius:18px;padding:28px 18px;margin-top:46px;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<div class="rpbar" id="rp"></div>
+<div class="topbar">
+  <div class="bt"><span class="dot"></span>Amp</div>
+  <a class="menu" href="#contents">Tracklist</a>
+</div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="kicker">Upper Secondary · Grades 9–12</div>
+    <h1>Amp</h1>
+    <p class="lead">Ren produces. Farhan writes and raps. Ten years of demo tapes, one shared dream. Then a virus, a hospital ward and a tracheostomy leave Farhan with a whisper that lasts minutes before it hurts. The group chat goes quiet. Ren doesn't. He decides Farhan hasn't lost his voice (the world has just lost its decoder), and over one stubborn year the two of them build Amp: a speech system trained on a decade of their own recordings, owned by the only person it should belong to. This is a story about fine-tuning, evaluation, voice cloning and agent design. Mostly, it is a story about showing up on Saturdays.</p>
+    <div class="metastrip">
+      <span class="tag">friendship story</span>
+      <span class="tag">5 interactive checkpoints</span>
+      <span class="tag">copy-ready Python</span>
+    </div>
+    <a class="startbtn" href="#contents">Press play →</a>
+  </section>
+
+  <!-- CONTENTS -->
+  <section id="contents">
+    <h2>Tracklist</h2>
+    <div class="toc">
+      <a class="tocitem" href="#ch1"><div class="cn">01</div><div><h4>Ten Years of Tape</h4><div class="th">A decade of demos becomes a dataset: spectrograms, embeddings, consent</div></div></a>
+      <a class="tocitem" href="#ch2"><div class="cn">02</div><div><h4>Fine-tune, Don't Imitate</h4><div class="th">Pretraining vs fine-tuning vs inference; Farhan's taste as the reward signal</div></div></a>
+      <a class="tocitem" href="#ch3"><div class="cn">03</div><div><h4>Honest Evaluation</h4><div class="th">Word-error rate, precision/recall, and the overfitting week</div></div></a>
+      <a class="tocitem" href="#ch4"><div class="cn">04</div><div><h4>The Betrayal That Almost Was</h4><div class="th">A fake diss track, provenance, watermarks and a voice-licence</div></div></a>
+      <a class="tocitem" href="#ch5"><div class="cn">05</div><div><h4>Open Mic</h4><div class="th">The live pipeline on stage, and four bars Amp never gets to say</div></div></a>
+    </div>
+  </section>
+
+  <!-- CH1 -->
+  <section class="module" id="ch1">
+    <div class="mhead"><span class="mno">TRACK 01</span><h2>Ten Years of Tape</h2><span class="th">spectrograms · embeddings · consent</span></div>
+
+    <p>The ward smelled of antiseptic and canteen Milo. Ren had been coming every day for six weeks, and every day he brought the same two things: homework Farhan ignored, and headphones Farhan didn't.</p>
+    <p>The tracheostomy tube sat below Farhan's collarbone like a full stop someone had punched into the middle of a sentence. The doctors were careful with their words, and Ren had learned to be careful with them too. Farhan was not "mute": the surgeons had spared what they could, and with a speaking valve he could push air past his vocal folds and manage a whisper. But a whisper cost him. Minutes a day, then a raw, burning ache, then notes typed on a cracked phone screen.</p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing)</em>: The group chat's dead. Eleven people watched my message and nobody replied.</p>
+      <p><span class="who">Ren</span>: They don't know what to say. That's not the same as not caring. But yeah. It's rubbish.</p>
+      <p><span class="who">Farhan</span> <em>(typing)</em>: You know what's worse than losing your voice? Watching everyone act like YOU'RE the awkward silence.</p>
+      <p><span class="who">Ren</span>: Then let's be loud. I've been thinking. You didn't lose your voice, bro. The world lost its decoder. Those are different engineering problems.</p>
+    </div>
+
+    <p>Here was Ren's argument, sketched on the back of a physiotherapy schedule. Since Primary Three they had recorded <em>everything</em>: every voice memo, every hook Farhan freestyled on the 154 bus, every argument about whether a snare was too loud, all of it captured over Ren's beats and synced to a shared drive with the world's worst folder names. Ten years. Roughly <span class="num">40 hours</span> of Farhan talking, rapping, laughing, and telling Ren his mixes were muddy.</p>
+    <p>That wasn't a nostalgia archive. That was a <b>dataset</b>.</p>
+
+    <h3>What a voice actually is</h3>
+    <p>To build anything, they first had to answer a question that sounds philosophical but is brutally practical: <b>what makes a voice a voice?</b> A microphone only records air pressure wiggling thousands of times per second: a long list of numbers. Useless to stare at. So speech systems convert audio into a <b>spectrogram</b>: a picture where time runs left to right, pitch runs bottom to top, and brightness shows how much energy sits at each frequency. Farhan's growled "oi" and his sarcastic drawl each paint a different shape.</p>
+    <p>And once sound is a picture, the same trick that powers computer vision applies: a <b>convolutional neural network</b> reads the spectrogram exactly the way it reads a photo: as a grid of pixels, scanning small patches for edges and textures, then combining patches into bigger patterns. The network compresses each snippet of Farhan into an <b>embedding</b>: a vector of a few hundred numbers that captures <em>how</em> he sounds (the nasal edge on his vowels, the way his pitch dips before a punchline) while throwing away <em>what</em> he happened to be saying.</p>
+    <p>Two clips of Farhan land close together in that vector space. A clip of Ren lands far away. "Close" has a precise meaning: <b>cosine similarity</b>, the angle between two vectors: <span class="num">1.0</span> means pointing the same way, <span class="num">0</span> means unrelated.</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span>voiceprint.py · is this clip Farhan?</span><div class="acts"><button onclick="copyCode(this,'code1')">Copy</button></div></div>
+      <pre id="code1"><span class="c"># A voice embedding turns "how someone sounds" into a vector.</span>
+<span class="c"># Cosine similarity measures the angle between two voices.</span>
+<span class="k">import</span> numpy <span class="k">as</span> np
+
+<span class="k">def</span> <span class="n">cosine</span>(a, b):
+    <span class="k">return</span> np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+<span class="c"># Toy 4-D embeddings (real ones have ~256 dimensions)</span>
+farhan_2019 = np.array([<span class="s">0.82, 0.31, -0.44, 0.15</span>])  <span class="c"># bus freestyle</span>
+farhan_2025 = np.array([<span class="s">0.79, 0.35, -0.40, 0.11</span>])  <span class="c"># ward whisper</span>
+ren_hyping  = np.array([<span class="s">-0.20, 0.88, 0.35, -0.10</span>]) <span class="c"># wrong guy</span>
+
+<span class="k">print</span>(<span class="s">"Farhan vs Farhan:"</span>, round(cosine(farhan_2019, farhan_2025), 3))  <span class="c"># 0.998</span>
+<span class="k">print</span>(<span class="s">"Farhan vs Ren:   "</span>, round(cosine(farhan_2019, ren_hyping), 3))   <span class="c"># -0.062</span>
+<span class="c"># Six years apart, one tracheostomy later: still the same direction.</span></pre>
+    </div>
+
+    <p>When Ren ran a real version of this on the archive, the result made both of them go quiet. Farhan's whisper embeddings from the ward sat <em>in the same neighbourhood</em> as his 2019 freestyles. Weaker signal, same direction. The voice wasn't gone. It was quiet, not erased.</p>
+
+    <h3>Whose keys?</h3>
+    <p>Before a single training run, Ren stopped and did the unglamorous thing properly. Forty hours of someone's voice is not "content". It is the raw material for a system that can <em>speak as that person</em>. So they wrote it down like engineers: the recordings and every model trained on them belong to <b>Farhan</b>. Farhan holds the encryption keys. Farhan can revoke, delete, or veto any use, including Ren's. Every file got a provenance note: where it was recorded, when, and the consent status.</p>
+
+    <div class="scene">
+      <p><span class="who">Ren</span>: I know it feels dumb, signing a contract with your best friend.</p>
+      <p><span class="who">Farhan</span> <em>(typing)</em>: It's not dumb. It's the first time since the surgery someone's asked my permission for anything. The nurses ask my mum.</p>
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 01 · Who holds the keys?</div>
+      <p style="margin-top:0">Ren and Farhan are drafting the data agreement for the voice archive. Which design puts consent where it belongs?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb1',false,'Convenient, and wrong. Ren doing the engineering does not make it his voice. If Ren controls the data, Farhan needs permission to use his own sound.')">Ren keeps the keys: he's building the model, so he manages the data</button>
+        <button class="btn" onclick="answer('fb1',false,'Splitting keys sounds fair but means Farhan can never act alone on his own voice: he would need Ren\'s sign-off to delete his own recordings. Ownership of your voice should not require a co-signature.')">Split the keys 50/50: the archive was recorded together, so it's joint property</button>
+        <button class="btn" onclick="answer('fb1',true,'Correct. The beats may be Ren\'s, but the voice is Farhan\'s biometric identity. Farhan holds the keys and grants Ren a revocable licence to train: consent that can be withdrawn is the only kind that means anything.')">Farhan holds the keys; Ren works under a written, revocable licence</button>
+        <button class="btn" onclick="answer('fb1',false,'Uploading to a free cloud service usually grants the provider broad rights to the audio: the exact opposite of keeping Farhan in control. Read the terms of service before the terms read you.')">Upload it all to a free cloud voice service: they handle security professionally</button>
+      </div>
+      <span class="fb" id="fb1"></span>
+      <p class="labnote">Provenance and revocable consent aren't paperwork. They are the load-bearing wall of everything the boys build next, and the reason Track 04 doesn't end their friendship.</p>
+    </div>
+
+    <div class="take">
+      <h3>Track 01 · Liner notes</h3>
+      <ul>
+        <li><b>Sound becomes image:</b> a spectrogram lets a CNN read audio as a pixel grid, just like a photo.</li>
+        <li><b>Embeddings capture identity:</b> a vector encodes <em>how</em> a voice sounds; cosine similarity measures how close two voices are.</li>
+        <li><b>A voice is biometric data:</b> the person the voice belongs to holds the keys; consent must be documented, provenanced and revocable.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CH2 -->
+  <section class="module" id="ch2">
+    <div class="mhead"><span class="mno">TRACK 02</span><h2>Fine-tune, Don't Imitate</h2><span class="th">pretraining · fine-tuning · inference · preference as reward</span></div>
+
+    <p>Farhan came home in March. The hospital bed was replaced by his own bed, the beeping by the neighbour's renovation drill, and the visits became a standing appointment: <b>every Saturday, ten to six, Ren's room, no exceptions.</b> Ren's mum started cooking for two without being asked.</p>
+    <p>Now came the hard question. How do two sixteen-year-olds with a gaming laptop build a speech system? They don't, not from scratch. Training a speech model from zero takes hundreds of thousands of hours of audio and more computing power than their whole school owns. But they didn't need to start from zero, because the field doesn't work that way anymore.</p>
+
+    <h3>Three stages, three jobs</h3>
+    <p>Modern speech systems are built in stages, and mixing them up is how people end up either broke or disappointed:</p>
+    <p><b>Pretraining</b> happens once, at enormous cost, usually inside a big lab: a general model learns from vast, diverse audio what human speech <em>is</em>: phonemes, rhythm, the physics of vocal tracts, a thousand accents. The boys downloaded an open-source pretrained model. It knew speech. It didn't know Farhan.</p>
+    <p><b>Fine-tuning</b> is where their forty hours came in: continue training the pretrained model on a small, specific dataset so it adapts. Nights and weekends on Ren's laptop (and one guilty week of a rented GPU paid with hongbao money), the general model's parameters shifted towards one particular voice: the vowels, the timing, the almost-laugh Farhan puts under a line when he knows it's good.</p>
+    <p><b>Inference</b> is using the trained model: Farhan types or whispers, Amp speaks. No learning happens at inference: the weights are frozen. It's the concert, not the rehearsal.</p>
+
+    <div class="clue">PRETRAIN &nbsp;→ learn speech in general &nbsp;(a big lab, once, enormous data)<br>FINE-TUNE → adapt to Farhan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(the boys, weeks, 40 hours of tape)<br>INFERENCE → speak, right now &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Farhan's phone, daily, weights frozen)</div>
+
+    <h3>His taste is the reward signal</h3>
+    <p>The first fine-tuned Amp sounded like Farhan the way a wax statue looks like a person. Accurate and horrible. The vowels were right; the <em>choices</em> were wrong. It stressed syllables Farhan would never stress. It was polite. Farhan has never once been polite on a beat.</p>
+    <p>So they stole an idea from how chatbots are aligned: <b>reinforcement learning from human feedback</b>, scaled down to an audience of one. Every Saturday, Amp generated pairs of readings of the same line. Farhan scored them: <em>that's me</em> / <em>that's a stranger</em>. Those preferences trained a small reward model (a learned function that predicts which output Farhan would pick), and Amp was tuned to score higher on it. Not "sound good". Not "sound natural". <b>Sound like the person whose taste is the reward.</b></p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing)</em>: Version 12 said "let's GO" like a bank advertisement.</p>
+      <p><span class="who">Ren</span>: Noted. Thumbs-down logged. The reward model has learned to fear you.</p>
+      <p><span class="who">Farhan</span> <em>(typing)</em>: Good. My whole personality is a loss function now.</p>
+    </div>
+
+    <div class="choicebox">
+      <div class="labhead">Saturday, week 19 · Your call</div>
+      <p style="margin-top:0">Farhan arrives grey-faced: a bad night, throat raw, zero whisper budget. The GPU is rented until midnight and the preference queue is full. Ren looks at him. What does Ren do?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="choice('ch2out','Ren closes the laptop mid-training-run. They watch three hours of terrible football and Farhan falls asleep on the beanbag. The GPU money is wasted; the Saturday is not. Amp loses a week. Farhan keeps the only collaborator who never made him feel like a deadline, and next Saturday he scores forty pairs in one sitting.')">Close the laptop. Football, snacks, no Amp today.</button>
+        <button class="btn" onclick="choice('ch2out','Ren swaps the plan: no scoring, no whispering: Farhan lies on the beanbag with one thumb on the phone, tapping 👍/👎 while old demos play. Ten minutes in he stops to laugh (silently, shaking) at 2018 Farhan\'s attempt at a love song. They get thirty preferences and one good afternoon. The system flexed around the person, which is the whole design philosophy anyway.')">Shrink the session: thumb-votes only, from the beanbag, stop anytime.</button>
+      </div>
+      <div class="choiceout" id="ch2out"></div>
+      <p class="labnote">There is no wrong door here. Both answers share the load-bearing rule: Farhan is the producer of his own voice, never the project. Amp adapts to him, never the reverse.</p>
+    </div>
+
+    <h3>Why Amp lives on a phone</h3>
+    <p>The final engineering fight of the season was about <em>where inference runs</em>. The easy route: a big model on a cloud server. But Farhan needs Amp in the canteen, in the MRT tunnel with no signal, in class, and he flatly refused to stream his voice, his words and his medical situation to someone else's computer every time he wanted to say "oi, wait for me lah".</p>
+    <p>So Ren <b>distilled</b> Amp: compressed the fine-tuned model into a small one that runs on a mid-range phone. It costs a fraction of the energy per sentence, works with zero signal, and the audio never leaves Farhan's pocket. A smaller model meant slightly less perfect prosody, a trade-off they took with open eyes, because privacy and availability <em>were the product</em>. Training is the expensive, rare thing. Inference is the daily thing. You optimise the daily thing for the life it has to live in.</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 02 · Sort the stages</div>
+      <p style="margin-top:0">Four claims about Amp's life cycle. Exactly one is right; the others each smuggle one stage into another's job.</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb2',false,'Backwards economics. Pretraining is the massive, general, once-only stage; two students cannot (and need not) pretrain from scratch. Their 40 hours is fine-tuning data.')">The boys pretrained Amp from scratch on their 40 hours of tape</button>
+        <button class="btn" onclick="answer('fb2',true,'Correct on all three counts: pretraining gave general speech ability (done elsewhere, at scale), fine-tuning adapted it to Farhan on their small dataset, and at inference the weights are frozen: Amp speaks but no longer learns.')">Pretraining gave general speech; fine-tuning adapted it to Farhan; at inference the weights are frozen</button>
+        <button class="btn" onclick="answer('fb2',false,'No. Inference does not update weights. If Amp learned from every sentence it spoke, one noisy day would corrupt the voice. Learning happens in training; usage is frozen.')">Amp keeps learning a little from every sentence it speaks at school</button>
+        <button class="btn" onclick="answer('fb2',false,'Other way round. Fine-tuning was the heavy, occasional cost (rented GPU, weeks). On-phone inference is cheap per sentence; that is exactly why the daily product could be small, private and offline.')">Inference is the expensive stage, which is why Amp needs a rented GPU daily</button>
+      </div>
+      <span class="fb" id="fb2"></span>
+      <p class="labnote">Bonus link: Farhan's thumbs-up/thumbs-down rounds are RLHF in miniature: human preference distilled into a reward signal. His taste is literally the objective function.</p>
+    </div>
+
+    <div class="take">
+      <h3>Track 02 · Liner notes</h3>
+      <ul>
+        <li><b>Pretrain → fine-tune → inference:</b> learn speech in general, adapt to one person, then run with frozen weights.</li>
+        <li><b>RLHF in miniature:</b> "that's me / that's a stranger" preferences train a reward model; alignment means aligned <em>to Farhan</em>.</li>
+        <li><b>Deploy for the life it lives in:</b> a distilled on-device model buys privacy, offline use and low energy at the price of a little polish.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CH3 -->
+  <section class="module" id="ch3">
+    <div class="mhead"><span class="mno">TRACK 03</span><h2>Honest Evaluation</h2><span class="th">word-error rate · precision/recall · overfitting</span></div>
+
+    <p>By June, Amp had two halves. The <b>ear</b>: a recogniser that turned Farhan's limited whisper into text, so he could speak a few words and have Amp expand them aloud. The <b>mouth</b>: the synthesiser from Track 02. And Ren, drunk on progress, declared version 23 "basically done".</p>
+    <p>Farhan typed one line: <em>"Prove it."</em></p>
+
+    <h3>Counting what goes wrong</h3>
+    <p>The industry-standard score for the ear is <b>word-error rate (WER)</b>: compare the transcript against what was really said, count every <b>substitution</b> (wrong word), <b>deletion</b> (missed word) and <b>insertion</b> (invented word), and divide by the number of words in the true sentence.</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span>wer.py · the ear's report card</span><div class="acts"><button onclick="copyCode(this,'code2')">Copy</button></div></div>
+      <pre id="code2"><span class="c"># Word-error rate: (S + D + I) / N</span>
+<span class="c"># S = substitutions, D = deletions, I = insertions,</span>
+<span class="c"># N = words in the REFERENCE (what Farhan actually whispered)</span>
+
+<span class="k">def</span> <span class="n">wer</span>(subs, dels, ins, n_ref):
+    <span class="k">return</span> (subs + dels + ins) / n_ref
+
+<span class="c"># Saturday test set, version 23:</span>
+<span class="k">print</span>(<span class="s">"Good day :"</span>, wer(subs=<span class="s">1</span>, dels=<span class="s">0</span>, ins=<span class="s">0</span>, n_ref=<span class="s">25</span>))  <span class="c"># 0.04 → 4%</span>
+<span class="k">print</span>(<span class="s">"Bad day  :"</span>, wer(subs=<span class="s">2</span>, dels=<span class="s">1</span>, ins=<span class="s">1</span>, n_ref=<span class="s">20</span>))  <span class="c"># 0.20 → 20%</span>
+<span class="c"># One number per day is not one number per system.</span>
+<span class="c"># A model that only works on good days doesn't work.</span></pre>
+    </div>
+
+    <p>That split, good days versus bad days, was Farhan's insistence, and it changed everything. Post-tracheostomy voices are not constant. On a rested morning with the valve freshly cleaned, his whisper carried; after physiotherapy, or on a low day, it frayed to almost nothing. An average over all days would have hidden the exact failures that hurt most. So every evaluation ran twice, and the <em>bad-day</em> number was the one that counted. You evaluate a system on the person's hardest hour, because that's when they need it.</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 03 · Score the bad day</div>
+      <p style="margin-top:0">Bad-day test: Farhan whispers a reference sentence of <span class="num">20</span> words. Amp's transcript gets <span class="num">2</span> words wrong (substitutions), misses <span class="num">1</span> word entirely (deletion) and invents <span class="num">1</span> word that was never said (insertion). What is the word-error rate?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb3',false,'You dropped the insertion: (2+1)/20 = 15%. Invented words count too: a transcript that adds words Farhan never said is putting words in his mouth, the exact thing Amp must never do.')">15%</button>
+        <button class="btn" onclick="answer('fb3',true,'Correct: (S + D + I) / N = (2 + 1 + 1) / 20 = 4/20 = 20%. On bad days one word in five goes wrong, which is why version 23 was nowhere near \'basically done\'.')">20%</button>
+        <button class="btn" onclick="answer('fb3',false,'That is 5/20. Check your count: 2 substitutions + 1 deletion + 1 insertion = 4 errors, not 5. WER = 4/20 = 20%.')">25%</button>
+        <button class="btn" onclick="answer('fb3',false,'You divided by the transcript length after edits rather than the reference length. WER is always errors over the words Farhan actually said: 4/20 = 20%.')">21%</button>
+      </div>
+      <span class="fb" id="fb3"></span>
+      <p class="labnote">Same errors, different denominators, wildly different stories. Fixing the denominator is half of honest evaluation.</p>
+    </div>
+
+    <h3>The metric that missed the point</h3>
+    <p>Then came the humbling part. Version 25 hit <span class="num">6%</span> bad-day WER, and Farhan hated it. The words were right. The <em>meaning</em> was wrong. Farhan is famous across two schools for sarcasm you could bottle, and Amp read his most cutting lines with the warm sincerity of a station announcement. WER counts words; it is stone deaf to intent.</p>
+    <p>So they built a second evaluation from <b>Farhan's own rubric</b>, a checklist he wrote himself: <em>Did it keep my timing? Did the sarcasm survive? Would my mum know it wasn't me?</em> Each Saturday, a blind test: twenty lines, half real archive audio, half Amp, scored on the rubric by Farhan, Ren, and Ren's mum (a devastating judge). The lesson under the lesson: <b>a metric is a claim about what matters</b>, and off-the-shelf metrics encode someone else's claim. When precision on "did the flagged sarcastic lines actually land as sarcastic" mattered, they counted true and false positives like any classifier: of <span class="num">20</span> lines Amp marked sarcastic, <span class="num">18</span> genuinely were (precision <span class="num">0.90</span>), but it found only <span class="num">18</span> of the <span class="num">24</span> sarcastic lines in the set (recall <span class="num">0.75</span>). Amp was cautious with the attitude. Farhan wanted the attitude.</p>
+
+    <h3>The overfitting week</h3>
+    <p>Week 31 nearly broke morale. Ren, chasing the rubric scores, fine-tuned hard on their cleanest data: studio-quality archive tape, healthy-voice Farhan, treated room. The metrics on the <em>training-style</em> data soared. Then Farhan tried Amp in the polyclinic waiting room after a check-up (tired voice, air-con roar) and it fell apart. <span class="num">31%</span> WER. Amp had become a specialist in <b>Studio Farhan</b>, a person who no longer entirely existed, and had forgotten <b>hospital Farhan</b>, the person it was for.</p>
+    <p>Classic <b>overfitting</b>: the model memorised the quirks of its training data instead of learning the pattern underneath. The fix was as unglamorous as the diagnosis was dramatic: <em>more varied data, held-out tests, earlier stopping.</em> They recorded new samples on bad days on purpose (short sessions, Farhan's call, always). They augmented old tape with realistic noise: bus rumble, canteen clatter. And they locked away a <b>test set</b> Amp never trained on, so the score they trusted was earned on data the model had never seen.</p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing)</em>: So the model fell in love with a version of me from 2021.</p>
+      <p><span class="who">Ren</span>: Yeah. My fault. I optimised for the Farhan who was easy to measure.</p>
+      <p><span class="who">Farhan</span> <em>(typing)</em>: Don't do that. Everyone does that. Build for the Tuesday-afternoon me.</p>
+    </div>
+
+    <div class="take">
+      <h3>Track 03 · Liner notes</h3>
+      <ul>
+        <li><b>WER = (S+D+I)/N:</b> count substitutions, deletions and insertions against the reference, and report the bad-day number, not the flattering average.</li>
+        <li><b>Metrics are claims:</b> WER can be excellent while the sarcasm dies. Precision/recall on <em>what the user actually cares about</em> beats a borrowed benchmark.</li>
+        <li><b>Overfitting wears a good report card:</b> brilliant on training-like data, useless in the polyclinic. Held-out test sets and varied data keep you honest.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CH4 -->
+  <section class="module" id="ch4">
+    <div class="mhead"><span class="mno">TRACK 04</span><h2>The Betrayal That Almost Was</h2><span class="th">voice cloning · temperature · provenance · watermarking</span></div>
+
+    <p>It surfaced on a Thursday, the way these things do: forwarded, then forwarded again, then everywhere. Ninety seconds of audio titled <em>"FARHAN COMES FOR MERIDIAN SEC (LEAKED DISS)"</em>. Farhan's voice, unmistakably, sickeningly his, sneering insults at half their friends, at a rival crew, at a teacher who had visited him in hospital.</p>
+    <p>Except Farhan hadn't recorded ninety seconds of anything in over a year. He physically couldn't.</p>
+    <p>The trail was short. A classmate had ripped a thirty-second demo clip from an old shared playlist, fed it to a free online voice-cloning site, typed a script, and pressed generate. Twenty minutes of effort. He thought it was funny.</p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing, hands shaking)</em>: Delete Amp. Delete the archive. All of it.</p>
+      <p><span class="who">Ren</span>: Farhan…</p>
+      <p><span class="who">Farhan</span> <em>(typing)</em>: I spent a year learning to be okay with a machine speaking for me because it was MINE. Now my voice belongs to everyone but me. Some kid with a browser owns it as much as I do.</p>
+    </div>
+
+    <p>Ren didn't argue that night. This part matters: he didn't defend the technology, didn't say <em>but we built it safely</em>, didn't treat a year of engineering as more important than his friend shaking on the void deck. He said: "If you want it gone, it's gone. Your keys. But give me one week to fight first." Farhan gave him the week.</p>
+
+    <h3>Know your enemy's pipeline</h3>
+    <p>Their counter-attack started with understanding exactly how the fake was made, because the cloner and Amp are, uncomfortably, cousins. A modern voice synthesiser works like the text models they'd studied: the script is broken into <b>tokens</b>, mapped to <b>embeddings</b>, passed through <b>attention</b> layers that decide how each sound should lean on its neighbours, and the model predicts the audio piece by piece as a sequence of probabilities, then <b>samples</b> from those probabilities to produce sound. A short reference clip conditions the whole pipeline to steer the output towards one speaker's timbre. Thirty seconds is genuinely enough for a passable clone. Everyone should know that; almost nobody does.</p>
+    <p>And that word <b>samples</b> hides a dial: <b>temperature</b>. Low temperature makes the model take the safest, most probable option at every step: smooth, controlled, eerily consistent. Higher temperature admits more randomness: livelier, riskier, more human-messy. The diss track had been generated at the site's cautious default, and once you knew to listen for it, you couldn't unhear it.</p>
+
+    <div class="clue">REAL FARHAN, 90 seconds of archive tape: 14 audible breaths, 2 stumbles he ran with,<br>pitch drifting flat when he gets heated, one cough, timing that pushes and drags the beat.<br><br>THE FAKE, 90 seconds: zero breaths. Zero stumbles. Every line the same loudness,<br>the same pace, the same perfect placement. No bad takes, because there were no takes.</div>
+
+    <div class="lab warnlab">
+      <div class="labhead">Checkpoint 04 · Spot the clone</div>
+      <p style="margin-top:0">Ren plays both clips to the class. Which acoustic tell most reliably exposed this fake?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb4',false,'The opposite, usually. Cheap clones tend to be cleaner than reality, and a forger can add fake static in seconds. Poor audio quality proves nothing either way.')">The fake sounds crackly and low-quality, like a bad phone line</button>
+        <button class="btn" onclick="answer('fb4',true,'Correct. Low-temperature sampling picks the safest option every step, so the output is too smooth: no breaths, no stumbles, no loudness drift; none of the physical mess a body makes. Real speech is full of survivable imperfection; this fake had no bad takes because it never took any.')">It's too smooth: no breaths, no stumbles, unnervingly even pacing and loudness</button>
+        <button class="btn" onclick="answer('fb4',false,'Getting words wrong is a script problem, not an acoustic tell: the forger typed the script, so it says exactly what he wanted. The giveaway is in how it sounds, not what it says.')">The fake mispronounces words, proving the model misheard the script</button>
+        <button class="btn" onclick="answer('fb4',false,'Sadly no. Thirty seconds of reference audio is enough for a passable timbre match; that is precisely what made this so easy. If a wrong-sounding voice were the tell, nobody would ever be fooled.')">A clone from only 30 seconds of audio can't match Farhan's timbre at all</button>
+      </div>
+      <span class="fb" id="fb4"></span>
+      <p class="labnote">Honest caveat, which Ren gave the assembly too: better forgers raise the temperature and splice in fake breaths. Tells help today; they are not a permanent defence. That is why the real fixes are structural.</p>
+    </div>
+
+    <h3>Engineers and friends</h3>
+    <p>The week produced three structural fixes, and the order mattered. Friend things first, engineer things after:</p>
+    <p><b>1 · The licence.</b> They formalised Track 01's handshake into a signed <b>voice licence</b>: Farhan's voice may be synthesised only by Amp, only for Farhan's own communication, only while he consents, revocable in writing at any time, by him alone. Not because paper stops a forger, but because it draws the public line the school, both families, and any future dispute can stand on. Accountability needs a document.</p>
+    <p><b>2 · The watermark.</b> Every clip Amp produces now carries a signature: an inaudible pattern woven through the audio plus a signed provenance tag in the file: <em>generated by Amp, for Farhan, at this timestamp</em>. Anything claiming to be Farhan's synthetic voice without the mark is counterfeit by definition. They flipped the burden of proof.</p>
+    <p><b>3 · The assembly.</b> The part nobody expected: instead of hiding, they went on stage. Ren cloned <em>his own</em> voice live in front of the whole school (thirty seconds of reference, a typed script, press generate) and let a hall full of students hear how trivially "audio evidence" can be manufactured, and how the too-smooth tell gives cheap fakes away. The classmate got his consequences from the discipline master; the school got something rarer: <span class="num">800</span> students who will never again believe a voice clip just because it sounds like someone. Nobody gets fooled twice on Ren's watch.</p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing)</em>: You could have just reported him and moved on.</p>
+      <p><span class="who">Ren</span>: Reporting him fixes Tuesday. Teaching eight hundred people fixes the school. And you standing next to me up there fixes the story: you're not the kid who got faked. You're the guy who showed everyone how it works.</p>
+    </div>
+
+    <p>On Sunday, Farhan sent Ren a single line: <em>"Keep the archive. Keys stay with me."</em> The friendship had been the point all along; the technology just had to be rebuilt until it agreed.</p>
+
+    <div class="take">
+      <h3>Track 04 · Liner notes</h3>
+      <ul>
+        <li><b>Synthesis is a pipeline:</b> tokens → embeddings → attention → probabilities → sampling; a 30-second clip can condition it to clone a timbre.</li>
+        <li><b>Temperature leaves fingerprints:</b> safe, low-temperature sampling sounds too smooth: no breaths, no stumbles, no drift. Useful tell; not a permanent one.</li>
+        <li><b>Structural defences beat detection:</b> watermarking and signed provenance on all legitimate output, plus a revocable licence, flip the burden of proof, and teaching the community closes the loop.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CH5 -->
+  <section class="module" id="ch5">
+    <div class="mhead"><span class="mno">TRACK 05</span><h2>Open Mic</h2><span class="th">a live agent pipeline · human override · "does it feel like us?"</span></div>
+
+    <p>The community club open mic. A borrowed PA, plastic chairs, an auntie selling drinks at the back. Fourteen months after the ward, Farhan and Ren's names were on the list, third from last: <b>AMP · R. Kwan &amp; F. Iskandar.</b></p>
+
+    <h3>The system on stage</h3>
+    <p>Live performance is where Amp stopped being a model and became an <b>agent</b>: a system running a loop, not answering a single prompt. Ren drew the loop on the back of the setlist:</p>
+
+    <div class="clue">THE STAGE LOOP (every bar, ~1.8 seconds):<br>1 LISTEN &nbsp;· track Ren's beat + Farhan's taps and whisper fragments<br>2 PREDICT · from the lyric sheet + tempo, plan the next phrase's timing and stress<br>3 CHECK &nbsp;&nbsp;· does the plan match Farhan's live conducting? (pause / punch / stretch)<br>4 SPEAK &nbsp;&nbsp;· synthesise the phrase, watermarked, in his voice<br>5 OBSERVE · did it land where Farhan wanted? adjust, go to 1<br><br>HARD RULE, wired above everything: FARHAN'S OVERRIDE ALWAYS WINS.<br>His kill-switch mutes Amp mid-syllable. No confidence score outranks it.</div>
+
+    <p>Step 3 is the soul of the design. Amp doesn't just read lyrics aloud; Farhan <em>conducts</em> it in real time from a controller taped to the mic stand: hold for a pause, double-tap to punch a word, slide to stretch a phrase. The model predicts; the human disposes. And the override rule isn't politeness, it's architecture: the mute command is wired upstream of the synthesiser, so there is no state Amp can be in (mid-word, mid-flourish, ninety-nine-percent confident) where Farhan cannot silence it instantly. They tested it two hundred times. It is the one feature with a required pass rate of 100%.</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 05 · Why must the override always win?</div>
+      <p style="margin-top:0">A well-meaning uncle at the soundcheck suggests: "If Amp is 99% confident in its phrasing, maybe it should finish the line even if Farhan taps stop; he might have tapped by accident." Why do the boys refuse?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb5',false,'It is not about latency: Amp reacts faster than any human. The reason is about who is allowed to decide, not who is quicker.')">Because Amp's reactions are too slow to judge accidental taps</button>
+        <button class="btn" onclick="answer('fb5',false,'Confidence measures how sure the model is about its prediction, not whether speaking is what Farhan wants. A model can be 99% confident and 100% unwanted. High confidence is an argument for the phrasing, never against the person.')">Because Amp's confidence scores are usually miscalculated anyway</button>
+        <button class="btn" onclick="answer('fb5',true,'Correct. Amp speaks AS Farhan, so every syllable is speech attributed to a person, and consent to speak can be withdrawn at any instant, for reasons no model can see: pain, a change of heart, something in the crowd. If any condition can outvote the human, the human is no longer in control, just consulted. The override is the design\'s whole promise: authorship stays with Farhan.')">Because Amp speaks as Farhan, and if anything can overrule his stop, his voice is no longer his</button>
+        <button class="btn" onclick="answer('fb5',false,'A confirmation dialog mid-performance means Amp keeps talking in Farhan\'s voice while he is asking it to stop. Any design where stopping needs negotiation has already failed: the override must be immediate and unconditional.')">They should compromise: Amp asks Farhan to confirm the stop before going silent</button>
+      </div>
+      <span class="fb" id="fb5"></span>
+      <p class="labnote">Generalise it: in any agent that acts on a person's behalf (speaking, sending, buying, driving), the human override must sit <em>above</em> the model's confidence, not beside it. That is what "human in the loop by design" means.</p>
+    </div>
+
+    <h3>The metric that matters</h3>
+    <p>How do you evaluate a system like this? Not WER: nobody in a crowd counts substitutions. Months before, the boys had written their governing metric on a sticky note above Ren's desk, and every design decision since had answered to it: <b><em>does it feel like us?</em></b> Concretely: after each rehearsal, both of them scored the set: did the phrasing sound like Farhan's intent, did Ren's drops land with Amp's lines, did anything feel like a machine performing <em>at</em> people instead of two friends performing <em>for</em> them. Version by version they logged the scores, found the weakest moment, fixed exactly that, and re-ran. Evaluate, surface the limitation, iterate. The last logged limitation, in Farhan's handwriting: <em>"Amp still can't do the thing where I almost laugh. Keep that one. Some things should stay mine."</em></p>
+
+    <div class="choicebox">
+      <div class="labhead">Ten minutes to stage · Your call</div>
+      <p style="margin-top:0">The emcee asks how to introduce them. Ren looks at Farhan. Farhan looks at the ceiling, then types two options and turns the phone around.</p>
+      <div class="btnrow">
+        <button class="btn" onclick="choice('ch5out','The emcee tells the room everything: the ward, the tapes, the year of Saturdays, the machine on stage that sings in a borrowed-back voice. The crowd knows exactly what they are hearing, which makes the whisper, when it comes, land like thunder. Transparency didn\'t cost them the magic. It was the magic.')">Tell the whole story: let the crowd know Amp is synthetic before a single bar</button>
+        <button class="btn" onclick="choice('ch5out','The emcee says only: &quot;Amp. Two boys, one voice.&quot; They perform first, explain after: Farhan types the story onto the projector while the applause is still settling, watermark demo and all. Nobody feels tricked, because the truth arrives before anyone leaves the room. Different order, same honesty: the crowd never goes home deceived.')">Play first, explain after: let the music speak, then show exactly how it was made</button>
+      </div>
+      <div class="choiceout" id="ch5out"></div>
+      <p class="labnote">Both doors lead to the same non-negotiable: the audience learns the truth from Farhan and Ren, on their terms, before the night ends. Synthetic media with the consent, provenance and honesty handled: that was always the act.</p>
+    </div>
+
+    <h3>Four bars</h3>
+    <p>The set was eight minutes. Ren on the decks, head down, hands sure. Farhan centre stage, conducting his own voice: pausing it, punching it, stretching a line until the room grinned. Amp sounded like him because it had been graded by him, ten thousand thumb-votes deep. The crowd stopped noticing the laptop by the second verse. That was the whole idea.</p>
+    <p>Then, before the last four bars, Farhan tapped the kill-switch himself.</p>
+    <p>Silence. Ren pulled the beat down to almost nothing. He knew; of course he knew; it was the only part they'd never rehearsed with Amp at all. Farhan lifted the mic. And in a whisper that cost him, four bars, barely louder than breath… the plastic chairs creaked as the whole room leaned in.</p>
+    <p>Amp could hit every phoneme he couldn't. But eighty people holding their breath to catch a real voice at the edge of what it could do: no synthesiser gets that. The triumph wasn't that the machine spoke well. It was that the machine knew when to shut up, because the person it belonged to told it to, and the friend at the decks had built it that way from the first Saturday.</p>
+
+    <div class="scene">
+      <p><span class="who">Farhan</span> <em>(typing, on the bus home)</em>: You knew I was going to take the last four bars.</p>
+      <p><span class="who">Ren</span>: Since week one, bro. Why do you think the kill-switch got the 100% test suite?</p>
+    </div>
+
+    <p>The 154 bus, upper deck, front row. One pair of earphones split between them, left bud, right bud, like they were ten years old and the shared drive was still empty. The recording of tonight already syncing to it: hour forty-one of the archive, keys held where they belong.</p>
+    <p><b>Amp could say almost anything in Farhan's voice. It never had to say what mattered: Ren already knew.</b></p>
+
+    <div class="take">
+      <h3>Track 05 · Liner notes</h3>
+      <ul>
+        <li><b>An agent is a loop:</b> listen → predict → check → act → observe, re-planning every cycle against the live world.</li>
+        <li><b>Override above confidence:</b> when a system acts as a person, that person's stop signal must be architecturally unbeatable; consent is real-time, not a settings page.</li>
+        <li><b>Evaluate against your own metric:</b> "does it feel like us?": score it, find the weakest moment, iterate, and know which limitations to fix and which to keep.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FINISH -->
+  <div class="finish">
+    <h2>Run it back</h2>
+    <p class="muted" style="max-width:56ch;margin:10px auto">Amp could say almost anything in Farhan's voice. It never had to say what mattered: Ren already knew.</p>
+    <a class="startbtn" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to the top →</a>
+  </div>
+
+</div>
+
+<script>
+  // reading progress bar
+  const rp = document.getElementById('rp');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const p = h.scrollTop / (h.scrollHeight - h.clientHeight);
+    rp.style.width = (p * 100) + '%';
+  }, { passive: true });
+
+  // checkpoint answers
+  function answer(fbId, ok, msg){
+    const fb = document.getElementById(fbId);
+    fb.textContent = (ok ? '✔ ' : '✘ ') + msg;
+    fb.className = 'fb ' + (ok ? 'good' : 'bad');
+  }
+
+  // story choices: both paths converge
+  function choice(outId, msg){
+    const out = document.getElementById(outId);
+    out.textContent = msg;
+    out.style.display = 'block';
+  }
+
+  // copy code
+  function copyCode(btn, preId){
+    const txt = document.getElementById(preId).innerText;
+    navigator.clipboard.writeText(txt).then(() => {
+      const old = btn.textContent; btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = old; }, 1400);
+    });
+  }
+</script>
+</body>
+</html>

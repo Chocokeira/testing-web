@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build an AI Agent from Scratch (Grades 7–12)</title>
+<link rel="stylesheet" href="agentsec.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SITE BREADCRUMB -->
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:2px 0 18px;font-size:13.5px">
+    <a href="overview.html" style="text-decoration:none;font-weight:700;color:var(--violet)">← IJAIO 2026 overview</a>
+    <span style="opacity:.4">·</span>
+    <a href="basicssec.html" style="text-decoration:none;font-weight:600;color:inherit;opacity:.75">First principles of AI</a>
+    <span style="opacity:.4">·</span>
+    <a href="basicssecstory.html" style="text-decoration:none;font-weight:600;color:inherit;opacity:.75">Story</a>
+    <span style="opacity:.4">·</span>
+    <a href="basicssecvisual.html" style="text-decoration:none;font-weight:600;color:inherit;opacity:.75">Poster</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">Build it yourself <span class="d"></span> No frameworks <span class="d"></span> Grades 7–12</div>
+    <h1>Build an <span class="g">AI Agent</span><br>from scratch</h1>
+    <p>An agent is a language model that can <strong>use tools</strong>. Behind the big libraries, it's really just a loop you can write yourself. You'll learn the ideas, read the pseudocode, and see the real Python.</p>
+    <div class="meta">
+      <span class="chip">what is an agent</span><span class="chip">tool calling</span>
+      <span class="chip">schemas</span><span class="chip">the agent loop</span><span class="chip">message state</span>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#s1"><b>01</b> Concept</a>
+    <a href="#s2"><b>02</b> Tool calling</a>
+    <a href="#s3"><b>03</b> Tools = functions</a>
+    <a href="#s4"><b>04</b> Schemas</a>
+    <a href="#s5"><b>05</b> Messages</a>
+    <a href="#s6"><b>06</b> The loop</a>
+    <a href="#s7"><b>07</b> Agent class</a>
+    <a href="#s8"><b>08</b> Run it</a>
+    <a href="#s9"><b>09</b> Responsible use</a>
+    <a href="#s10"><b>10</b> Quiz</a>
+    <a href="#s11"><b>11</b> Production</a>
+  </nav>
+
+  <!-- 01 CONCEPT -->
+  <section id="s1">
+    <div class="eyebrow">01 · The big idea</div>
+    <h2>What is an agent?</h2>
+    <p class="lead">An <span class="term">agent</span> is an app, built on a language model (an LLM), that can <strong>use tools</strong> to get things done.</p>
+    <p>In 2022, a chatbot was simple. Your message went straight to the language model, and its reply came straight back. The model could only use what it learned during training.</p>
+    <p>Now the model can <span class="hl">reach the real world</span>. Ask "What's in this PDF?" and it can use a search tool (that's <span class="term">RAG</span>). Ask it to send an email, and it can use a send-email function. Want today's news? It uses a news tool. A model with tools like this is an agent.</p>
+    <div class="ba">
+      <div class="box before">
+        <h3>◷ Before: plain chatbot</h3>
+        <div class="flowline"><span class="a">You</span> → app → LLM → app → <span class="a">You</span></div>
+        <p style="font-size:13.5px;color:var(--dim);margin:8px 0 0">Reply limited to training data. No actions, no fresh facts.</p>
+      </div>
+      <div class="box after">
+        <h3>✦ Now: an agent</h3>
+        <div class="flowline"><span class="a">You</span> → app → LLM → <span class="t">tool call</span> → run tool → LLM → <span class="a">You</span></div>
+        <p style="font-size:13.5px;color:var(--dim);margin:8px 0 0">Can fetch live data and take real actions.</p>
+      </div>
+    </div>
+    <div class="callout"><b>Definitions vary.</b> "Agent" is a new word, but a safe one is: <em>an app, built on a language model, that can use tools.</em></div>
+  </section>
+
+  <!-- 02 TOOL CALLING -->
+  <section id="s2">
+    <div class="eyebrow">02 · How it really works</div>
+    <h2>How tool calling works</h2>
+    <p class="lead">The most important idea: the model <strong>picks</strong> a tool, but <strong>your app runs it</strong>. The model never runs the tool itself.</p>
+    <p>Watch it build up, one step per click. The model sends a <em>tool call</em> (just a request). Your code runs the function and sends the result back. Only then does the model write the final answer.</p>
+    <div class="seq-controls">
+      <button class="btn" id="seqStep">▶ Next step</button>
+      <button class="btn ghost" id="seqReset">↺ Reset</button>
+      <span class="seq-note" id="seqCounter">Step 0 / 5</span>
+    </div>
+    <div class="msglist" id="seqList">
+      <div class="msg" data-role="user"><span class="role user">user</span><span class="c">"What's the temperature in São Paulo?" <span class="eyebadge">you see this</span></span></div>
+      <div class="msg" data-role="assistant"><span class="role assistant">assistant</span><span class="c">tool_call → <span class="mono">get_temperature(city="São Paulo")</span> <span class="eyebadge" style="color:var(--amber);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.08)">internal</span></span></div>
+      <div class="msg" data-role="app"><span class="role tool">your app</span><span class="c">runs the Python function → returns <span class="mono">"26"</span></span></div>
+      <div class="msg" data-role="tool"><span class="role tool">tool</span><span class="c">tool result fed back to the model: <span class="mono">26</span> <span class="eyebadge" style="color:var(--amber);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.08)">internal</span></span></div>
+      <div class="msg" data-role="assistant2"><span class="role assistant">assistant</span><span class="c">"It's about 26°C in São Paulo right now." <span class="eyebadge">you see this</span></span></div>
+    </div>
+    <div class="seq-note" id="seqInsight" style="margin-top:14px">&nbsp;</div>
+  </section>
+
+  <!-- 03 TOOLS = FUNCTIONS -->
+  <section id="s3">
+    <div class="eyebrow">03 · Tools are ordinary functions</div>
+    <h2>A tool is just a function</h2>
+    <p class="lead">A tool is just a function. You can write it in any language; here it's Python.</p>
+    <p>This example returns a fixed number. A real tool could call a weather API, send an email, look something up in a database, or download a file: <span class="hl">anything a function can do</span>.</p>
+    <div class="callout"><b>With power comes care.</b> A tool that sends an email or changes a file affects real people. Well-built agents check with a person before doing anything important (see section 09).</div>
+    <div class="codecard">
+      <div class="codetabs">
+        <button class="codetab pseudo active" data-target="t3p"><span class="dot">●</span>Pseudocode</button>
+        <button class="codetab" data-target="t3y"><span class="dot">●</span>Python</button>
+      </div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t3y">Copy</button>
+<pre id="t3p"><span class="cm"># A tool = a function that does one job</span>
+<span class="ck">FUNCTION</span> <span class="cf">get_temperature</span>(city):
+    <span class="ck">IF</span> city <span class="ck">is</span> "San Francisco" <span class="ck">RETURN</span> "72"
+    <span class="ck">IF</span> city <span class="ck">is</span> "Paris"         <span class="ck">RETURN</span> "75"
+    <span class="ck">IF</span> city <span class="ck">is</span> "Tokyo"         <span class="ck">RETURN</span> "73"
+    <span class="ck">RETURN</span> "unknown / 70"</pre>
+<pre id="t3y" class="hidden"><span class="ck">def</span> <span class="cf">get_temperature</span>(city: <span class="ck">str</span>) -&gt; <span class="ck">str</span>:
+    <span class="cm"># mock data (swap in a real weather API here)</span>
+    temps = {<span class="cs">"San Francisco"</span>: <span class="cs">"72"</span>, <span class="cs">"Paris"</span>: <span class="cs">"75"</span>, <span class="cs">"Tokyo"</span>: <span class="cs">"73"</span>}
+    <span class="ck">return</span> temps.get(city, <span class="cs">"unknown / 70"</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 SCHEMAS -->
+  <section id="s4">
+    <div class="eyebrow">04 · Describing tools to the model</div>
+    <h2>Tool schemas</h2>
+    <p class="lead">The model can't see your code. So you give it a <span class="term">schema</span>, a short description of each tool: its name, what it does, and what inputs it takes.</p>
+    <p>The descriptions matter a lot. They tell the model exactly what to put in each input, so <strong>better descriptions mean better tool calls</strong>. You can write the schema by hand, or let <span class="hl">Pydantic</span> build it for you.</p>
+    <div class="toggle">
+      <button class="on" data-sc="hand">Hand-written</button>
+      <button data-sc="pyd">With Pydantic</button>
+    </div>
+    <div class="codecard" id="scHand">
+      <div class="codetabs"><button class="codetab active" style="cursor:default"><span class="dot" style="color:var(--green)">●</span>Python · JSON schema</button></div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t4a">Copy</button>
+<pre id="t4a">get_temperature_schema = {
+    <span class="cs">"type"</span>: <span class="cs">"function"</span>,
+    <span class="cs">"function"</span>: {
+        <span class="cs">"name"</span>: <span class="cs">"get_temperature"</span>,
+        <span class="cs">"description"</span>: <span class="cs">"Get the current temperature for a given city."</span>,
+        <span class="cs">"parameters"</span>: {
+            <span class="cs">"type"</span>: <span class="cs">"object"</span>,
+            <span class="cs">"properties"</span>: {
+                <span class="cs">"city"</span>: {
+                    <span class="cs">"type"</span>: <span class="cs">"string"</span>,
+                    <span class="cs">"description"</span>: <span class="cs">"The city to get the temperature for. "</span>
+                                   <span class="cs">"Add only the city name, not the state or country."</span>
+                }
+            },
+            <span class="cs">"required"</span>: [<span class="cs">"city"</span>]
+        }
+    }
+}</pre>
+      </div>
+    </div>
+    <div class="codecard" id="scPyd" style="display:none">
+      <div class="codetabs"><button class="codetab active" style="cursor:default"><span class="dot" style="color:var(--green)">●</span>Python · Pydantic</button></div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t4b">Copy</button>
+<pre id="t4b"><span class="ck">from</span> pydantic <span class="ck">import</span> BaseModel, Field
+
+<span class="ck">class</span> <span class="cf">GetTemperature</span>(BaseModel):
+    city: <span class="ck">str</span> = Field(
+        description=<span class="cs">"The city to get the temperature for. "</span>
+                    <span class="cs">"Add only the city name, not the state or country."</span>
+    )
+
+<span class="cm"># Generate the same JSON schema, with far less clutter</span>
+params_schema = GetTemperature.model_json_schema()</pre>
+      </div>
+    </div>
+    <div class="callout">Pass your tools with <code style="color:var(--cyan)">tools=[...]</code> and <code style="color:var(--cyan)">tool_choice="auto"</code>. That lets the model decide when to use them.</div>
+  </section>
+
+  <!-- 05 MESSAGES -->
+  <section id="s5">
+    <div class="eyebrow">05 · The conversation is a list</div>
+    <h2>Messages &amp; memory</h2>
+    <p class="lead">An agent's memory is a <strong>list of messages</strong>. It is not the same as the chat the user sees on screen.</p>
+    <p>This inside list also holds the <span class="term">system</span> prompt, the model's <span class="term">tool calls</span>, and the <span class="term">tool</span> results. Every message has a <strong>role</strong>:</p>
+    <div class="codecard">
+      <div class="codetabs"><button class="codetab active" style="cursor:default"><span class="dot" style="color:var(--cyan)">●</span>The four roles</button></div>
+      <div class="codewrap">
+<pre><span class="cf">system</span>     <span class="cm"># instructions: "You are a helpful assistant that…"</span>
+<span class="cf">user</span>       <span class="cm"># what the person typed</span>
+<span class="cf">assistant</span>  <span class="cm"># the model's reply: text OR a tool call</span>
+<span class="cf">tool</span>       <span class="cm"># the result your app sends back (tagged with a call id)</span></pre>
+      </div>
+    </div>
+    <p>So one question and answer on screen can be <strong>four</strong> messages inside: user → assistant (tool call) → tool (result) → assistant (final answer). The user only sees the first and the last.</p>
+  </section>
+
+  <!-- 06 THE LOOP -->
+  <section id="s6">
+    <div class="eyebrow">06 · The heart of the agent</div>
+    <h2>The agent loop</h2>
+    <p class="lead">Keep calling the model until it stops asking for tools. That's the whole idea.</p>
+    <div class="codecard">
+      <div class="codetabs">
+        <button class="codetab pseudo active" data-target="t6p"><span class="dot">●</span>Pseudocode</button>
+        <button class="codetab" data-target="t6y"><span class="dot">●</span>Python</button>
+      </div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t6y">Copy</button>
+<pre id="t6p"><span class="ck">FUNCTION</span> <span class="cf">execute</span>():
+    <span class="ck">LOOP forever</span>:
+        response = ask the LLM with (messages + tools)
+        <span class="ck">IF</span> response has <span class="ck">no</span> tool calls:
+            <span class="ck">RETURN</span> response text          <span class="cm"># final answer</span>
+        add the tool-call message to messages
+        <span class="ck">FOR each</span> tool_call:
+            fn   = look up the function by its name
+            args = the arguments the model chose
+            out  = run fn(args)               <span class="cm"># WE execute, not the LLM</span>
+            add a "tool" message with out (tagged with the call id)</pre>
+<pre id="t6y" class="hidden"><span class="ck">import</span> json
+
+<span class="ck">def</span> <span class="cf">execute</span>(self):
+    <span class="ck">while</span> <span class="cn">True</span>:
+        response = self.client.chat.completions.create(
+            messages=self.messages,
+            tools=self.tools,
+            tool_choice=<span class="cs">"auto"</span>,
+        )
+        choice = response.choices[<span class="cn">0</span>].message
+        tool_calls = choice.tool_calls
+
+        <span class="ck">if not</span> tool_calls:
+            <span class="ck">return</span> choice.content          <span class="cm"># final answer</span>
+
+        self.messages.append(choice)         <span class="cm"># record the tool-call message</span>
+        <span class="ck">for</span> call <span class="ck">in</span> tool_calls:
+            name = call.function.name
+            args = json.loads(call.function.arguments)
+            fn   = globals()[name]            <span class="cm"># dynamic lookup by name</span>
+            result = fn(**args)               <span class="cm"># your app runs the tool</span>
+            self.messages.append({
+                <span class="cs">"role"</span>: <span class="cs">"tool"</span>,
+                <span class="cs">"tool_call_id"</span>: call.id,     <span class="cm"># match the id back</span>
+                <span class="cs">"content"</span>: <span class="ck">str</span>(result),
+            })</pre>
+      </div>
+    </div>
+    <div class="callout"><b>Why the matching id?</b> When you send a tool result back, you label it with the same <code style="color:var(--amber)">tool_call_id</code> the model used. That links each request to its answer, so the model doesn't get confused.</div>
+  </section>
+
+  <!-- 07 AGENT CLASS -->
+  <section id="s7">
+    <div class="eyebrow">07 · Putting it together</div>
+    <h2>The Agent class</h2>
+    <p class="lead">Three methods: <code style="color:var(--violet2)">__init__</code> (set up), <code style="color:var(--violet2)">__call__</code> (handle a message), and <code style="color:var(--violet2)">execute</code> (the loop above).</p>
+    <div class="codecard">
+      <div class="codetabs">
+        <button class="codetab pseudo active" data-target="t7p"><span class="dot">●</span>Pseudocode</button>
+        <button class="codetab" data-target="t7y"><span class="dot">●</span>Python</button>
+      </div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t7y">Copy</button>
+<pre id="t7p"><span class="ck">CLASS</span> <span class="cf">MyAgent</span>:
+    <span class="ck">ON init</span>(client, system, tools):
+        store client, tools
+        messages = empty list
+        <span class="ck">IF</span> system: add system message to messages
+
+    <span class="ck">ON call</span>(message):
+        add user message to messages
+        answer = execute()                <span class="cm"># run the loop</span>
+        add assistant answer to messages
+        <span class="ck">RETURN</span> answer
+
+    <span class="ck">execute</span>(): ...                        <span class="cm"># the loop from section 06</span></pre>
+<pre id="t7y" class="hidden"><span class="ck">from</span> huggingface_hub <span class="ck">import</span> InferenceClient
+<span class="ck">import</span> os, json
+
+<span class="ck">class</span> <span class="cf">MyAgent</span>:
+    <span class="ck">def</span> <span class="cf">__init__</span>(self, client, system=<span class="cs">""</span>, tools=<span class="cn">None</span>):
+        self.client   = client
+        self.system   = system
+        self.tools    = tools <span class="ck">or</span> []
+        self.messages = []
+        <span class="ck">if</span> system:
+            self.messages.append({<span class="cs">"role"</span>: <span class="cs">"system"</span>, <span class="cs">"content"</span>: system})
+
+    <span class="ck">def</span> <span class="cf">__call__</span>(self, message=<span class="cn">None</span>):
+        <span class="ck">if</span> message:
+            self.messages.append({<span class="cs">"role"</span>: <span class="cs">"user"</span>, <span class="cs">"content"</span>: message})
+        result = self.execute()              <span class="cm"># the loop from section 06</span>
+        self.messages.append({<span class="cs">"role"</span>: <span class="cs">"assistant"</span>, <span class="cs">"content"</span>: result})
+        <span class="ck">return</span> result
+
+    <span class="cm"># def execute(self): ...  (see section 06)</span></pre>
+      </div>
+    </div>
+    <div class="codecard">
+      <div class="codetabs"><button class="codetab active" style="cursor:default"><span class="dot" style="color:var(--green)">●</span>Python · set up &amp; run</button></div>
+      <div class="codewrap">
+        <button class="copybtn" data-copy="t7run">Copy</button>
+<pre id="t7run"><span class="cm"># 1) a client (uses a token, not a raw API key)</span>
+client = InferenceClient(
+    model=<span class="cs">"moonshotai/Kimi-K2-Thinking"</span>,   <span class="cm"># must support function calling</span>
+    token=os.environ[<span class="cs">"HF_TOKEN"</span>],
+)
+
+<span class="cm"># 2) build the agent with a system prompt + tools</span>
+agent = MyAgent(
+    client=client,
+    system=<span class="cs">"You are a helpful assistant that can retrieve the temperature in a given city."</span>,
+    tools=[get_temperature_schema],
+)
+
+<span class="cm"># 3) ask it something, globally!</span>
+print(agent(<span class="cs">"What is the temperature in Cairo?"</span>))
+<span class="cm"># → "The current temperature in Cairo is …"</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 RUN IT -->
+  <section id="s8">
+    <div class="eyebrow">08 · See the loop run</div>
+    <h2>Simulated console</h2>
+    <p class="lead">Pick a city and run the agent. This copies the loop you just read: same steps, no API key needed.</p>
+    <div class="cpick" id="cityPick">
+      <button class="on" data-c="Cairo">Cairo</button>
+      <button data-c="Mumbai">Mumbai</button>
+      <button data-c="São Paulo">São Paulo</button>
+      <button data-c="Lagos">Lagos</button>
+      <button data-c="Toronto">Toronto</button>
+      <button data-c="Jakarta">Jakarta</button>
+    </div>
+    <button class="btn" id="runConsole">▶ run agent("What is the temperature in <span id="cityLabel">Cairo</span>?")</button>
+    <div class="console">
+      <div class="console-bar"><span class="dotx" style="background:var(--rose)"></span><span class="dotx" style="background:var(--amber)"></span><span class="dotx" style="background:var(--green)"></span><span class="t">agent.py</span></div>
+      <div class="console-body" id="consoleBody">Pick a city and press run ▸</div>
+    </div>
+  </section>
+
+  <!-- 09 RESPONSIBLE USE -->
+  <section id="s9">
+    <div class="eyebrow">09 · Using AI responsibly</div>
+    <h2>Building agents responsibly</h2>
+    <p class="lead">An agent can take real actions: send messages, read data, change files. That power needs care. Here are everyday examples of doing it the right way.</p>
+    <div class="ethics">
+      <div class="ecard">
+        <h4>Ask before acting</h4>
+        <div class="scn">A study agent can email your teacher about a missed class.</div>
+        <div class="resp"><b>Do this:</b> it writes the draft and waits for you to tap "Send"; it never emails on its own.</div>
+      </div>
+      <div class="ecard">
+        <h4>Be honest it's an AI</h4>
+        <div class="scn">A homework helper answers questions in a chat.</div>
+        <div class="resp"><b>Do this:</b> it says it's an AI that can make mistakes, and reminds you to check important answers.</div>
+      </div>
+      <div class="ecard">
+        <h4>Respect privacy</h4>
+        <div class="scn">A library agent can search the school catalogue.</div>
+        <div class="resp"><b>Do this:</b> it looks up which books exist, but never reads other students' private borrowing records.</div>
+      </div>
+      <div class="ecard">
+        <h4>Show your sources</h4>
+        <div class="scn">A research agent uses a search tool to answer a question.</div>
+        <div class="resp"><b>Do this:</b> it links where each fact came from, so you can check it and catch mistakes.</div>
+      </div>
+      <div class="ecard">
+        <h4>Set clear limits</h4>
+        <div class="scn">A shopping agent can find products online.</div>
+        <div class="resp"><b>Do this:</b> it can suggest what to buy, but cannot spend real money without a person's approval.</div>
+      </div>
+      <div class="ecard">
+        <h4>Never deceive or harm</h4>
+        <div class="scn">An agent could write messages that look like they're from someone else.</div>
+        <div class="resp"><b>Do this:</b> it never pretends to be a real person, helps you cheat, or spreads false information.</div>
+      </div>
+    </div>
+    <div class="callout" style="border-left-color:var(--green);background:rgba(90,209,155,.07)"><b style="color:var(--green)">The big idea:</b> keep a person in control. The more an agent can <em>do</em>, the more it should pause, explain, and ask before it acts.</div>
+  </section>
+
+  <!-- 10 QUIZ -->
+  <section id="s10">
+    <div class="eyebrow">10 · Check yourself</div>
+    <h2>Quick quiz</h2>
+    <p class="lead">One idea per question. Read the explanation either way.</p>
+    <div id="quiz"></div>
+    <div class="seq-note" style="margin-top:4px">Score: <b style="color:var(--violet2)" id="quizScore">0</b> / 5</div>
+  </section>
+
+  <!-- 11 PRODUCTION -->
+  <section id="s11">
+    <div class="eyebrow">11 · Reality check</div>
+    <h2>This is for learning, not for real apps</h2>
+    <p class="lead">The goal was to show how an agent works inside, not to build something ready to ship.</p>
+    <p>A real agent needs more: <strong>error handling</strong> (tools fail, the model sends bad inputs, the network drops), a <strong>limit</strong> on how many loop turns can run, checks on the tool inputs, logging, and safety checks before it takes actions. Real frameworks add all of this for you.</p>
+    <p>Once you understand the loop, these frameworks make a lot more sense:</p>
+    <div class="gloss" style="margin-top:8px">
+      <div class="item"><dt>smolagents</dt><dd>Hugging Face's lightweight agent framework.</dd></div>
+      <div class="item"><dt>LangChain</dt><dd>Popular toolkit for chaining LLM calls and tools.</dd></div>
+      <div class="item"><dt>LlamaIndex</dt><dd>Strong for RAG: connecting models to your data.</dd></div>
+      <div class="item"><dt>@tool decorators</dt><dd>Generate schemas automatically from a function.</dd></div>
+    </div>
+    <h2 style="margin-top:26px;font-size:22px">Glossary</h2>
+    <div class="gloss" style="margin-top:10px">
+      <div class="item"><dt>agent</dt><dd>An app, built on a language model, that can use tools.</dd></div>
+      <div class="item"><dt>tool call</dt><dd>The model's request to run a function with specific arguments.</dd></div>
+      <div class="item"><dt>schema</dt><dd>A structured description of a tool: name, purpose, parameters.</dd></div>
+      <div class="item"><dt>tool_choice="auto"</dt><dd>Lets the model decide when to call a tool.</dd></div>
+      <div class="item"><dt>system prompt</dt><dd>Hidden instructions that shape how the agent behaves.</dd></div>
+      <div class="item"><dt>RAG</dt><dd>Retrieval-Augmented Generation: a tool fetches data the model then uses.</dd></div>
+    </div>
+  </section>
+
+  <!-- KEEP EXPLORING -->
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:26px 0 4px;font-size:14px">
+    <a href="basicssec.html" style="text-decoration:none;font-weight:700;color:#13111c;background:var(--violet);padding:10px 18px;border-radius:999px">How the model itself works: nine steps →</a>
+    <a href="overview.html" style="text-decoration:none;font-weight:700;color:var(--violet);border:2px solid var(--violet);padding:8px 18px;border-radius:999px">Back to IJAIO overview</a>
+  </div>
+
+  <footer>Built for builders <span class="v">◆</span> A hands-on introduction to AI agents</footer>
+</div>
+
+<script>
+/* ----- CODE TABS ----- */
+document.querySelectorAll('.codetab[data-target]').forEach(tab=>{
+  tab.onclick=()=>{
+    const group=tab.closest('.codecard');
+    group.querySelectorAll('.codetab').forEach(t=>t.classList.remove('active'));
+    group.querySelectorAll('pre').forEach(p=>p.classList.add('hidden'));
+    tab.classList.add('active');
+    group.querySelector('#'+tab.dataset.target).classList.remove('hidden');
+  };
+});
+/* ----- COPY ----- */
+document.querySelectorAll('.copybtn').forEach(b=>{
+  b.onclick=()=>{
+    const txt=document.getElementById(b.dataset.copy).innerText;
+    navigator.clipboard.writeText(txt).then(()=>{const o=b.textContent;b.textContent='Copied ✓';setTimeout(()=>b.textContent=o,1200);});
+  };
+});
+/* ----- SCHEMA TOGGLE ----- */
+document.querySelectorAll('.toggle button').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const hand=btn.dataset.sc==='hand';
+    document.getElementById('scHand').style.display=hand?'':'none';
+    document.getElementById('scPyd').style.display=hand?'none':'';
+  };
+});
+/* ----- SEQUENCE VISUALIZER ----- */
+const seqMsgs=[...document.querySelectorAll('#seqList .msg')];
+const insights=[
+  "Step 1: You send a question. It enters the message list as a <b>user</b> message.",
+  "Step 2: The model replies with a <b>tool call</b>, not text. It's only a request.",
+  "Step 3: Your application looks up and runs the function. The model never executes it.",
+  "Step 4: The result is added back as a <b>tool</b> message, tagged with the call id.",
+  "Step 5: Now the model writes the real answer. Done!",
+];
+let seqI=0;
+const seqCounter=document.getElementById('seqCounter');
+const seqInsight=document.getElementById('seqInsight');
+document.getElementById('seqStep').onclick=()=>{
+  if(seqI>=seqMsgs.length)return;
+  seqMsgs[seqI].classList.add('show');
+  seqInsight.innerHTML=insights[seqI];
+  seqI++; seqCounter.textContent='Step '+seqI+' / 5';
+};
+document.getElementById('seqReset').onclick=()=>{
+  seqMsgs.forEach(m=>m.classList.remove('show'));
+  seqI=0;seqCounter.textContent='Step 0 / 5';seqInsight.innerHTML='&nbsp;';
+};
+
+/* ----- CONSOLE SIM ----- */
+const TEMPS={Cairo:"28",Mumbai:"31","São Paulo":"26",Lagos:"30",Toronto:"18",Jakarta:"32"};
+let city="Cairo";
+document.querySelectorAll('#cityPick button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#cityPick button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');city=b.dataset.c;document.getElementById('cityLabel').textContent=city;
+});
+function typeLines(el, lines){
+  el.innerHTML='';let i=0;
+  (function next(){
+    if(i>=lines.length)return;
+    const div=document.createElement('div');div.innerHTML=lines[i];el.appendChild(div);
+    i++;setTimeout(next,650);
+  })();
+}
+document.getElementById('runConsole').onclick=()=>{
+  const t=TEMPS[city];
+  typeLines(document.getElementById('consoleBody'),[
+    '<span class="pl">&gt;&gt;&gt;</span> agent("What is the temperature in '+city+'?")',
+    '<span class="tc">↳ tool call</span>  get_temperature(city="'+city+'")',
+    '<span class="res">↳ executing</span> get_temperature  →  returns "'+t+'"',
+    '<span class="res">↳ tool result</span> sent back to the model',
+    '<span class="fin">The current temperature in '+city+' is '+t+'°C.</span>',
+  ]);
+};
+
+/* ----- QUIZ ----- */
+const QUIZ=[
+  {q:"When the model asks for a tool, who actually runs it?",
+   opts:["The model runs it inside the provider","Your application runs the function","It runs on its own, with no code at all"],c:1,
+   ex:"The model only sends a tool call (a request). Your app finds the matching function, runs it, and sends the result back."},
+  {q:"What helps the model pick the right tool and inputs?",
+   opts:["Clear names and descriptions in the schema","Listing every tool in alphabetical order","Choosing the largest, most expensive model"],c:0,
+   ex:"The model reads the names and descriptions to choose a tool and fill its inputs. Clearer descriptions mean better tool calls."},
+  {q:"What makes the agent loop stop?",
+   opts:["After exactly one tool call has been made","When a fixed time limit eventually runs out","When the model's reply has no tool call"],c:2,
+   ex:"The loop repeats until the model replies with no tool call. That reply is the final answer; there's no fixed time or one-call rule."},
+  {q:"How is the inside message list different from the on-screen chat?",
+   opts:["It is exactly the same as the visible chat","It also keeps the system prompt and tool steps","It keeps only the user's own questions"],c:1,
+   ex:"The inside list also holds the system prompt, the model's tool calls, and the tool results, not just the two visible turns."},
+  {q:"Your agent has a tool that can send emails. What's the most responsible design?",
+   opts:["Let it send to anyone instantly, to save time","Let it send first, then tell the user afterwards","Show the draft and let the user approve it"],c:2,
+   ex:"Keep a person in control. For actions that affect others, the agent should pause and ask before acting, not act first and explain later."},
+];
+let score=0;const answered=new Set();const quizBox=document.getElementById('quiz');
+QUIZ.forEach((item,qi)=>{
+  const wrap=document.createElement('div');wrap.className='q';
+  wrap.innerHTML='<div class="qq">'+(qi+1)+'. '+item.q+'</div>';
+  const opts=document.createElement('div');opts.className='opts';
+  const fb=document.createElement('div');fb.className='fb';
+  item.opts.forEach((o,oi)=>{
+    const btn=document.createElement('button');btn.className='opt';btn.textContent=o;
+    btn.onclick=()=>{
+      if(answered.has(qi))return;answered.add(qi);
+      [...opts.children].forEach(b=>b.disabled=true);
+      if(oi===item.c){btn.classList.add('correct');score++;document.getElementById('quizScore').textContent=score;
+        fb.className='fb show yay';fb.innerHTML='✓ Correct. '+item.ex;}
+      else{btn.classList.add('wrong');opts.children[item.c].classList.add('correct');
+        fb.className='fb show nope';fb.innerHTML='✗ Not quite. '+item.ex;}
+    };
+    opts.appendChild(btn);
+  });
+  wrap.appendChild(opts);wrap.appendChild(fb);quizBox.appendChild(wrap);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The False Positive · Lower Secondary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#0FA8A4; --tealDeep:#0a6f6c; --tealSoft:#d4f0ef; --paper:#fffdf7; --panel:#fff;
+    --ink:#22303a; --muted:#5c6f72; --coral:#ff6a5a; --violet:#7b5cff; --violetSoft:#e6dfff; --amber:#E8920C;
+    --ok:#0c8a4d; --bad:#c0392b;
+    --code:#0f1e24; --line:#e7e0d3; --shadow:0 10px 24px rgba(20,50,50,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Lora',Georgia,serif;color:var(--ink);line-height:1.72;
+    background:
+      radial-gradient(900px 380px at 100% -60px,#e0f5f4,transparent),
+      radial-gradient(700px 340px at 0% 20%,#eef7e6,transparent),
+      var(--paper)}
+  .rpbar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--teal),var(--violet));z-index:60}
+  .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 16px;
+    background:rgba(255,253,247,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .bt{font-family:'Fredoka';font-weight:700;color:var(--tealDeep);font-size:16px;margin-right:auto;display:flex;gap:8px;align-items:center}
+  .menu{border:none;background:var(--teal);color:#fff;font-family:'Fredoka';font-weight:600;font-size:14px;border-radius:12px;padding:8px 13px;cursor:pointer;text-decoration:none}
+  .wrap{max-width:730px;margin:0 auto;padding:0 18px 80px}
+  h1{font-family:'Fredoka';font-weight:700;font-size:clamp(30px,6vw,46px);line-height:1.05;margin:0 0 6px;color:#123}
+  h2{font-family:'Fredoka';font-weight:700;font-size:25px;margin:34px 0 6px;color:var(--tealDeep)}
+  p{margin:12px 0}
+  .lead{font-size:19px;color:#31474b}
+  .cover{text-align:center;padding:40px 10px 8px}
+  .cover .heroes{font-size:78px;line-height:1;animation:bob 3.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .pill{display:inline-block;font-family:'Fredoka';font-weight:600;background:#fff;color:var(--tealDeep);border:2px solid var(--tealSoft);border-radius:999px;padding:6px 16px;margin-bottom:12px}
+  .startbtn{font-family:'Fredoka';font-weight:700;font-size:19px;color:#fff;background:var(--teal);border:none;border-radius:16px;padding:14px 26px;box-shadow:var(--shadow);cursor:pointer;margin-top:12px;text-decoration:none;display:inline-block}
+  .toc{display:grid;gap:12px;margin:18px 0}
+  .tocitem{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;box-shadow:var(--shadow);cursor:pointer;text-decoration:none;color:inherit}
+  .tocitem:hover{border-color:var(--teal)}
+  .tocitem .cn{flex:none;width:42px;height:42px;border-radius:12px;background:var(--tealSoft);color:var(--tealDeep);font-family:'Fredoka';font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center}
+  .tocitem .ci{font-size:30px;flex:none} .tocitem h4{font-family:'Fredoka';margin:0;font-size:18px} .tocitem .th{color:var(--muted);font-size:14px}
+  .chapter{border-top:2px dashed var(--tealSoft);margin-top:40px;padding-top:10px}
+  .chero{display:flex;gap:16px;align-items:center;margin:8px 0 6px}
+  .chero .big-emo{font-size:56px;line-height:1}
+  .chero .ch-no{font-family:'JetBrains Mono';font-size:13px;color:var(--teal);font-weight:600;letter-spacing:.08em}
+  .chero .th{color:var(--muted);font-size:15px}
+  .scene{background:linear-gradient(180deg,#fbfaff,#fff);border-left:3px solid var(--violet);border-radius:0 14px 14px 0;padding:4px 18px;margin:16px 0;font-size:16px}
+  .scene .who{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--violet)}
+  .essay{background:#fdf9ef;border:1px solid #efe3c2;border-radius:14px;padding:14px 20px;margin:18px 0;font-style:italic;font-size:16.5px;color:#4a3f28}
+  .essay .who{font-family:'JetBrains Mono';font-style:normal;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:4px}
+  .box{border-radius:16px;padding:14px 18px;margin:18px 0;font-size:16.5px;line-height:1.6}
+  .box .bt{font-family:'Fredoka';font-weight:700;display:block;margin-bottom:4px;font-size:15px;letter-spacing:.02em}
+  .glass{background:#eafaf8;border:1px solid #b9e7e3} .glass .bt{color:var(--tealDeep)}
+  .watch{background:#fff5e9;border:1px solid #f6ddb4} .watch .bt{color:#9a6402}
+  .lab{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin:20px 0;box-shadow:var(--shadow)}
+  .labhead{font-family:'JetBrains Mono';font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .labhead:before{content:'';width:8px;height:8px;border-radius:50%;background:var(--teal)}
+  .labnote{font-size:14px;color:var(--muted);margin:10px 0 0}
+  .btnrow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .btn{font-family:inherit;font-weight:600;font-size:14px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+  .btn:hover{border-color:var(--teal)}
+  .fb{display:block;margin-top:10px;font-size:14.5px;font-weight:600;min-height:1em}
+  .fb.good{color:var(--ok)} .fb.bad{color:var(--bad)}
+  .mtx{width:100%;max-width:430px;border-collapse:collapse;font-family:'JetBrains Mono';font-size:13px;margin:10px 0}
+  .mtx th{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid var(--line);text-align:left}
+  .mtx td{padding:8px 10px;border-bottom:1px solid var(--line)}
+  .num{font-family:'JetBrains Mono';font-weight:700;color:var(--violet)}
+  .fork{background:#f3efff;border:1px dashed #ddd3ff;border-radius:16px;padding:14px 18px;margin:20px 0}
+  .fork .bt{font-family:'Fredoka';font-weight:700;color:var(--violet);display:block;margin-bottom:6px;font-size:15px}
+  .forkpath{display:none;margin-top:10px}
+  .codewrap{margin:18px 0;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #0b1418}
+  .codebar{display:flex;align-items:center;justify-content:space-between;background:#0b1a20;color:#8fd9d3;font-family:'JetBrains Mono';font-size:12px;font-weight:600;padding:8px 14px;letter-spacing:.04em}
+  .codebar .copy{background:#12303a;color:#bfeae6;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-family:'JetBrains Mono';font-size:11px}
+  pre{margin:0;background:var(--code);color:#e6f2f1;padding:14px 16px;overflow:auto;font-family:'JetBrains Mono';font-size:13.5px;line-height:1.6}
+  pre .c{color:#6d8c8a} pre .k{color:#ff9d7a} pre .s{color:#9ce6b0} pre .n{color:#8fb8ff}
+  .take{background:linear-gradient(180deg,#f4fbfa,#fff);border:1px solid var(--tealSoft);border-radius:16px;padding:14px 18px;margin:22px 0}
+  .take h3{font-family:'Fredoka';font-weight:600;font-size:17px;margin:0 0 8px;color:var(--tealDeep)}
+  .take ul{margin:0;padding-left:18px} .take li{margin:5px 0;font-size:15px}
+  .finish{text-align:center;background:linear-gradient(90deg,#e9fbf9,#f3efff);border-radius:20px;padding:26px 18px;margin-top:46px;box-shadow:var(--shadow)}
+  .finish .medal{font-size:60px}
+</style>
+<script>
+  function copyCode(btn){
+    var code = btn.closest('.codewrap').querySelector('code').innerText;
+    if(navigator.clipboard){ navigator.clipboard.writeText(code); }
+    var old = btn.textContent; btn.textContent='Copied!'; setTimeout(function(){btn.textContent=old;},1400);
+  }
+  function answer(fbId, ok, okMsg, badMsg){
+    var fb=document.getElementById(fbId);
+    fb.className='fb '+(ok?'good':'bad');
+    fb.textContent=(ok?'✔ ':'✘ ')+(ok?okMsg:badMsg);
+  }
+  function fork(forkId, pathId){
+    var f=document.getElementById(forkId);
+    var paths=f.querySelectorAll('.forkpath');
+    for(var i=0;i<paths.length;i++){ paths[i].style.display='none'; }
+    document.getElementById(pathId).style.display='block';
+  }
+  window.addEventListener('scroll', function(){
+    var h=document.documentElement, sc=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    var rp=document.getElementById('rp'); if(rp) rp.style.width=sc+'%';
+  });
+</script>
+</head>
+<body>
+<div class="rpbar" id="rp"></div>
+<div class="topbar">
+  <div class="bt">📖 The False Positive</div>
+  <a class="menu" href="#contents">Chapters</a>
+</div>
+
+<div class="wrap">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="pill">Lower Secondary · Grades 7–8</div>
+    <div class="heroes">🤝📄🤖</div>
+    <h1>The False Positive</h1>
+    <p class="lead" style="max-width:36ch;margin:8px auto 0">A novel about friendship, an AI detector, and the essay a machine called a lie.</p>
+    <p style="max-width:54ch;margin:10px auto 0;color:var(--muted)">When the school's new AI &ldquo;originality checker&rdquo; flags Tariq's essay about his late mother as machine-written (92% confident), only one person refuses to believe it. Dev can't out-shout a number. So he decides to understand it.</p>
+    <a class="startbtn" href="#contents">Open the book ↓</a>
+  </section>
+
+  <!-- CONTENTS -->
+  <section id="contents">
+    <h2>Contents</h2>
+    <div class="toc">
+      <a class="tocitem" href="#ch1"><span class="cn">1</span><span class="ci">🔍</span><div><h4>What the Machine Actually Reads</h4><div class="th">Tokens, predictability, and why plain words look suspicious</div></div></a>
+      <a class="tocitem" href="#ch2"><span class="cn">2</span><span class="ci">🧠</span><div><h4>How It &ldquo;Knows&rdquo;</h4><div class="th">Training data, embeddings, and a neighbourhood Tariq never chose</div></div></a>
+      <a class="tocitem" href="#ch3"><span class="cn">3</span><span class="ci">📊</span><div><h4>The Numbers That Matter</h4><div class="th">Base rates, the confusion matrix, and 25 innocent faces</div></div></a>
+      <a class="tocitem" href="#ch4"><span class="cn">4</span><span class="ci">🧾</span><div><h4>Building the Counter-Case</h4><div class="th">Bigram fingerprints, fooling the detector, drafting the appeal</div></div></a>
+      <a class="tocitem" href="#ch5"><span class="cn">5</span><span class="ci">⚖️</span><div><h4>The Hearing</h4><div class="th">A human loop for a machine mistake, and a voice comes back</div></div></a>
+    </div>
+  </section>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter" id="ch1">
+    <div class="chero"><span class="big-emo">🔍</span><div><div class="ch-no">CHAPTER ONE</div><h1 style="font-size:30px;margin:0">What the Machine Actually Reads</h1><div class="th">Tokens, predictability, and why plain words look suspicious</div></div></div>
+
+    <p>The email arrived on a Tuesday, and by Wednesday morning the whole of Year 9 knew. <b>OriginalityGuard</b>, the AI checker the school was piloting, had scanned every essay from Ms Okafor's class and flagged exactly one: <i>&ldquo;Likely machine-generated. Confidence: 92%.&rdquo;</i></p>
+    <p>Tariq's essay. The one about his mother.</p>
+    <p>Tariq had joined the school in September, three months after she died. He was quiet, brilliant at maths, and spoke in class about as often as it snowed in June. Dev was the only one who had bothered to sit next to him, and by October they were the kind of friends who could share a bag of crisps and forty minutes of silence and call it a good lunch.</p>
+    <p>Now Tariq wasn't even coming to lunch. He sat at the back of every lesson, hood half up, saying nothing at all. In the corridor Dev heard someone whisper, <i>&ldquo;imagine getting a robot to write about your own mum,&rdquo;</i> and something in his chest went hard and bright at the same time.</p>
+
+    <div class="scene"><span class="who">Dev · outside the library</span>
+      <p>&ldquo;I read your essay. Before all this. You showed me the draft, remember? You wrote that thing. Every word.&rdquo;</p>
+      <p>Tariq shrugged, eyes on the floor. &ldquo;The computer says I didn't. Ninety-two per cent. Who argues with ninety-two per cent?&rdquo;</p>
+      <p>&ldquo;Me,&rdquo; said Dev. &ldquo;But not by shouting. If a machine accused you, I want to know exactly what the machine actually <i>does</i>. Then we take it apart. Piece by piece.&rdquo;</p>
+    </div>
+
+    <div class="fork" id="fork1">
+      <span class="bt">🔀 Story choice: how does Dev start?</span>
+      <p style="margin:0 0 4px">Tariq turns to leave. Dev has one second to keep him.</p>
+      <div class="btnrow">
+        <button class="btn" onclick="fork('fork1','f1a')">&ldquo;Help me understand it. You're better at maths than me.&rdquo;</button>
+        <button class="btn" onclick="fork('fork1','f1b')">&ldquo;Come to mine after school. Crisps. No talking required.&rdquo;</button>
+      </div>
+      <div class="forkpath" id="f1a"><p>Something flickers in Tariq's face, the first spark in a week. Being needed is easier than being pitied. &ldquo;Fine,&rdquo; he mutters. &ldquo;But only the maths.&rdquo; It's a start. That afternoon, the two of them open a laptop and type: <i>how do AI text detectors work?</i></p></div>
+      <div class="forkpath" id="f1b"><p>Tariq almost smiles. Crisps and silence: the original terms of the friendship. He shows up at four, hood down for the first time in days. By half past, curiosity beats grief to the keyboard, and the two of them type: <i>how do AI text detectors work?</i></p></div>
+    </div>
+
+    <h2>The machine doesn't read. It counts.</h2>
+    <p>The first surprise: the detector never &ldquo;reads&rdquo; the essay the way Ms Okafor does. Before anything else, the text is <b>tokenised</b>, chopped into pieces called <b>tokens</b>: whole words, bits of words, punctuation. Each token is swapped for an ID number from a giant dictionary. From that moment on, the essay isn't sentences about Tariq's mother. It's a list of numbers.</p>
+    <div class="box glass"><span class="bt">🔬 Under the hood: tokens</span>
+      &ldquo;My mother taught me&rdquo; might become <span class="num">[3666, 2755, 7891, 502]</span>: four tokens, four IDs. Longer or rarer words get split: &ldquo;unforgettable&rdquo; might be <i>un</i> + <i>forget</i> + <i>table</i>. That's also why models can miscount the letters in a word: they never see letters, only token IDs. Ask one how many <i>r</i>'s are in &ldquo;strawberry&rdquo; and it's guessing about the inside of pieces it can't see into.
+    </div>
+    <p>The second surprise was bigger. Detectors like this one mostly measure <b>predictability</b>. A language model reads the essay token by token and asks, at every step: <i>how surprised am I by the next token?</i> Text that keeps surprising the model scores &ldquo;high perplexity&rdquo; and looks human. Text where every next token is exactly what the model expected scores low, and looks machine-made, because machines tend to pick likely next tokens.</p>
+
+    <div class="scene"><span class="who">Tariq · quietly</span>
+      <p>&ldquo;So it flagged me because my essay was... predictable?&rdquo;</p>
+      <p>&ldquo;Because it was <i>plain</i>,&rdquo; said Dev, reading the screen. &ldquo;Simple words. Short sentences. No showing off. It says here that careful, simple writing, and writing by people whose first language isn't English, gets flagged more often. The detector can't tell honest-plain from machine-plain.&rdquo;</p>
+      <p>Tariq stared at the wall for a long time. &ldquo;My mother taught me to write like that,&rdquo; he said. &ldquo;On purpose.&rdquo;</p>
+    </div>
+
+    <div class="essay"><span class="who">From Tariq's essay</span>
+      &ldquo;My mother did not like fancy sentences. She said plain words are not empty words. She said you should write the way you would speak to someone you love: simply, and meaning all of it.&rdquo;
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 1 · Spot the assumption</div>
+      <p style="margin-top:0">The detector's logic: <i>&ldquo;machine text is predictable, so predictable text is machine text.&rdquo;</i> What is the hidden assumption that breaks on Tariq's essay?</p>
+      <div class="btnrow">
+        <button class="btn" style="text-align:left" onclick="answer('fb1',false,'','Tokenisation is just the input step: words to IDs. It works the same on human and machine text; the problem is downstream.')">That text can be split into tokens</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb1',true,'Exactly. Humans can be predictable too: deliberately plain writers, non-native speakers, anyone taught to keep it simple. Predictability is a property of the style, not proof of the author.','')">That humans always write unpredictable, surprising text</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb1',false,'','Length isn\'t the assumption being made here; short and long essays alike are scored on how predictable each next token is.')">That longer essays are more human</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb1',false,'','The detector never checks facts at all; it never even sees meaning, only token-by-token probabilities.')">That machines get facts wrong</button>
+      </div>
+      <span class="fb" id="fb1"></span>
+      <div class="labnote">Key idea: a detector measures a <i>signal that correlates</i> with machine text. Correlation is not authorship.</div>
+    </div>
+
+    <h2>The page as numbers</h2>
+    <p>Late that evening, Dev found the scanned copy of the flagged essay in the email: a photo of the printed page, Ms Okafor's red tick still visible in the corner. &ldquo;Even this,&rdquo; he said, &ldquo;is numbers to a computer. The photo is a grid of pixels, each pixel a number for its brightness. Your handwritten name at the top? To the machine it's a rectangle of values like <span class="num">[212, 40, 38, 197…]</span>.&rdquo;</p>
+    <p>&ldquo;Everything I wrote about her,&rdquo; said Tariq, &ldquo;turned into a spreadsheet.&rdquo; He didn't say it sadly, exactly. He said it the way you'd note down an opponent's weakness. &ldquo;Then the spreadsheet made a mistake. And spreadsheets can be checked.&rdquo;</p>
+    <p>It was the most he'd said in a week.</p>
+
+    <div class="take"><h3>What Dev and Tariq learned</h3>
+      <ul>
+        <li><b>Tokenisation:</b> text is split into tokens, each mapped to an ID number; the model never sees letters or meaning directly.</li>
+        <li><b>Perplexity-style detection:</b> the detector scores how <i>predictable</i> the text is, and calls low-surprise text &ldquo;machine-like&rdquo;.</li>
+        <li><b>The flaw:</b> plain, careful, honest prose (and non-native writing) is also low-surprise. The signal confuses a style with an author.</li>
+        <li><b>Images too:</b> even the scanned page is a grid of number-pixels. Everything the machine judges, it judges as numbers.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="ch2">
+    <div class="chero"><span class="big-emo">🧠</span><div><div class="ch-no">CHAPTER TWO</div><h1 style="font-size:30px;margin:0">How It &ldquo;Knows&rdquo;</h1><div class="th">Training data, embeddings, and a neighbourhood Tariq never chose</div></div></div>
+
+    <p>Ms Halloran taught computing, wore trainers with her blazer, and was the only teacher who hadn't looked at Tariq differently since the flag. When Dev asked her how a detector could be &ldquo;92% confident&rdquo; about something that wasn't true, she didn't give them an answer. She gave them a lunchtime, a whiteboard, and the detector company's own technical documentation.</p>
+
+    <div class="scene"><span class="who">Ms Halloran · computing room</span>
+      <p>&ldquo;Nobody sat down and programmed a rule that says <i>essays about mothers are fake</i>. That's not how this works. The detector was <b>trained</b>. Supervised learning: the company collected thousands of texts already labelled <i>human-written</i> or <i>AI-written</i>, showed them to the model, and let it adjust itself until its guesses matched the labels.&rdquo;</p>
+      <p>&ldquo;So it's only as good as those examples,&rdquo; said Tariq slowly.</p>
+      <p>&ldquo;Better,&rdquo; she said. &ldquo;It's only as good as how well <i>your writing</i> resembles those examples. Different question. Now find out what was in that training data.&rdquo;</p>
+    </div>
+
+    <p>They found it in the documentation's small print. The &ldquo;human&rdquo; pile: mostly published articles, blogs and university essays: fluent, adult, first-language English, full of flourishes. The &ldquo;AI&rdquo; pile: chatbot output (clear, even, simple sentences). Nowhere in either pile: a 14-year-old writing plainly about grief, in his second language, the way his mother taught him.</p>
+    <div class="box watch"><span class="bt">⚠️ The quiet problem</span>
+      A supervised model doesn't learn what's <i>true</i>. It learns the difference between its two piles of examples. If your honest writing happens to resemble the wrong pile, the model will sort you into it, confidently, because you look like what it was <i>shown</i>, not like what you <i>are</i>.
+    </div>
+
+    <h2>The map of words</h2>
+    <p>Then Dev found the diagram that made it click: an <b>embedding space</b>. Every word, every whole text, gets turned into a point on a huge map, placed so that similar things sit close together. &ldquo;King&rdquo; near &ldquo;queen&rdquo;. &ldquo;Happy&rdquo; near &ldquo;glad&rdquo;. And whole essays cluster by <i>style</i>: vocabulary, sentence rhythm, how predictable each next word is.</p>
+    <p>He drew it on Ms Halloran's whiteboard. One blob: the training pile of flowery human articles. Another blob: even, simple AI output. And a single X, Tariq's essay, sitting inside the second blob. Not because a machine wrote it. Because plain vocabulary, steady short sentences and careful grammar are <i>exactly</i> where chatbot text also happens to live.</p>
+
+    <div class="scene"><span class="who">Tariq · at the whiteboard</span>
+      <p>&ldquo;So on the map, my mother's way of writing... lives in the machine's neighbourhood.&rdquo;</p>
+      <p>&ldquo;Through no fault of yours,&rdquo; said Ms Halloran. &ldquo;The map is real: the styles genuinely are similar. The <i>mistake</i> is treating an address on a style map as evidence about who did the writing. Plenty of humans live at that address. Your mum, for one, by the sound of it.&rdquo;</p>
+      <p>Tariq picked up the marker and, very deliberately, drew a second X next to his, and wrote <i>Ammi</i> underneath. &ldquo;Then it flagged her too,&rdquo; he said. &ldquo;It's wrong about both of us.&rdquo;</p>
+    </div>
+
+    <div class="box glass"><span class="bt">🔬 Under the hood: embeddings</span>
+      An embedding turns each token or text into a list of numbers: coordinates. Distance on this map means <i>similarity of usage</i>, and directions can carry meaning (the arrow from &ldquo;king&rdquo; to &ldquo;queen&rdquo; is like the one from &ldquo;man&rdquo; to &ldquo;woman&rdquo;). It is brilliant for finding <i>similar</i> things, and useless, on its own, for proving <i>who made</i> a thing. Similarity is not identity.
+    </div>
+
+    <p>On the bus home, Tariq was quiet again, but it was a different quiet. The quiet of someone reading detector documentation on a cracked phone screen and taking notes.</p>
+    <p>&ldquo;Chapter three of the docs,&rdquo; he said suddenly. &ldquo;It says the detector is <i>95% accurate</i>. That sounds like a lot.&rdquo;</p>
+    <p>Dev looked over. &ldquo;You've got your maths face on.&rdquo;</p>
+    <p>&ldquo;Ninety-five per cent of <i>what</i>, though?&rdquo; said Tariq. &ldquo;That's the question. Tomorrow we do the numbers.&rdquo;</p>
+
+    <div class="take"><h3>What Dev and Tariq learned</h3>
+      <ul>
+        <li><b>Supervised learning:</b> the detector learned from thousands of texts labelled <i>human</i> or <i>AI</i>; it matches patterns in those piles, it doesn't know truth.</li>
+        <li><b>Training data has gaps:</b> young, plain-style and non-native writers were barely in the &ldquo;human&rdquo; pile, so their writing resembles the wrong pile.</li>
+        <li><b>Embeddings:</b> texts become points on a map where similar styles sit close together; Tariq's plain prose sits near typical AI output through no fault of his.</li>
+        <li><b>Similarity is not identity:</b> living in a neighbourhood on a style map proves nothing about who wrote the words.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="ch3">
+    <div class="chero"><span class="big-emo">📊</span><div><div class="ch-no">CHAPTER THREE</div><h1 style="font-size:30px;margin:0">The Numbers That Matter</h1><div class="th">Base rates, the confusion matrix, and 25 innocent faces</div></div></div>
+
+    <p>They took over the computing room at lunch. Tariq wrote <b>95% ACCURATE</b> on the whiteboard, then underlined <i>accurate</i> so hard the marker squeaked.</p>
+
+    <div class="scene"><span class="who">Tariq · marker in hand</span>
+      <p>&ldquo;First: the detector doesn't say yes or no. Underneath, it computes a <b>score</b>: it weighs up its signals, adds them together, and if the total crosses a <b>threshold</b>, it fires: <i>flagged</i>. Like a single neuron: weighted sum in, decision out. Our 92% is just how far past the threshold my essay landed.&rdquo;</p>
+      <p>&ldquo;So 92% isn't <i>92% chance you cheated</i>?&rdquo; asked Dev.</p>
+      <p>&ldquo;No. It's the machine's internal enthusiasm. Whether the flag is likely to be <i>right</i> depends on something the score doesn't show you at all.&rdquo; He wrote two words: <b>BASE RATE</b>.</p>
+    </div>
+
+    <p>Here was the whole trick, the thing nobody at the school had done: <b>every test result has four possible fates</b>, and you have to count all four. They drew the table, the <b>confusion matrix</b>, for their school's actual situation. Year 9's spring essays: <span class="num">520</span> in total. Suppose, generously, <span class="num">20</span> really were machine-written and <span class="num">500</span> were honest.</p>
+    <p>The documentation gave the detector's real performance: it catches <b>90%</b> of genuinely AI-written texts, and wrongly flags <b>5%</b> of genuinely human ones. That second number is what &ldquo;95% accurate on human writing&rdquo; hides.</p>
+
+    <table class="mtx">
+      <tr><th></th><th>Flagged 🚩</th><th>Not flagged</th></tr>
+      <tr><td><b>Actually AI-written (20)</b></td><td>18 &nbsp;<span style="color:var(--muted)">true positives</span></td><td>2 &nbsp;<span style="color:var(--muted)">false negatives</span></td></tr>
+      <tr><td><b>Actually honest (500)</b></td><td><span class="num">25</span> &nbsp;<span style="color:var(--muted)">FALSE positives</span></td><td>475 &nbsp;<span style="color:var(--muted)">true negatives</span></td></tr>
+    </table>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 2 · Place Tariq in the matrix</div>
+      <p style="margin-top:0">Tariq wrote every word of his essay himself, and the detector flagged it. Which cell of the confusion matrix is Tariq?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb3a',false,'','A true positive is an AI-written text correctly flagged. Tariq\'s essay wasn\'t AI-written; the flag is not correct.')">True positive</button>
+        <button class="btn" onclick="answer('fb3a',true,'Yes: honest work, wrongly flagged. A false positive. The whole story lives in this one cell, and Tariq is not alone in it.','')">False positive</button>
+        <button class="btn" onclick="answer('fb3a',false,'','A true negative is honest work correctly left alone. Tariq\'s essay was honest, but it was NOT left alone.')">True negative</button>
+        <button class="btn" onclick="answer('fb3a',false,'','A false negative is AI-written work the detector missed. That\'s the opposite corner from Tariq.')">False negative</button>
+      </div>
+      <span class="fb" id="fb3a"></span>
+    </div>
+
+    <h2>False positives have faces</h2>
+    <p>Dev stared at the table. &ldquo;Wait. Do the honest row again. Five hundred honest essays, and it wrongly flags five per cent...&rdquo;</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 3 · Count the innocent</div>
+      <p style="margin-top:0">500 students wrote their essays honestly. The detector wrongly flags 5% of honest work. How many innocent students get flagged?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb3b',false,'','That would be a 1% false-positive rate. This detector\'s is 5%: five in every hundred honest essays.')">5</button>
+        <button class="btn" onclick="answer('fb3b',true,'500 × 0.05 = 25. Twenty-five students accused of something they didn\'t do: an entire classroom of Tariqs, from one year group, in one school.','')">25</button>
+        <button class="btn" onclick="answer('fb3b',false,'','That\'s 19% of 500. The false-positive rate is 5%: 500 × 0.05.')">95</button>
+        <button class="btn" onclick="answer('fb3b',false,'','475 is the number of honest essays correctly left alone (the true negatives): the lucky ones.')">475</button>
+      </div>
+      <span class="fb" id="fb3b"></span>
+      <div class="labnote">Now the killer question: of all <b>43</b> flagged essays (18 + 25), how many flags point at a guilty essay? 18 ÷ 43 ≈ <b>42%</b>. When cheating is rare, most flags are wrong, even from a &ldquo;95% accurate&rdquo; tool. That's the base-rate trap.</div>
+    </div>
+
+    <div class="scene"><span class="who">Dev · very quietly</span>
+      <p>&ldquo;So when OriginalityGuard flags someone in our school... it's more likely to be wrong than right.&rdquo;</p>
+      <p>&ldquo;More likely to be <i>someone like me</i> than a cheat,&rdquo; said Tariq. &ldquo;Twenty-five of us, if everyone's honest and the school just believes the flags.&rdquo; He capped the marker. &ldquo;Ninety-two per cent confident. Forty-two per cent likely. Those are different numbers, Dev. And they made me stop talking over the wrong one.&rdquo;</p>
+    </div>
+
+    <div class="box watch"><span class="bt">⚠️ Be fair to the machine</span>
+      None of this means the detector is useless or &ldquo;always wrong&rdquo;. It genuinely catches most machine-written text, and a flag is a reasonable <i>signal to look closer</i>. The failure isn't the tool; it's treating a screening score as a verdict, without base rates, without reading the work, without asking the student. Confidence is not proof.
+    </div>
+
+    <div class="take"><h3>What Dev and Tariq learned</h3>
+      <ul>
+        <li><b>Score + threshold:</b> underneath, the detector computes a weighted score and &ldquo;fires&rdquo; when it crosses a threshold, like a single neuron. 92% is enthusiasm, not evidence.</li>
+        <li><b>Confusion matrix:</b> every result is a TP, FP, TN or FN. You must count all four cells.</li>
+        <li><b>Base rates:</b> when real cheating is rare, false positives outnumber true ones: 25 innocent vs 18 guilty flags, so a flag is right only ~42% of the time here.</li>
+        <li><b>False positives have faces:</b> &ldquo;5%&rdquo; is an abstraction; twenty-five wrongly accused classmates are not.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="ch4">
+    <div class="chero"><span class="big-emo">🧾</span><div><div class="ch-no">CHAPTER FOUR</div><h1 style="font-size:30px;margin:0">Building the Counter-Case</h1><div class="th">Bigram fingerprints, fooling the detector, drafting the appeal</div></div></div>
+
+    <p>Understanding why the machine was wrong wasn't enough. They needed <b>positive evidence</b> that Tariq wrote the essay, and Tariq, it turned out, had years of it. Journals. His mother had made him keep one since he was nine: a few plain sentences every night, in the same steady voice.</p>
+    <p>&ldquo;Language models predict the next token from the ones before it,&rdquo; said Dev, flicking through a 2023 notebook. &ldquo;The simplest version just counts <b>bigrams</b>: which word follows which. So people leave fingerprints. Your journals and your essay should share the same word-pairs, over and over. Let's count.&rdquo;</p>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 4 · Count the bigrams</div>
+      <p style="margin-top:0">Take the essay's key sentence, tokenised as 6 words: <i>&ldquo;plain · words · are · not · empty · words&rdquo;</i>. A bigram is each pair of neighbouring words. How many bigrams does this sentence contain?</p>
+      <div class="btnrow">
+        <button class="btn" onclick="answer('fb4',false,'','Close. Count the gaps between neighbours: words 1–2, 2–3, 3–4, 4–5, 5–6. That\'s one more than 4.')">4</button>
+        <button class="btn" onclick="answer('fb4',true,'Right: 6 words have 5 neighbouring pairs, always one fewer than the word count. (plain,words) (words,are) (are,not) (not,empty) (empty,words).','')">5</button>
+        <button class="btn" onclick="answer('fb4',false,'','Six is the number of words. Pairs of neighbours are always one fewer: n − 1.')">6</button>
+        <button class="btn" onclick="answer('fb4',false,'','30 would be every possible ordered pair of the 6 words, but bigrams only use NEIGHBOURING words, in order.')">30</button>
+      </div>
+      <span class="fb" id="fb4"></span>
+      <div class="labnote">And there it was: <i>(plain, words)</i> and <i>(not, empty)</i> appear in Tariq's journals <b>years</b> before any chatbot could have &ldquo;generated&rdquo; them. His mother's phrase, in his nine-year-old handwriting.</div>
+    </div>
+
+    <p>Ms Halloran helped them turn the counting into code: five lines of Python that any teacher on the panel could run themselves:</p>
+
+    <div class="codewrap">
+      <div class="codebar"><span>fingerprint.py</span><button class="copy" onclick="copyCode(this)">copy</button></div>
+      <pre><code><span class="c"># A writing fingerprint: which word-pairs (bigrams) does an author reuse?</span>
+<span class="k">def</span> <span class="n">bigrams</span>(text):
+    words = text.lower().split()
+    <span class="k">return</span> {(words[i], words[i+1]) <span class="k">for</span> i <span class="k">in</span> range(len(words) - 1)}
+
+journal = <span class="s">"plain words are not empty words she told me"</span>   <span class="c"># journal, age 11</span>
+essay   = <span class="s">"plain words are not empty words they are the ones you mean"</span>
+
+shared = bigrams(journal) &amp; bigrams(essay)
+print(<span class="s">"shared pairs:"</span>, len(shared), <span class="s">"of"</span>, len(bigrams(journal)))  <span class="c"># 5 of 8</span></code></pre>
+    </div>
+
+    <p>Across twelve journal entries and the flagged essay, the overlap was unmistakable: the same plain pairs, the same rhythm, a voice with a history. A chatbot has no childhood. Tariq's sentences did.</p>
+
+    <h2>Fooling it both ways</h2>
+    <p>Then came the demonstration that would end any argument. Dev opened a chatbot and used a proper prompt: role, task, examples. First, <b>few-shot prompting</b>: he pasted three genuine paragraphs of nervous, short-sentenced Year 9 writing as examples and asked for a fourth in the same style. OriginalityGuard's verdict on the machine's output: <span class="num">Likely human: 96%</span>.</p>
+    <p>Then the reverse. Dev wrote a paragraph himself, live, on paper first so there could be no doubt, writing slowly and carefully, every sentence plain and simple, the way you'd write to someone you love. He typed it in. OriginalityGuard's verdict on Dev's own fresh words: <span class="num">Likely AI: 88%</span>.</p>
+    <div class="box glass"><span class="bt">🔬 Under the hood: why the demo works</span>
+      Few-shot examples steer a language model's style hard: show it three samples of &ldquo;surprising&rdquo; human-messy text and it produces high-perplexity output that sails past the detector. Meanwhile any human who writes carefully and plainly drifts towards low perplexity and gets flagged. The detector is measuring a <b>style dial</b> that both humans and machines can turn, in either direction.
+    </div>
+
+    <div class="scene"><span class="who">Tariq · closing the laptop</span>
+      <p>&ldquo;So a cheat with ten minutes and three examples walks free, and I get flagged for writing the way Ammi taught me. It's not just wrong about me. It's wrong in <i>both directions</i>.&rdquo;</p>
+      <p>&ldquo;Which is exactly what we tell the panel,&rdquo; said Dev. &ldquo;Nicely. In writing. Tonight.&rdquo;</p>
+    </div>
+
+    <h2>The appeal: a human process for a machine mistake</h2>
+    <p>They drafted it together at Dev's kitchen table. Not an angry letter: a <i>procedure</i>, the kind adults could adopt. It asked for three things: a named human who <b>reads the flagged work</b> before anything else happens; a chance for the student to <b>talk about the work</b>: where it came from, show drafts, answer questions; and a rule that <b>no consequence follows from a score alone</b>. Attached: the confusion-matrix maths, the journal fingerprints, and the both-directions demo.</p>
+    <p>Tariq wrote the last line himself, and read it aloud to check it, the first full sentence Dev had heard him volunteer in two weeks:</p>
+    <div class="essay"><span class="who">From the appeal</span>
+      &ldquo;We are not asking the school to distrust the machine. We are asking the school to trust it exactly as much as the maths says, and to remember that behind every flag there is a person who deserves a reader before a verdict.&rdquo;
+    </div>
+
+    <div class="take"><h3>What Dev and Tariq learned</h3>
+      <ul>
+        <li><b>Bigram models:</b> the simplest language model counts which word follows which, and those counts double as a writer's fingerprint (n words → n−1 bigrams).</li>
+        <li><b>Evidence beats assertion:</b> journals from years before the flag share the essay's exact word-pairs. Provenance is proof a score can't offer.</li>
+        <li><b>Few-shot prompting:</b> examples in a prompt steer style, enough to make machine text pass as human, while careful human text gets flagged. The detector errs in both directions.</li>
+        <li><b>Appeals are design:</b> a fair process names a human reader, hears the student, and never punishes on a score alone.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="ch5">
+    <div class="chero"><span class="big-emo">⚖️</span><div><div class="ch-no">CHAPTER FIVE</div><h1 style="font-size:30px;margin:0">The Hearing</h1><div class="th">A human loop for a machine mistake, and a voice comes back</div></div></div>
+
+    <p>The panel met on a Thursday after school: Ms Okafor, the deputy head Mr Bryce, and Ms Halloran with her laptop and a carefully neutral face. Two chairs had been set out for the boys. Tariq had brought the journals in a supermarket bag; Dev had brought the maths, printed twice, in case someone spilled tea on the first copy.</p>
+
+    <div class="fork" id="fork5">
+      <span class="bt">🔀 Story choice: who opens?</span>
+      <p style="margin:0 0 4px">Mr Bryce folds his hands: &ldquo;Well, gentlemen. Who's going to start?&rdquo;</p>
+      <div class="btnrow">
+        <button class="btn" onclick="fork('fork5','f5a')">Dev opens: Tariq shouldn't have to defend his grief</button>
+        <button class="btn" onclick="fork('fork5','f5b')">Tariq opens: it's his name, and his voice to take back</button>
+      </div>
+      <div class="forkpath" id="f5a"><p>Dev stands, and starts with the number everyone in the room trusts: &ldquo;Ninety-two per cent. Let me show you what that number actually measures, and what it can't.&rdquo; He walks them through it, and when he reaches the journals he simply turns to his friend. Tariq takes over without being asked, voice low but steady, and does not stop.</p></div>
+      <div class="forkpath" id="f5b"><p>Tariq stands. It takes him a moment. &ldquo;I haven't said much lately,&rdquo; he begins, &ldquo;because a machine said my words weren't mine. So I'd like to show you what it actually measured.&rdquo; Dev feeds him the printouts one by one, grinning like a stagehand, and Tariq's voice grows steadier with every page.</p></div>
+    </div>
+
+    <p>They gave the panel everything, in order. What the detector reads (numbers, not meaning). What it learned from (piles it was shown, not truth). What 95% accurate really produces in a school of honest students (twenty-five false accusations, and flags that are right less than half the time). The journals, with <i>(plain, words)</i> and <i>(not, empty)</i> in a nine-year-old's handwriting. And the demonstration: machine text passing as human, Dev's own fresh sentences flagged as machine.</p>
+    <p>Ms Okafor read the essay again, slowly, next to the 2021 journal. When she looked up, she took off her glasses. &ldquo;I should have done this on day one,&rdquo; she said. &ldquo;Read them side by side. It's the same boy on every page.&rdquo;</p>
+
+    <h2>How the school should use the tool</h2>
+    <p>Mr Bryce asked the fair question: &ldquo;So do we bin the software?&rdquo; And this was the part Dev was proudest of, because their answer was <i>no</i>. They proposed running the detector the way a well-designed <b>agent loop</b> runs (sense, think, act, with a human where it matters):</p>
+    <div class="box glass"><span class="bt">🔄 The loop: flag → human reads → talk to the student</span>
+      <b>Sense:</b> the detector screens essays and raises flags; that's all a flag is, a sensor reading.<br>
+      <b>Think:</b> a named teacher <i>reads</i> the flagged work against the student's past writing, the judgement step machines don't get to do.<br>
+      <b>Act:</b> a conversation with the student (drafts, questions, context) before any decision.<br>
+      The tool call (the detector) belongs in the <i>sense</i> step. The moment it was being used as the <i>act</i> step (score straight to accusation), the loop was broken by design.
+    </div>
+
+    <div class="lab">
+      <div class="labhead">Checkpoint 5 · Design the policy</div>
+      <p style="margin-top:0">The panel asks: &ldquo;What should our policy actually say?&rdquo; Which design is right?</p>
+      <div class="btnrow">
+        <button class="btn" style="text-align:left" onclick="answer('fb5',false,'','That repeats the original mistake with a bigger number. Thresholds move the errors around; they can\'t remove false positives, and a score alone still isn\'t proof.')">Scores above 95% mean an automatic zero: the tool decides</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb5',false,'','Overcorrection. The detector genuinely catches most machine-written text; as a screening signal it has real value. The fix is where it sits in the process, not whether it exists.')">Delete the detector and never check anything again</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb5',true,'Yes. Flag → human reads → talk to the student: the detector senses, a person judges, a conversation decides. No consequence without a human who has read the work.','')">A flag only starts a process: a teacher reads the work, then talks with the student; no consequence from a score alone</button>
+        <button class="btn" style="text-align:left" onclick="answer('fb5',false,'','Two detectors trained on similar data share similar blind spots; Tariq\'s plain style would trip both. Averaging correlated errors isn\'t oversight; a human reader is.')">Run every essay through a second detector and average the scores</button>
+      </div>
+      <span class="fb" id="fb5"></span>
+    </div>
+
+    <p>The school adopted it in a week, one line at the top of the policy, in bold: <b>&ldquo;No consequence without a human who has read the work.&rdquo;</b> Tariq's flag was withdrawn, with a written apology. Ms Halloran got the false-positive maths added to the Year 9 scheme of work, which she called &ldquo;the only good thing a 92 ever did.&rdquo;</p>
+
+    <h2>Assembly</h2>
+    <p>Two weeks later, Ms Okafor asked Tariq to read the essay at year assembly. He said no. Then he thought about it for a day, and said yes: &ldquo;but only the real one. No edits.&rdquo;</p>
+    <p>He stood at the front with a single sheet of paper, and read about his mother in the plainest words in the world. How she checked his journal every night without ever reading it unless invited. How she said fancy sentences were for hiding, and plain ones were for meaning. How the last thing she taught him wasn't a sentence at all.</p>
+    <div class="essay"><span class="who">Tariq · at the microphone</span>
+      &ldquo;My mother said plain words are not empty words. A machine read my plain words and decided no person was in them. It was wrong. She is in every one of them. She is the reason they are plain.&rdquo;
+    </div>
+    <p>The hall was silent: the proper kind, the kind you can stand in the middle of and not drown. Then it wasn't silent at all.</p>
+    <p>From the back row, Dev grinned and clapped until his hands hurt. Because that was the thing no detector would ever have a token for: he hadn't defended an essay. He'd defended the person his friend's mother had made, and a number, however confident, was never going to be allowed to redefine his friend.</p>
+
+    <div class="take"><h3>What Dev and Tariq learned</h3>
+      <ul>
+        <li><b>Sense → think → act:</b> a detector is a sensor, not a judge; tool calls belong in the sensing step, humans in the judgement step.</li>
+        <li><b>Confident ≠ correct:</b> models optimise for a signal, not truth; a bold score can be plausibly, fluently wrong.</li>
+        <li><b>Safeguards are design choices:</b> human oversight, an appeal route and reading the actual work aren't extras; they're the system working as intended.</li>
+        <li><b>What friendship is for:</b> refusing to let a number redefine someone you know, and learning enough about the number to prove it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FINISH -->
+  <div class="finish">
+    <div class="medal">🏅</div>
+    <h2 style="margin-top:6px">The End</h2>
+    <p style="max-width:52ch;margin:10px auto 0">A score is not a verdict. A friend is not a probability. And plain words are not empty words.</p>
+    <a class="startbtn" href="#contents" style="font-size:16px;padding:11px 20px">Back to contents ↑</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · Fix the Robot · Upper Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--amber:#E8920C;--deep:#9a6402;--coral:#FF6A5A;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1F0E;--cream:#FFFAF0;--line:#fdeccb}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:900px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7c6134;margin-top:4px;max-width:62ch;margin-left:auto;margin-right:auto}
+  main{max-width:900px;margin:12px auto 60px;padding:0 18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:16px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:19px;margin:0 0 6px}
+  .hint{font-size:13.5px;color:#7c6134;margin:0 0 14px}
+  .lvltabs{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .lvltab{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;border:2px solid var(--line);background:#fff;color:var(--deep);border-radius:999px;padding:9px 18px;cursor:pointer}
+  .lvltab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .lvltab.done::after{content:' ✔';color:#1f8a4c}
+  .lvltab.on.done::after{color:#8ef0b0}
+  .tests{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+  .test{background:#FFFaF3;border:2px solid var(--line);border-radius:16px;padding:10px 12px;text-align:center;min-width:104px}
+  .test .em{font-size:34px}
+  .test .g{font-family:'Fredoka',sans-serif;font-weight:600;font-size:13.5px;margin-top:3px}
+  .test .v{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;margin-top:2px}
+  .test.ok{border-color:#1f8a4c;background:#e9f7ee}.test.ok .v{color:#1f8a4c}
+  .test.bad{border-color:#d6336c;background:#fdeaef}.test.bad .v{color:#d6336c}
+  .dataset{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin-top:8px}
+  .ex{background:#FFF4DE;border:2px solid var(--line);border-radius:14px;padding:9px 8px;text-align:center;cursor:pointer;transition:transform .12s}
+  .ex:hover{transform:translateY(-2px);border-color:var(--violet)}
+  .ex .em{font-size:30px}
+  .ex .lab{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;margin-top:4px;padding:3px 8px;border-radius:999px;background:#fff;display:inline-block;color:var(--deep)}
+  .ex.fixed{border-color:#1f8a4c;background:#eef9f1}
+  .ex.added{border-color:var(--teal);background:#e6fbfa}
+  .drawer{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .drawer .ex{min-width:96px}
+  .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:11px 22px;cursor:pointer;color:#fff;background:var(--amber)}
+  .btn.teal{background:var(--teal)} .btn:hover{filter:brightness(.95)}
+  .fb{min-height:26px;text-align:center;font-weight:600;font-size:15px;margin-top:10px}
+  .fb.ok{color:#1f8a4c}.fb.no{color:#d6336c}
+  .note{margin-top:12px;font-size:13.5px;background:#FFF4DE;border:1px dashed #f0cf92;border-radius:12px;padding:10px 14px;color:#7c5a12;font-weight:500}
+  footer{max-width:900px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🔧 Fix the Robot</h1>
+  <div class="sub">Robo keeps getting things wrong, but Robo isn't broken. <b>Its training data is.</b> Be the data detective: find the problem in the dataset, fix it, retrain, and watch the tests pass.</div>
+  <div class="lvltabs">
+    <button class="lvltab on" id="lt0" onclick="setLevel(0)">Level 1 · Wrong labels</button>
+    <button class="lvltab" id="lt1" onclick="setLevel(1)">Level 2 · One-sided data</button>
+  </div>
+</header>
+<main>
+
+  <div class="card" style="border-top:6px solid var(--coral)">
+    <h2>🤖 Robo's test results</h2>
+    <p class="hint" id="testHint"></p>
+    <div class="tests" id="tests"></div>
+    <div class="fb" id="fb"></div>
+  </div>
+
+  <div class="card" style="border-top:6px solid var(--teal)">
+    <h2 id="dsTitle">🗂️ The training data</h2>
+    <p class="hint" id="dsHint"></p>
+    <div class="dataset" id="dataset"></div>
+    <div id="drawerWrap" style="display:none">
+      <p class="hint" style="margin-top:16px">📥 <b>Photo drawer</b>: tap photos to ADD them to the training data (choose wisely: only variety helps!):</p>
+      <div class="drawer" id="drawer"></div>
+    </div>
+    <div class="row"><button class="btn teal" onclick="retrain()">⚙️ Retrain Robo!</button></div>
+    <div class="note" id="lesson"></div>
+  </div>
+
+</main>
+<footer>
+  <a class="link" href="priup-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="priup-play-prompt-duel.html">🗣️ Prompt Duel</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+/* ---------- Level definitions ---------- */
+const L1={
+  hint:'Robo learned "cat vs dog" from the dataset below. Look at its test results: something in the training data taught it WRONG. Tap a training card to flip its label.',
+  dsHint:'Tap a card to flip its label between CAT and DOG. Find the mislabelled ones!',
+  data:[
+    {e:'🐱',true_g:'cat',label:'cat'},{e:'🐶',true_g:'dog',label:'dog'},
+    {e:'🐈',true_g:'cat',label:'cat'},{e:'🐕',true_g:'dog',label:'cat'},
+    {e:'🐈‍⬛',true_g:'cat',label:'cat'},{e:'🦮',true_g:'dog',label:'dog'},
+    {e:'🐩',true_g:'dog',label:'cat'},{e:'🐱',true_g:'cat',label:'cat'},
+  ],
+  tests:[{e:'🐶',want:'dog'},{e:'🐩',want:'dog'},{e:'🐱',want:'cat'},{e:'🐕',want:'dog'}],
+  lesson:'💡 Robo copies its data. Two dogs were labelled "cat", so Robo learned that some dogs ARE cats. Fixing the <b>labels</b>, not the robot, fixes the answers. Data quality beats clever code!',
+};
+const L2={
+  hint:'Robo learned "cat" only from photos of ORANGE cats. Now look who fails the tests… Fix it by ADDING variety from the photo drawer.',
+  dsHint:'This dataset is one-sided (skewed): every cat is orange! You can\'t flip labels here; you need MORE VARIED examples.',
+  data:[
+    {e:'🐱',true_g:'cat',label:'cat',locked:true},{e:'🐱',true_g:'cat',label:'cat',locked:true},
+    {e:'🐱',true_g:'cat',label:'cat',locked:true},{e:'🐶',true_g:'dog',label:'dog',locked:true},
+    {e:'🐕',true_g:'dog',label:'dog',locked:true},{e:'🦮',true_g:'dog',label:'dog',locked:true},
+  ],
+  drawer:[
+    {e:'🐈‍⬛',g:'cat',helps:true,n:'black cat'},{e:'🐱',g:'cat',helps:false,n:'another orange cat'},
+    {e:'🐈',g:'cat',helps:true,n:'grey tabby'},{e:'🐶',g:'dog',helps:false,n:'another dog'},
+    {e:'😺',g:'cat',helps:true,n:'white cat'},{e:'🐱',g:'cat',helps:false,n:'orange cat again'},
+  ],
+  tests:[{e:'🐱',want:'cat'},{e:'🐈‍⬛',want:'cat'},{e:'🐈',want:'cat'},{e:'🐶',want:'dog'}],
+  lesson:'💡 Nothing was mislabelled. The data was <b>one-sided</b>. Robo had never seen a black or grey cat, so it failed on them. Adding more orange cats doesn\'t help; only <b>variety</b> does. This is why skewed data makes unfair AI!',
+};
+let level=0, D=null, added=[], solvedFlags=[false,false];
+function setLevel(l){
+  level=l; added=[];
+  D = l===0? JSON.parse(JSON.stringify(L1)) : JSON.parse(JSON.stringify(L2));
+  document.getElementById('lt0').classList.toggle('on',l===0);
+  document.getElementById('lt1').classList.toggle('on',l===1);
+  document.getElementById('testHint').textContent=D.hint;
+  document.getElementById('dsHint').textContent=D.dsHint;
+  document.getElementById('lesson').textContent='Fix the data, press Retrain, and the lesson appears here.';
+  document.getElementById('drawerWrap').style.display= l===1?'block':'none';
+  document.getElementById('fb').textContent='';
+  renderData(); if(l===1) renderDrawer();
+  runTests(false);
+}
+function renderData(){
+  document.getElementById('dataset').innerHTML=D.data.map((d,i)=>{
+    const fixed = !d.locked && d.label===d.true_g && d.was_flipped;
+    return '<div class="ex'+(fixed?' fixed':'')+(d.added?' added':'')+'" onclick="flip('+i+')"><div class="em">'+d.e+'</div><div class="lab">'+d.label.toUpperCase()+'</div></div>';
+  }).join('');
+}
+function flip(i){
+  const d=D.data[i];
+  if(d.locked||d.added) return;
+  d.label = d.label==='cat'?'dog':'cat';
+  d.was_flipped = true;
+  renderData();
+}
+function renderDrawer(){
+  document.getElementById('drawer').innerHTML=D.drawer.map((p,i)=>
+    added.includes(i)? '' :
+    '<div class="ex" onclick="addPhoto('+i+')"><div class="em">'+p.e+'</div><div class="lab">'+p.n+'</div></div>'
+  ).join('');
+}
+function addPhoto(i){
+  if(added.includes(i)) return;
+  added.push(i);
+  const p=D.drawer[i];
+  D.data.push({e:p.e,true_g:p.g,label:p.g,locked:true,added:true,helps:p.helps});
+  renderData(); renderDrawer();
+}
+function solved(){
+  if(level===0) return D.data.every(d=>d.label===d.true_g);
+  const helpCount=D.data.filter(d=>d.added&&d.helps).length;
+  return helpCount>=2;
+}
+function runTests(afterRetrain){
+  const ok=solved();
+  document.getElementById('tests').innerHTML=D.tests.map(t=>{
+    let pass;
+    if(level===0){
+      /* mislabelled dogs poison the "dog" concept: cat tests pass, dog tests fail */
+      const mislabeled=!D.data.every(d=>d.label===d.true_g);
+      pass = !mislabeled || t.want==='cat';
+    } else {
+      /* skew: common looks pass; unusual cats need >=2 varied examples added */
+      const helpCount=D.data.filter(d=>d.added&&d.helps).length;
+      pass = (t.e==='🐱'||t.e==='🐶')? true : helpCount>=2;
+    }
+    const guess= pass? t.want : (t.want==='cat'?'dog':'cat');
+    return '<div class="test '+(pass?'ok':'bad')+'"><div class="em">'+t.e+'</div><div class="g">Robo says: “'+guess+'”</div><div class="v">'+(pass?'✔ PASS':'✘ FAIL')+'</div></div>';
+  }).join('');
+  const fb=document.getElementById('fb');
+  if(!afterRetrain){ fb.textContent=''; return; }
+  if(ok){
+    fb.className='fb ok'; fb.textContent='🎉 All tests pass! You fixed Robo by fixing its DATA.';
+    document.getElementById('lesson').innerHTML=D.lesson;
+    solvedFlags[level]=true;
+    document.getElementById('lt'+level).classList.add('done');
+  } else {
+    fb.className='fb no';
+    fb.textContent= level===0? '🤔 Still failing. Compare each card\'s picture with its label: every card must be labelled truthfully.' :
+      '🤔 Still failing on unusual cats. Hint: adding more ORANGE cats or more dogs won\'t help. Add cats that look DIFFERENT.';
+  }
+}
+function retrain(){ runTests(true); }
+setLevel(0);
+</script>
+</body>
+</html>

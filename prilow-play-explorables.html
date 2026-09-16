@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IJAIO 2026 · How Scientists Explore · Lower Primary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  :root{--coral:#FF6A5A;--deep:#C23F33;--amber:#FFB23E;--teal:#16C4C0;--violet:#8E6BFF;--ink:#2A1714;--cream:#FFF6F2;--line:#ffe1da}
+  body{margin:0;font-family:'Spline Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
+  .bar{height:7px;background:linear-gradient(90deg,var(--coral),var(--amber),var(--teal),var(--violet))}
+  header{padding:24px 22px 8px;max-width:900px;margin:0 auto;text-align:center}
+  h1{font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,4vw,2.3rem);margin:0}
+  .sub{font-size:14.5px;color:#7a5a52;margin-top:4px}
+  main{max-width:900px;margin:10px auto 60px;padding:0 18px;display:flex;flex-direction:column;gap:18px}
+  .card{background:#fff;border:2px solid var(--line);border-radius:24px;padding:22px 24px}
+  h2{font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;margin:0 0 4px}
+  .hint{font-size:13.5px;color:#7a5a52;margin:0 0 16px}
+  .sliderrow{display:flex;align-items:center;gap:14px;margin:8px 0 16px}
+  .sliderrow .end{font-family:'Fredoka',sans-serif;font-weight:600;font-size:14px;white-space:nowrap}
+  input[type=range]{flex:1;accent-color:var(--violet);height:32px;cursor:pointer}
+  .story{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:64px;align-items:center}
+  .word{font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(16px,3vw,22px);background:#FFFaF8;border:2px solid var(--line);border-radius:14px;padding:9px 14px}
+  .word.hot{border-color:var(--violet);background:#efe9ff}
+  .row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+  .btn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:10px 20px;cursor:pointer;color:#fff;background:var(--violet)}
+  .btn:hover{filter:brightness(.94)}
+  .note{margin-top:14px;font-size:13.5px;background:#FFF1ED;border:1px dashed #ffc4b9;border-radius:12px;padding:9px 13px;color:#7a3d32;text-align:center;font-weight:500}
+  /* toy B */
+  .pets{display:flex;gap:8px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+  .guess{width:74px;padding:9px 4px;border-radius:14px;border:2px solid var(--line);background:#FFFaF8;text-align:center}
+  .guess .em{font-size:30px}
+  .guess .verdict{font-family:'Space Mono',monospace;font-weight:700;font-size:11px;margin-top:3px}
+  .guess.right{border-color:#1f8a4c;background:#e9f7ee}.guess.right .verdict{color:#1f8a4c}
+  .guess.wrong{border-color:#d6336c;background:#fdeaef}.guess.wrong .verdict{color:#d6336c}
+  .meter{background:#f3e4df;border-radius:999px;height:22px;overflow:hidden;max-width:420px;margin:0 auto}
+  .meter .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--coral),var(--teal));display:flex;align-items:center;justify-content:flex-end;padding-right:9px;color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;transition:width .4s ease}
+  .album{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:10px 0;min-height:30px}
+  .album span{font-size:22px}
+  footer{max-width:900px;margin:0 auto 40px;padding:0 18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+  a.link{font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;color:var(--deep);background:#fff;border:2px solid var(--line);border-radius:999px;padding:9px 16px;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<header>
+  <h1>🎛️ How Scientists Explore</h1>
+  <div class="sub">No quiz, no score: just move a slider and <b>see what happens</b>. That's how scientists explore!</div>
+</header>
+<main>
+
+  <div class="card" style="border-top:6px solid var(--violet)">
+    <h2>🎲 The Silly Story Dial</h2>
+    <p class="hint">A story machine picks the next word. The dial controls how it picks: <b>Sensible</b> = always the most likely word. <b>Silly</b> = surprising words! Real generative AI has a dial just like this.</p>
+    <div class="sliderrow">
+      <span class="end">😌 Sensible</span>
+      <input type="range" id="dial" min="0" max="100" value="0" oninput="spin()">
+      <span class="end">🤪 Silly</span>
+    </div>
+    <div class="story" id="story"></div>
+    <div class="row"><button class="btn" onclick="spin()">🎲 Tell me another!</button></div>
+    <div class="note" id="dialNote"></div>
+  </div>
+
+  <div class="card" style="border-top:6px solid var(--teal)">
+    <h2>📸 More Examples, Better Guesses</h2>
+    <p class="hint">Robo the robot is learning what a <b>cat</b> looks like. Slide to show it more cat photos, then watch it guess on 6 new animals.</p>
+    <div class="sliderrow">
+      <span class="end">1 photo</span>
+      <input type="range" id="exSlider" min="1" max="20" value="1" oninput="retrain()">
+      <span class="end">20 photos</span>
+    </div>
+    <div class="album" id="album"></div>
+    <div class="meter"><div class="fill" id="accFill" style="width:20%">20%</div></div>
+    <div class="pets" id="guesses"></div>
+    <div class="note" id="exNote"></div>
+  </div>
+
+</main>
+<footer>
+  <a class="link" href="prilow-lab.html">🧪 Practice Lab</a>
+  <a class="link" href="prilow-play-robo-pet.html">🤖 Robo-Pet Trainer</a>
+  <a class="link" href="overview.html">🏠 IJAIO overview</a>
+</footer>
+
+<script>
+/* ---------- Toy A: Silly Story Dial ---------- */
+/* word pools ordered from most likely to most surprising */
+const POOLS=[
+  ['The',['The','A','One','Yesterday a','Suddenly a']],
+  ['animal',['cat','dog','bunny','dinosaur','robot','banana']],
+  ['action',['sleeps','plays','jumps','sings','flies','dances backwards']],
+  ['place',['at home.','in the garden.','at school.','on the moon.','inside a teapot.','under a rainbow.']],
+];
+function pickIdx(t,n){
+  /* t 0..1 : 0 always index 0; 1 uniform-random */
+  if(Math.random()>t) return 0;
+  return Math.floor(Math.random()*n);
+}
+function spin(){
+  const t=document.getElementById('dial').value/100;
+  const host=document.getElementById('story'); host.innerHTML='';
+  POOLS.forEach(([_,pool])=>{
+    const i=pickIdx(t,pool.length);
+    const w=document.createElement('span');
+    w.className='word'+(i>1?' hot':''); w.textContent=pool[i];
+    host.appendChild(w);
+  });
+  const note=document.getElementById('dialNote');
+  if(t<.15) note.textContent='Dial low → the machine picks the MOST LIKELY words. Safe, sensible… and always the same!';
+  else if(t<.6) note.textContent='Dial in the middle → mostly likely words with a few surprises. Purple words are the surprising picks!';
+  else note.textContent='Dial high → the machine takes big chances. Fun and silly, but it can stop making sense!';
+}
+/* ---------- Toy B: More Examples ---------- */
+const TESTS=[{e:'🐱',cat:true},{e:'🐈',cat:true},{e:'🐶',cat:false},{e:'🐈‍⬛',cat:true},{e:'🦊',cat:false},{e:'🐰',cat:false}];
+function retrain(){
+  const n=+document.getElementById('exSlider').value;
+  const acc=Math.min(95,15+n*4);
+  document.getElementById('album').innerHTML='🐱'.repeat(n).split('').map(c=>'<span>'+c+'</span>').join('');
+  const f=document.getElementById('accFill'); f.style.width=acc+'%'; f.textContent=acc+'%';
+  /* deterministic: first k of 6 correct so sliding feels stable */
+  const k=Math.round(6*acc/100);
+  document.getElementById('guesses').innerHTML=TESTS.map((tst,i)=>{
+    const right=i<k;
+    const guessCat= right? tst.cat : !tst.cat;
+    return '<div class="guess '+(right?'right':'wrong')+'"><div class="em">'+tst.e+'</div><div>'+(guessCat?'“cat!”':'“not cat”')+'</div><div class="verdict">'+(right?'✔ right':'✘ wrong')+'</div></div>';
+  }).join('');
+  const note=document.getElementById('exNote');
+  if(n<4) note.textContent='With only '+n+' photo'+(n>1?'s':'')+', Robo is mostly guessing. It even calls a fox a cat!';
+  else if(n<12) note.textContent='Better! More examples are teaching Robo what makes a cat a cat.';
+  else note.textContent='Lots of examples → strong guesses. But look: even at '+acc+'%, Robo still is not perfect. AI never is!';
+}
+spin(); retrain();
+</script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meet Robo: How AI Agents Work (Grades 1–6)</title>
+<link rel="stylesheet" href="agentpri.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- SITE BREADCRUMB -->
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:2px 0 18px;font-size:13.5px">
+    <a href="overview.html" style="text-decoration:none;font-weight:700;color:#3a86ff">← IJAIO 2026 overview</a>
+    <span style="color:#b8c0cc">·</span>
+    <a href="basicspri.html" style="text-decoration:none;font-weight:600;color:#556">First principles of AI</a>
+    <span style="color:#b8c0cc">·</span>
+    <a href="basicspristory.html" style="text-decoration:none;font-weight:600;color:#556">Story</a>
+    <span style="color:#b8c0cc">·</span>
+    <a href="basicsprivisual.html" style="text-decoration:none;font-weight:600;color:#556">Poster</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <svg class="robo bob" viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg" aria-label="Robo the friendly agent">
+      <line x1="60" y1="8" x2="60" y2="22" stroke="#3a86ff" stroke-width="3"/>
+      <circle cx="60" cy="6" r="6" fill="#ffb703"/>
+      <rect x="22" y="22" width="76" height="62" rx="18" fill="#3a86ff"/>
+      <rect x="30" y="32" width="60" height="40" rx="12" fill="#eaf3ff"/>
+      <g class="blink" style="transform-origin:48px 52px"><circle cx="48" cy="52" r="7" fill="#2b2d42"/><circle cx="50" cy="50" r="2.5" fill="#fff"/></g>
+      <g class="blink" style="transform-origin:72px 52px"><circle cx="72" cy="52" r="7" fill="#2b2d42"/><circle cx="74" cy="50" r="2.5" fill="#fff"/></g>
+      <path d="M50 64 q10 8 20 0" stroke="#ff6b6b" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <rect x="34" y="88" width="52" height="34" rx="12" fill="#2ec4b6"/>
+      <rect x="14" y="92" width="14" height="24" rx="7" fill="#9b5de5"/>
+      <rect x="92" y="92" width="14" height="24" rx="7" fill="#9b5de5"/>
+      <circle cx="48" cy="105" r="4" fill="#fff"/><circle cx="72" cy="105" r="4" fill="#fff"/>
+    </svg>
+    <div>
+      <span class="tag">For young explorers · Grades 1–6</span>
+      <h1>Meet <span class="hl">Robo</span>,<br>the helper that uses <span class="hl">tools</span>!</h1>
+      <p>An AI agent is a smart helper that can pick up the right tool to answer your question or do a job. Let's learn how Robo thinks! 🚀</p>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#l1"><span class="nb">1</span>What is an agent?</a>
+    <a href="#l2"><span class="nb">2</span>Brain &amp; tools</a>
+    <a href="#l3"><span class="nb">3</span>Tools</a>
+    <a href="#l4"><span class="nb">4</span>The loop</a>
+    <a href="#l5"><span class="nb">5</span>Recipe</a>
+    <a href="#l6"><span class="nb">6</span>Try it!</a>
+    <a href="#l7"><span class="nb">★</span>Quiz</a>
+  </nav>
+
+  <!-- LESSON 1 -->
+  <section id="l1">
+    <span class="lessontag">Lesson 1</span>
+    <h2>What is an agent?</h2>
+    <p class="lead">An agent is a smart helper that can <em>use tools</em> to get things done.</p>
+    <p>Imagine a clever robot named Robo. Robo has learned a LOT and can answer many questions all by itself, like “What color do you get when you mix blue and yellow?” 🟢</p>
+    <p>But some things Robo just <b>can't</b> know from memory, like the weather <b>today</b> in your city, or how many books are in the library <b>right now</b>. Those things change all the time!</p>
+    <p>So Robo uses <span class="big-word">tools</span>: special gadgets that go and fetch fresh answers or do real jobs. A helper that can use tools like this is called an <b>agent</b>. That's the big idea! 🎉</p>
+  </section>
+
+  <!-- LESSON 2 -->
+  <section id="l2">
+    <span class="lessontag s2">Lesson 2</span>
+    <h2>A clever brain <em>and</em> handy tools</h2>
+    <p class="lead">Robo has a thinking brain. Tools help the brain reach the real world.</p>
+    <div class="split">
+      <div class="mini brain">
+        <h3><span class="ic" style="background:var(--grape)">🧠</span> The brain</h3>
+        <p>Knows lots from learning: words, stories, colors, simple maths, ideas. Great for thinking and explaining!</p>
+      </div>
+      <div class="mini tool">
+        <h3><span class="ic" style="background:var(--mint)">🛠️</span> The tools</h3>
+        <p>Go and DO things: check today's weather, count library books, add big numbers, send a message. Great for fresh facts and real jobs!</p>
+      </div>
+    </div>
+    <p style="margin-top:6px"><b>Your turn!</b> Tap a question, then tap where it belongs. Does Robo just <b>think</b>, or does it need a <b>tool</b>?</p>
+
+    <div class="game-board">
+      <div class="zone brain" data-zone="think"><h4>🧠 Just thinking</h4><div class="chips" id="zThink"></div></div>
+      <div class="zone tool" data-zone="tool"><h4>🛠️ Needs a tool</h4><div class="chips" id="zTool"></div></div>
+    </div>
+    <div class="chips" id="chipPool" style="margin-top:14px"></div>
+    <div class="game-help" id="sortHelp">Tap a question to pick it up. ✋</div>
+    <div class="scorebar">Stars: <span id="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></span></div>
+  </section>
+
+  <!-- LESSON 3 -->
+  <section id="l3">
+    <span class="lessontag s3">Lesson 3</span>
+    <h2>What is a tool?</h2>
+    <p class="lead">A tool is just a job that Robo knows how to use, like a button it can press.</p>
+    <p>Each tool does ONE special thing. Robo looks at your question and picks the tool that fits. Here are some of Robo's tools from around the world:</p>
+    <div class="tools">
+      <div class="toolcard"><div class="em" style="background:var(--sky)">🌡️</div><b>Weather Tool</b><span>Today's temperature in any city</span></div>
+      <div class="toolcard"><div class="em" style="background:var(--coral)">🧮</div><b>Calculator</b><span>Adds big numbers fast</span></div>
+      <div class="toolcard"><div class="em" style="background:var(--mint)">📚</div><b>Library Finder</b><span>Looks up books</span></div>
+      <div class="toolcard"><div class="em" style="background:var(--grape)">🕐</div><b>World Clock</b><span>The time in Tokyo or Lagos</span></div>
+      <div class="toolcard"><div class="em" style="background:var(--sun)">🗺️</div><b>Map Tool</b><span>Finds places near you</span></div>
+      <div class="toolcard"><div class="em" style="background:#06d6a0">🌍</div><b>Translator</b><span>Say it in another language</span></div>
+      <div class="toolcard"><div class="em" style="background:#ff8fab">🎨</div><b>Picture Maker</b><span>Draws a new picture from words</span></div>
+      <div class="toolcard"><div class="em" style="background:#4cc9f0">🔎</div><b>Web Search</b><span>Looks things up online</span></div>
+      <div class="toolcard"><div class="em" style="background:#b5179e">✉️</div><b>Message Sender</b><span>Sends a note for you</span></div>
+      <div class="toolcard"><div class="em" style="background:#f4a261">⏰</div><b>Reminder</b><span>Remembers things for later</span></div>
+    </div>
+    <p style="margin-top:16px">The cool part: a tool can be almost anything! If a person can do a job, Robo can have a tool for it. 🌟</p>
+  </section>
+
+  <!-- LESSON 4 -->
+  <section id="l4">
+    <span class="lessontag s4">Lesson 4</span>
+    <h2>The Agent Loop 🔁</h2>
+    <p class="lead">This is how Robo answers, step by step. Pick a question and press <b>Run</b>!</p>
+    <div class="loop-controls">
+      <button class="qpick on" data-q="0">🌡️ Temperature in Cairo?</button>
+      <button class="qpick" data-q="1">🧮 What is 12 × 8?</button>
+      <button class="qpick" data-q="2">📚 A book about dinosaurs?</button>
+      <button class="btn sun" id="runLoop">▶ Run Robo</button>
+    </div>
+    <div class="steps" id="loopSteps"></div>
+    <div class="answer-bubble" id="loopAnswer"><span style="font-size:22px">💬</span><span id="answerText"></span></div>
+  </section>
+
+  <!-- LESSON 5 -->
+  <section id="l5">
+    <span class="lessontag s5">Lesson 5</span>
+    <h2>Robo's recipe (pseudocode)</h2>
+    <p class="lead">Pseudocode means writing the steps in plain words, like a recipe, before real code.</p>
+    <div class="recipe">
+      <div class="rt">📝 How Robo answers a question</div>
+      <ol>
+        <li><span class="kw">WHEN</span> a friend asks Robo a question:</li>
+        <li>Robo <span class="kw">READS</span> the question carefully</li>
+        <li>Robo <span class="kw">THINKS</span>: “Can I answer from memory, or do I need a tool?”</li>
+        <li><span class="kw">IF</span> a tool is needed → <span class="kw">PICK</span> the right tool, <span class="kw">USE</span> it, and <span class="kw">READ</span> what it gives back</li>
+        <li>Robo <span class="kw">SAYS</span> the answer in a friendly way 💬</li>
+        <li>Robo <span class="kw">REMEMBERS</span> the chat, so it can keep helping 🧠</li>
+      </ol>
+    </div>
+    <p style="margin-top:14px">Notice step 4 can repeat! Sometimes Robo uses one tool, gets the answer, and might need another tool. It keeps going until it has everything it needs. 🔁</p>
+  </section>
+
+  <!-- LESSON 6 -->
+  <section id="l6">
+    <span class="lessontag s6">Lesson 6</span>
+    <h2>Try it yourself!</h2>
+    <p class="lead">You are the boss! Ask Robo something and watch it work.</p>
+    <div class="loop-controls">
+      <button class="qpick2 on" data-c="Nairobi">🌡️ Weather in Nairobi</button>
+      <button class="qpick2" data-c="Mumbai">🌡️ Weather in Mumbai</button>
+      <button class="qpick2" data-c="Toronto">🌡️ Weather in Toronto</button>
+      <button class="qpick2" data-c="Sydney">🌡️ Weather in Sydney</button>
+      <button class="btn" id="askRobo">🙋 Ask Robo</button>
+    </div>
+    <div class="steps" id="trySteps"></div>
+    <div class="answer-bubble" id="tryAnswer"><span style="font-size:22px">🤖</span><span id="tryText"></span></div>
+  </section>
+
+  <!-- LESSON 7: QUIZ -->
+  <section id="l7">
+    <span class="lessontag s7">★ Quiz time</span>
+    <h2>What did you learn?</h2>
+    <p class="lead">Tap the answer you think is right. You can try until you get it!</p>
+    <div id="quiz"></div>
+    <div class="scorebar" style="margin-top:6px">Score: <b id="quizScore">0</b> / 3 🎯</div>
+  </section>
+
+  <!-- WRAP UP -->
+  <section>
+    <h2>You're an Agent Expert! 🏆</h2>
+    <p class="lead">Here's everything you now know:</p>
+    <div class="badges">
+      <div class="badge"><div class="bm" style="background:var(--grape)">🤖</div><b>Agents use tools</b></div>
+      <div class="badge"><div class="bm" style="background:var(--mint)">🧠</div><b>Brain + tools team up</b></div>
+      <div class="badge"><div class="bm" style="background:var(--sky)">🔁</div><b>The agent loop</b></div>
+      <div class="badge"><div class="bm" style="background:var(--coral)">📝</div><b>Pseudocode recipes</b></div>
+    </div>
+    <p style="margin-top:18px;font-weight:700">Keep exploring! One day you can write real code and build your very own helper that uses tools. 🌟</p>
+  </section>
+
+  <!-- KEEP EXPLORING -->
+  <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:26px 0 4px;font-size:14px">
+    <a href="basicspri.html" style="text-decoration:none;font-weight:700;color:#fff;background:#3a86ff;padding:10px 18px;border-radius:999px">See inside the machine: the Eight Little Ideas →</a>
+    <a href="overview.html" style="text-decoration:none;font-weight:700;color:#3a86ff;border:2px solid #3a86ff;padding:8px 18px;border-radius:999px">Back to IJAIO overview</a>
+  </div>
+
+  <footer>Made for curious minds 🌍 · A friendly intro to AI agents</footer>
+</div>
+
+<script>
+/* ---------- LESSON 2: sorting game ---------- */
+const POOL=[
+  {t:"What is 5 + 3?",a:"think"},
+  {t:"Weather in Nairobi right now?",a:"tool"},
+  {t:"What color is the sky?",a:"think"},
+  {t:"How many library books today?",a:"tool"},
+  {t:"Tell me a short story",a:"think"},
+  {t:"What time is it in Tokyo now?",a:"tool"},
+];
+let selected=null, placedCount=0, mistakes=0;
+const pool=document.getElementById('chipPool');
+const help=document.getElementById('sortHelp');
+POOL.forEach((q,i)=>{
+  const c=document.createElement('button');
+  c.className='chip';c.textContent=q.t;c.dataset.ans=q.a;c.dataset.i=i;
+  c.onclick=()=>{ if(c.classList.contains('placed'))return;
+    document.querySelectorAll('.chip.selected').forEach(x=>x.classList.remove('selected'));
+    selected=c;c.classList.add('selected');help.textContent='Now tap a box: 🧠 thinking or 🛠️ tool';};
+  pool.appendChild(c);
+});
+document.querySelectorAll('.zone').forEach(z=>{
+  z.onclick=()=>{
+    if(!selected)return;
+    const want=z.dataset.zone, got=selected.dataset.ans;
+    if(want===got){
+      selected.classList.remove('selected');selected.classList.add('placed','correct');
+      z.querySelector('.chips').appendChild(selected);
+      selected=null;placedCount++;help.textContent='Yes! 🎉 Pick another question.';
+      if(placedCount===POOL.length)help.textContent='All sorted! You did it! 🏅';
+    }else{
+      selected.classList.add('wrong');
+      const bad=selected;setTimeout(()=>bad.classList.remove('wrong'),350);
+      mistakes++;updateStars();help.textContent='Oops, try the other box! 💪';
+    }
+  };
+});
+function updateStars(){
+  const stars=document.querySelectorAll('#stars .star');
+  const left=Math.max(0,stars.length-mistakes);
+  stars.forEach((s,i)=>s.classList.toggle('on',i<left));
+}
+updateStars();
+
+/* ---------- LESSON 4: agent loop animation ---------- */
+const LOOP_Q=[
+  {tool:"🌡️ Weather Tool",input:"Cairo",result:"28°C",answer:"It's 28°C and sunny in Cairo today! ☀️"},
+  {tool:"🧮 Calculator",input:"12 × 8",result:"96",answer:"12 × 8 = 96. Nice maths! 🔢"},
+  {tool:"📚 Library Finder",input:"dinosaurs",result:"3 books",answer:"I found 3 great dinosaur books for you! 🦕"},
+];
+let chosenQ=0;
+document.querySelectorAll('.qpick').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.qpick').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');chosenQ=+b.dataset.q;
+});
+function buildLoop(container, q){
+  const steps=[
+    {cls:'',n:1,b:'You ask a question',s:'Robo reads it carefully 👀'},
+    {cls:'',n:2,b:'Robo thinks',s:'“Do I need a tool for this?” 🤔'},
+    {cls:'tool',n:3,b:'Robo picks a tool',s:'Choosing: '+q.tool},
+    {cls:'tool',n:4,b:'Robo uses the tool',s:'Input: “'+q.input+'” → got: '+q.result},
+    {cls:'answer',n:5,b:'Robo answers you',s:'And remembers the chat 🧠'},
+  ];
+  container.innerHTML='';
+  return steps.map(st=>{
+    const d=document.createElement('div');
+    d.className='step '+st.cls;
+    d.innerHTML='<div class="num">'+st.n+'</div><div><b>'+st.b+'</b><small>'+st.s+'</small></div>';
+    container.appendChild(d);return d;
+  });
+}
+function runSteps(container, bubble, textEl, q){
+  const els=buildLoop(container,q);
+  bubble.classList.remove('show');
+  els.forEach((el,i)=>setTimeout(()=>el.classList.add('show'), i*650));
+  setTimeout(()=>{textEl.textContent=q.answer;bubble.classList.add('show');}, els.length*650+250);
+}
+document.getElementById('runLoop').onclick=()=>{
+  runSteps(document.getElementById('loopSteps'),
+           document.getElementById('loopAnswer'),
+           document.getElementById('answerText'), LOOP_Q[chosenQ]);
+};
+
+/* ---------- LESSON 6: try-it weather ---------- */
+const TEMPS={Nairobi:"24°C 🌤️",Mumbai:"31°C ☀️",Toronto:"18°C ⛅",Sydney:"22°C 🌈"};
+let chosenCity="Nairobi";
+document.querySelectorAll('.qpick2').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.qpick2').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');chosenCity=b.dataset.c;
+});
+document.getElementById('askRobo').onclick=()=>{
+  const q={tool:"🌡️ Weather Tool",input:chosenCity,result:TEMPS[chosenCity],
+           answer:"The weather in "+chosenCity+" is "+TEMPS[chosenCity]+" right now!"};
+  runSteps(document.getElementById('trySteps'),
+           document.getElementById('tryAnswer'),
+           document.getElementById('tryText'), q);
+};
+
+/* ---------- LESSON 7: quiz ---------- */
+const QUIZ=[
+  {q:"What is an AI agent?",opts:["A helper that can use tools","A kind of pencil","A video game"],c:0,
+   yay:"Yes! An agent is a smart helper that uses tools. 🎉",nope:"Not quite. An agent USES tools to help you."},
+  {q:"Robo doesn't know today's weather. What should it use?",opts:["Its memory","A weather tool","A song"],c:1,
+   yay:"Correct! Fresh facts need a tool. 🌡️",nope:"Today's weather changes, so Robo needs a TOOL."},
+  {q:"In the agent loop, who uses the tool and then answers you?",opts:["You do","Robo the agent","Nobody"],c:1,
+   yay:"That's it! The agent uses the tool, then answers. 🔁",nope:"It's the agent: it uses the tool, then tells you."},
+];
+let quizScore=0, answered=new Set();
+const quizBox=document.getElementById('quiz');
+QUIZ.forEach((item,qi)=>{
+  const wrap=document.createElement('div');wrap.className='q';
+  wrap.innerHTML='<div class="qq">'+(qi+1)+'. '+item.q+'</div>';
+  const opts=document.createElement('div');opts.className='opts';
+  const fb=document.createElement('div');fb.className='fb';
+  item.opts.forEach((o,oi)=>{
+    const btn=document.createElement('button');btn.className='opt';btn.textContent=o;
+    btn.onclick=()=>{
+      if(answered.has(qi))return;
+      if(oi===item.c){
+        btn.classList.add('correct');answered.add(qi);quizScore++;
+        document.getElementById('quizScore').textContent=quizScore;
+        fb.className='fb show yay';fb.textContent='✅ '+item.yay;
+        [...opts.children].forEach(b=>b.disabled=true);
+      }else{
+        btn.classList.add('wrong');btn.disabled=true;
+        fb.className='fb show nope';fb.textContent='❌ '+item.nope+' Try again!';
+      }
+    };
+    opts.appendChild(btn);
+  });
+  wrap.appendChild(opts);wrap.appendChild(fb);quizBox.appendChild(wrap);
+});
+</script>
+</body>
+</html>

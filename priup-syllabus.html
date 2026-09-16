@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Spline+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0}
+  ::selection{background:#E8920C;color:#fff}
+  @keyframes upReveal{from{transform:translateY(26px)}to{transform:none}}
+  @keyframes upBob{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}
+  @keyframes upBlink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+  @keyframes upWiggle{0%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}100%{transform:rotate(-3deg)}}
+  @keyframes upFloat{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(-12px,14px) rotate(10deg)}100%{transform:translate(0,0) rotate(0)}}
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="font-family:'Spline Sans',system-ui,sans-serif;background:#FFFAF2;color:#2A2012;line-height:1.62;overflow-x:hidden">
+
+  <div style="height:7px;width:100%;background:linear-gradient(90deg,#FF6A5A,#FFB23E,#16C4C0,#8E6BFF)"></div>
+
+  <nav style="position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:13px 26px;background:rgba(255,250,242,.86);backdrop-filter:blur(14px);border-bottom:2px solid #f3e4cb">
+    <a href="overview.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#2A2012">
+      <span style="width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#FF6A5A,#8E6BFF);display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;color:#fff;font-size:13px">AI</span>
+      <span style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:17px">IJAIO<span style="color:#E8920C">.</span>26</span>
+    </a>
+    <div style="display:none;gap:6px;margin-left:auto" data-bandnav>
+      <a href="prilow-syllabus.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:#fff;border:1.5px solid #f3e4cb;color:#C23F33" style-hover="border-color:#FF6A5A">G1–3</a>
+      <a href="priup-syllabus.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;padding:7px 13px;border-radius:999px;background:#E8920C;color:#fff">G4–6</a>
+    </div>
+    <a href="overview.html" style="margin-left:8px;text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;padding:9px 15px;border-radius:999px;background:#2A2012;color:#fff" style-hover="background:#E8920C">← Overview</a>
+  </nav>
+
+  <header style="position:relative;padding:clamp(48px,7vw,84px) 26px clamp(44px,6vw,72px);overflow:hidden">
+    <div data-anim style="position:absolute;top:50px;left:8%;width:74px;height:74px;border-radius:22px;background:#FF6A5A;opacity:.4;animation:upFloat 10s ease-in-out infinite"></div>
+    <div data-anim style="position:absolute;bottom:36px;left:34%;width:54px;height:54px;border-radius:50%;background:#16C4C0;opacity:.4;animation:upFloat 12s ease-in-out infinite"></div>
+    <div data-anim style="position:absolute;top:100px;right:26%;width:42px;height:42px;border-radius:13px;background:#8E6BFF;opacity:.32;animation:upFloat 14s ease-in-out infinite"></div>
+    <div style="position:relative;z-index:2;max-width:1140px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:34px;align-items:center">
+      <div>
+        <div data-reveal style="display:inline-flex;align-items:center;gap:9px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#9a6402;background:#FCEFD2;border:2px solid #f0d9a6;padding:7px 14px;border-radius:999px;margin-bottom:20px">★ Detailed Syllabus</div>
+        <h1 data-reveal style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(2.8rem,7vw,5.2rem);line-height:.96;letter-spacing:-.01em;margin:0 0 14px;color:#2A2012">Upper<br>Primary</h1>
+        <div data-reveal style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px">
+          <span style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;color:#E8920C">Grades 4–6</span>
+          <span style="width:6px;height:6px;border-radius:50%;background:#dcc;display:inline-block"></span>
+          <span style="font-size:15px;color:#6b5a3d">60 minutes · 100 marks</span>
+        </div>
+        <p data-reveal style="font-size:clamp(1.05rem,1.5vw,1.25rem);color:#5a4a30;max-width:50ch;margin:0 0 22px;font-weight:500">Rules versus learning from data, the first generative-AI mechanics - next-word prediction and prompting - and checking AI for fairness.</p>
+      </div>
+      <div data-reveal style="justify-self:center">
+        <div data-anim style="animation:upBob 4.6s ease-in-out infinite">
+          <div style="position:relative;width:188px;height:188px;border-radius:46px;background:#E8920C;box-shadow:0 26px 50px rgba(232,146,12,.4);border:4px solid #fff">
+            <div data-anim style="position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:5px;height:24px;background:#16C4C0;border-radius:3px;transform-origin:bottom;animation:upWiggle 3.2s ease-in-out infinite"></div>
+            <div style="position:absolute;top:-46px;left:50%;transform:translateX(-50%);width:18px;height:18px;border-radius:50%;background:#16C4C0"></div>
+            <div style="position:absolute;top:62px;left:40px;width:32px;height:40px;border-radius:16px;background:#fff;animation:upBlink 4.3s ease-in-out infinite"></div>
+            <div style="position:absolute;top:62px;right:40px;width:32px;height:40px;border-radius:16px;background:#fff;animation:upBlink 4.3s ease-in-out infinite"></div>
+            <div style="position:absolute;top:74px;left:50px;width:14px;height:14px;border-radius:50%;background:#2A2012"></div>
+            <div style="position:absolute;top:74px;right:50px;width:14px;height:14px;border-radius:50%;background:#2A2012"></div>
+            <div style="position:absolute;bottom:38px;left:50%;transform:translateX(-50%);width:58px;height:24px;border:5px solid #fff;border-top:none;border-radius:0 0 40px 40px"></div>
+            <div style="position:absolute;bottom:54px;left:26px;width:18px;height:11px;border-radius:50%;background:#f5b54e"></div>
+            <div style="position:absolute;bottom:54px;right:26px;width:18px;height:11px;border-radius:50%;background:#f5b54e"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="max-width:1140px;margin:0 auto;padding:0 26px 60px">
+
+    <section style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px">
+      <div data-reveal style="background:#fff;border:2px solid #f3e4cb;border-radius:24px;padding:28px 30px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#E8920C;margin-bottom:10px">Who it's for</div>
+        <p style="margin:0;font-size:15.5px;color:#5a4a30">Students, teachers and parents who want to see how Upper Primary learners move from recognising AI ideas to shaping simple solutions and responsible-use habits.</p>
+      </div>
+      <div data-reveal style="background:#fff;border:2px solid #f3e4cb;border-radius:24px;padding:28px 30px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#E8920C;margin-bottom:10px">What success looks like</div>
+        <p style="margin:0;font-size:15.5px;color:#5a4a30">Learners compare rules with learning from data, improve prompts, spot simple bias or hallucination risks, and present short design ideas with justification.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:clamp(48px,7vw,84px)">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E8920C;margin-bottom:8px">/ where this band sits</div>
+      <h2 data-reveal style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);margin:0 0 24px;letter-spacing:-.01em">The four-band journey</h2>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ compare }}" as="c" hint-placeholder-count="4">
+          <div data-reveal style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,2fr) minmax(0,1.3fr);gap:18px;align-items:center;padding:16px 22px;border-radius:18px;background:{{ c.bg }};border:2px solid {{ c.border }}">
+            <div style="display:flex;align-items:center;gap:12px"><span style="width:11px;height:30px;border-radius:6px;background:{{ c.accent }}"></span><div><b style="font-size:15px;display:block;font-family:'Fredoka',sans-serif">{{ c.band }}</b><span style="font-family:'Space Mono',monospace;font-size:11px;color:#a8895a">Grades {{ c.grades }}</span></div></div>
+            <div style="font-size:13px;color:#6b5a3d">{{ c.mode }}</div>
+            <div style="font-size:12.5px;color:#6b5a3d">{{ c.assess }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top:clamp(48px,7vw,84px)">
+      <div>
+        <div data-reveal style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E8920C;margin-bottom:10px">/ focus of this band</div>
+        <p data-reveal style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.22;margin:0;color:#2A2012">Rules vs learning from data, the first generative-AI mechanics, and evaluating AI <span style="color:#E8920C">fairly</span>.</p>
+      </div>
+    </section>
+
+    <section style="margin-top:clamp(48px,7vw,84px)">
+      <div data-reveal style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#E8920C;margin-bottom:8px">/ learning outcomes</div>
+      <h2 data-reveal style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);margin:0 0 10px;letter-spacing:-.01em">The five AI Pillars</h2>
+      <p data-reveal style="font-size:15px;color:#6b5a3d;max-width:66ch;margin:0 0 26px">Each Pillar leads with a <b>disposition</b>, then plain learning outcomes that combine what a learner knows and can do. The same five Pillars return in every band, a little deeper each time.</p>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <sc-for list="{{ pillars }}" as="s" hint-placeholder-count="5">
+          <div data-reveal style="background:#fff;border:2px solid #f3e4cb;border-radius:24px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:14px;padding:18px 26px;background:#E8920C;color:#fff">
+              <span style="font-family:'Space Mono',monospace;font-weight:700;font-size:12px;background:rgba(255,255,255,.25);padding:4px 11px;border-radius:10px">Pillar {{ s.num }}</span>
+              <h3 style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;margin:0">{{ s.title }}</h3>
+            </div>
+            <div style="padding:22px 26px 24px">
+              <div style="padding:12px 16px;background:#fde7f0;border-left:4px solid #a01a5b;border-radius:0 12px 12px 0;font-size:14px;color:#7a2350;margin-bottom:18px"><b style="color:#a01a5b">Disposition.</b> {{ s.disp }}</div>
+              <div style="display:inline-block;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#9a6402;background:#FFF3E0;padding:4px 11px;border-radius:10px;margin-bottom:12px">Learning outcomes</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ s.out }}" as="o" hint-placeholder-count="3">
+                  <div style="display:flex;gap:10px;font-size:14.5px;color:#3a3020"><span style="font-family:'Space Mono',monospace;color:#E8920C;font-weight:700;font-size:12px;min-width:26px">{{ o.n }}</span><span>{{ o.t }}</span></div>
+                </sc-for>
+              </div>
+              <div style="margin-top:16px;padding:12px 16px;background:#FFF3E0;border-left:4px solid #E8920C;border-radius:0 12px 12px 0;font-size:13.5px;color:#7a5a1a"><b style="color:#9a6402">Evidence.</b> {{ s.evid }}</div>
+              <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span style="font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9a6402">Key terms</span><sc-for list="{{ s.terms }}" as="kt" hint-placeholder-count="3"><span style="font-family:'Space Mono',monospace;font-size:11px;font-weight:700;background:#FFF7EA;border:1px solid #f0d9ae;color:#9a6402;border-radius:999px;padding:3px 10px">{{ kt }}</span></sc-for></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="margin-top:clamp(48px,7vw,84px);display:grid;grid-template-columns:1fr 1.3fr;gap:26px;align-items:start">
+      <div data-reveal style="background:linear-gradient(150deg,#E8920C,#f5a93a);color:#fff;border-radius:24px;padding:30px;box-shadow:0 24px 46px rgba(232,146,12,.3)">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.9;margin-bottom:12px">Assessment format</div>
+        <div style="font-family:'Fredoka',sans-serif;font-weight:700;font-size:30px;line-height:1.1;margin-bottom:8px">60 min</div>
+        <div style="font-size:15px;opacity:.95">30 MCQ [60] + 2 structured tasks [40]<br>Total 100 marks</div>
+        <div style="margin-top:18px;font-family:'Space Mono',monospace;font-size:12px;background:rgba(255,255,255,.2);padding:9px 14px;border-radius:12px;display:inline-block">No marks lost for wrong answers ✓</div>
+      </div>
+      <div data-reveal>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ assess }}" as="a" hint-placeholder-count="4">
+            <div style="display:flex;gap:12px;align-items:flex-start;background:#fff;border:2px solid #f3e4cb;border-radius:16px;padding:15px 18px"><span style="flex:none;width:8px;height:8px;border-radius:50%;background:#E8920C;margin-top:7px"></span><span style="font-size:14.5px;color:#3a3020">{{ a }}</span></div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <a href="priup-lab.html" data-reveal style="display:block;text-decoration:none;margin-top:clamp(48px,7vw,80px);background:#FFF6E9;border:2px solid #f0e2c2;border-radius:28px;padding:clamp(26px,3.6vw,40px);color:#2A1714;position:relative;overflow:hidden" style-hover="transform:translateY(-3px)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9a6402;margin-bottom:8px">Hands-on Practice Lab</div>
+          <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.3rem,2.4vw,1.9rem)">Play the Upper Primary Practice Lab</div>
+          <div style="font-size:14px;color:#7a5a52;margin-top:6px">Build, train and test a mini AI through hands-on activities, then put it all together in one project.</div>
+        </div>
+        <span style="flex:none;width:62px;height:62px;border-radius:50%;background:#E8920C;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff">🤖</span>
+      </div>
+    </a>
+
+    <div data-reveal style="margin-top:18px;background:#2A2012;border-radius:28px;padding:clamp(28px,4vw,42px);color:#fff;position:relative;overflow:hidden">
+      <div data-anim style="position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(232,146,12,.55),transparent 70%);animation:upFloat 11s ease-in-out infinite"></div>
+      <div style="position:relative">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#f3b25e;margin-bottom:8px">Ready to practise?</div>
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.3rem,2.4vw,1.9rem)">Try the Upper Primary problem sets</div>
+        <div style="font-size:14px;color:#b8a585;margin-top:6px">Three interactive sets with clear marking guides. Tap an answer to check it yourself.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+          <a href="priup-problem-set-a.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#E8920C;color:#fff" style-hover="transform:translateY(-2px)">Problem Set A · Standard →</a>
+          <a href="priup-problem-set-b.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:transparent;border:2px solid #E8920C;color:#f3b25e" style-hover="transform:translateY(-2px)">Problem Set B · Generative-AI →</a>
+          <a href="priup-problem-set-c.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:transparent;border:2px solid #E8920C;color:#f3b25e" style-hover="transform:translateY(-2px)">Problem Set C · Fresh item bank →</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:30px;display:flex;gap:12px;flex-wrap:wrap">
+      <a href="prilow-syllabus.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#fff;border:2px solid #ffd9d1;color:#C23F33" style-hover="background:#FFE7E3">← Lower Primary</a>
+      <a href="overview.html" style="text-decoration:none;font-family:'Space Mono',monospace;font-weight:700;font-size:12.5px;padding:11px 18px;border-radius:999px;background:#fff;border:2px solid #f3e4cb;color:#9a6402" style-hover="background:#FCEFD2">Overview</a>
+    </div>
+  </main>
+
+  <footer style="border-top:2px solid #f3e4cb;padding:30px 26px;text-align:center;font-size:13px;color:#a8895a">International Junior Artificial Intelligence Olympiad (IJAIO) 2026</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  setRoot = (el) => { this._root = el; };
+  componentDidMount() {
+    const root = this._root || document;
+    const setNav = () => { const n = root.querySelector('[data-bandnav]'); if (n) n.style.display = window.innerWidth > 760 ? 'flex' : 'none'; };
+    setNav(); window.addEventListener('resize', setNav); this._setNav = setNav;
+    const els = [...root.querySelectorAll('[data-reveal]')];
+    els.forEach(el => { el.style.opacity = '0'; });
+    const reveal = () => {
+      const vh = window.innerHeight || 800;
+      els.forEach(el => { if (el._shown) return; const r = el.getBoundingClientRect(); if (r.top < vh * 0.94 && r.bottom > 0) { el._shown = true; el.style.opacity = '1'; el.style.animation = 'upReveal .65s cubic-bezier(.2,.7,.2,1) both'; } });
+    };
+    this._reveal = reveal;
+    window.addEventListener('scroll', reveal, { passive: true });
+    document.addEventListener('scroll', reveal, { passive: true, capture: true });
+    window.addEventListener('resize', reveal);
+    reveal(); requestAnimationFrame(() => requestAnimationFrame(reveal)); setTimeout(reveal, 300);
+  }
+  componentWillUnmount() {
+    if (this._reveal) { window.removeEventListener('scroll', this._reveal); document.removeEventListener('scroll', this._reveal, true); window.removeEventListener('resize', this._reveal); }
+    if (this._setNav) window.removeEventListener('resize', this._setNav);
+  }
+  renderVals() {
+    const compare = [
+      { band: 'Lower Primary', grades: '1–3', mode: 'Mostly unplugged patterning, classification, and safe AI use', assess: '45 min · 20 MCQ + 2 tasks', accent: '#FF6A5A', bg: '#fff', border: '#f3e4cb' },
+      { band: 'Upper Primary', grades: '4–6', mode: 'Prompting, simple classifiers, fairness and design tasks', assess: '60 min · 30 MCQ + 2 tasks', accent: '#E8920C', bg: '#FFF4DF', border: '#E8920C' },
+      { band: 'Lower Secondary', grades: '7–8', mode: 'By-hand models plus short Python reasoning tasks', assess: '90 min · 20 MCQ + 3 tasks', accent: '#0FA8A4', bg: '#fff', border: '#f3e4cb' },
+      { band: 'Upper Secondary', grades: '9–12', mode: 'Implementation, metrics, evaluation, and agentic design', assess: '90 min · 20 MCQ + 3 tasks', accent: '#8E6BFF', bg: '#fff', border: '#f3e4cb' },
+    ];
+    const pillars = [
+      { num: '1', title: 'Representation', disp: 'Trusts that meaning can be measured; looks for the numbers behind words and pictures.', out: [
+        'Turn words into numbers and show that similar things get similar numbers (proto-embeddings).',
+        'Group items by their features and explain what makes a group alike.',
+        'Collect and label a small set of examples (a mini dataset).',
+        'Check whether the sample is fair or leaves some things out.',
+        'Hand-tokenise a short sentence and notice that one word is not always one token.' ], evid: 'Build and label a small picture set, group it by feature, and say whether the set is fair.', terms: ['feature', 'label', 'vector (number-list)'] },
+      { num: '2', title: 'Learning', disp: 'Believes behaviour is learned from data - and that data can be fair or unfair.', out: [
+        'Distinguish following rules from learning from data, the idea of machine learning.',
+        'Train a simple classifier by giving and refining labelled examples.',
+        'Tell fair from unfair training examples.',
+        'Group items with no labels, the idea of clustering (unsupervised learning).',
+        'Learn from rewards by trial and error, the idea of reinforcement learning.',
+        'Describe a single neuron as a tiny decision-maker: inputs → weighted sum → fires (or not).' ], evid: 'Train a simple classifier from your examples, improve it, and explain one unfair case you fixed.', terms: ['training data', 'classify', 'generalisation: working on NEW examples'] },
+      { num: '3', title: 'Generation', disp: 'Curious about how machines make new things; experiments and improves.', out: [
+        'Explain how a chatbot predicts a likely next word.',
+        'Explain how an image generator builds a picture from a description.',
+        'Write a clear prompt (role + instruction + example) and improve it after seeing the result.',
+        'Create something new with a generative tool and refine it through better prompts.',
+        'Tell apart generating something new from retrieving (searching for) something that already exists.' ], evid: 'Improve a prompt across two tries and explain why the second output is better.', terms: ['next-word prediction', 'prompt', 'temperature (the randomness dial)', 'diffusion (painting from noise)'] },
+      { num: '4', title: 'Interaction & Agency', disp: 'Directs the tool with care; designs solutions with people in mind.', out: [
+        'Trace how a helper senses the world (its sensors), decides, then acts: perceive → decide → act.',
+        'Sketch a solution’s architecture (inputs → model → outputs → user).',
+        'Name one likely failure case and suggest a fix.',
+        'Design a small AI helper for a real classroom or home problem.' ], evid: 'Design an AI helper, label what it senses and does, and name a failure case and its fix.', terms: ['AI agent', 'sense → think → act', 'tool'] },
+      { num: '5', title: 'Responsibility', disp: 'Honest about AI help; fair-minded and caring about effects on people and the planet.', out: [
+        'Recognise that generative AI can “hallucinate”: sound confident yet be wrong.',
+        'Cross-check an AI claim against a reliable source before sharing it.',
+        'Acknowledge AI help honestly rather than passing it off as one’s own.',
+        'Explain that AI uses energy and water to run, so using it has a real-world cost.' ], evid: 'Spot a likely hallucination, verify it against a source, and name one real-world cost of AI.', terms: ['hallucination', 'deepfake', 'bias', 'verify'] },
+    ];
+    const assess = [
+      'MCQ items cover AI applications, rule-based vs data-based systems, prompting, safety, and fairness.',
+      'Structured tasks may ask learners to improve prompts, explain bias, compare outputs, or sketch a simple solution.',
+      'Creation tasks are short and guided rather than fully open-ended projects.',
+      'Marking rewards explanation, evidence of checking, and sensible design choices.',
+    ];
+    return { compare, pillars: pillars.map(p => ({ num: p.num, title: p.title, disp: p.disp, evid: p.evid, terms: p.terms || [], out: p.out.map((t, i) => ({ n: p.num + '.' + (i + 1), t })) })), assess };
+  }
+}
+</script>
+</body>
+</html>
